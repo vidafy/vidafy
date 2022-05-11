@@ -35,12 +35,20 @@ namespace WebExtension
         {
             // Add cors
             services.AddCors();
-            
+
 
             #region FOR LOCAL DEBUGGING USE
-            //
-            //
-            //
+            //Remark This section before upload
+            //services.AddSingleton<ITokenProvider>(x => new WebExtensionTokenProvider
+            //{
+            //    //DirectScaleUrl = "http://localhost:44309/",
+            //    DirectScaleUrl = Configuration["configSetting:BaseURL"].Replace("{clientId}", "vidafy").Replace("{environment}", "stage"),
+            //    DirectScaleSecret = "VidafyLive",
+            //    ExtensionSecrets = new[] { "798FD6G7SHA4E9V" }
+            //});
+            //Remark This section before upload
+            #endregion
+
             //Remark This section before upload
             if (CurrentEnvironment.IsDevelopment())
             {
@@ -52,10 +60,7 @@ namespace WebExtension
                 //});
             }
             //Remark This section before upload
-            //
-            //
-            //
-            #endregion
+
 
            
             //DS

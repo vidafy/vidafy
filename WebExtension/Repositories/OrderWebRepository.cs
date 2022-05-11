@@ -1,4 +1,5 @@
 ﻿using Dapper;
+using DirectScale.Disco.Extension;
 using DirectScale.Disco.Extension.Services;
 using System;
 using System.Collections.Generic;
@@ -11,6 +12,7 @@ namespace WebExtension.Repositories
     public interface IOrderWebRepository
     {
         List<int> GetFilteredOrderIds(string search, DateTime beginDate, DateTime endDate);
+        List<Bom> billOfMaterialItems(int itemId);
     }
     public class OrderWebRepository : IOrderWebRepository
     {
@@ -62,6 +64,19 @@ namespace WebExtension.Repositories
             }
 
             return sql;
+        }
+
+        public  List<Bom> billOfMaterialItems(int itemId)
+        {
+            using (var dbConnection = new SqlConnection( _dataService.GetClientConnectionString().Result))
+            {
+                string sql = @"SELECT B.[ItemID], B.[Qty], I.[SKU], L.[ProductName] AS EnglishDescription FROM [dbo].[INV_BOM] B
+                JOIN [dbo].[INV_Inventory] I ON I.[recordnumber] = B.[ItemID] AND I.[HasKitGroups] = 0
+                LEFT JOIN [dbo].[INV_LanguageValues] L ON L.[ItemID] = B.[ItemID] AND L.[LanguageCode] = 'en'
+                WHERE B.[ParentItemID] = @ItemId;";
+
+                return dbConnection.Query<Bom>(sql, new { ItemId = itemId }).ToList();
+            }
         }
     }
 }
