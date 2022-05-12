@@ -1,13 +1,19 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Dapper;
+using DirectScale.Disco.Extension;
+using DirectScale.Disco.Extension.Services;
+using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Web.Http;
+using System.Collections.Generic;
+using System.Data.SqlClient;
+using System.Linq;
+using System.Threading.Tasks;
 using WebExtension.Helper;
 using WebExtension.Models;
 using WebExtension.Services;
 
 namespace WebExtension.Controllers
 {
-    [System.Web.Http.Route("Command/[controller]")]
+    [Route("Command/[controller]")]
     [ApiController]
     public class ClientApiController : ControllerBase
     {
@@ -30,9 +36,9 @@ namespace WebExtension.Controllers
         //}
 
 
-        [System.Web.Http.HttpPost]
-        [System.Web.Http.Route("Inventory/GetBom")]
-        public IHttpActionResult GetBom([System.Web.Http.FromBody] BomQueryRequest request)
+        [HttpPost]
+        [Route("Inventory/GetBom")]
+        public IActionResult GetBom([FromBody] BomQueryRequest request)
         {
             BomQueryResponse model = new BomQueryResponse();
             try
@@ -40,16 +46,14 @@ namespace WebExtension.Controllers
                 var billOfMaterialItems1 = _orderWebService.BillOfMaterialItemsDetails(request.ItemId);
                 var billOfMaterialItems11 = billOfMaterialItems1.Result;
                 model.Data = new BomQuery { BillOfMaterialItems = billOfMaterialItems11.ToArray() };
-                
-                //return new Responses().OkResult(model);
+                return new Responses().OkResult(model);
             }
             catch (Exception ex)
             {
                 model.Message = ex.Message;
                 model.Status = 350;
-                //return new Responses().BadRequestResult(model);
+                return new Responses().BadRequestResult(model);
             }
-            return (IHttpActionResult)Ok(model);
         }
     }
 }
