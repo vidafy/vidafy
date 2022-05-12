@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
+using WebExtension.Helper;
 using WebExtension.Models;
 using WebExtension.Services;
 
@@ -24,14 +25,35 @@ namespace WebExtension.Controllers
         }
 
 
-        [HttpGet]
+        //[HttpGet]
+        //[Route("Inventory/GetBom")]
+        //public BomQueryResponse GetBom([FromQuery] BomQueryRequest request)
+        //{
+        //    var billOfMaterialItems1 = _orderWebService.BillOfMaterialItemsDetails(request.ItemId);
+        //    var billOfMaterialItems11 = billOfMaterialItems1.Result;
+        //    var data = new BomQuery { BillOfMaterialItems = billOfMaterialItems11.ToArray() };
+        //    return new BomQueryResponse {  Data = data };
+        //}
+
+
+        [HttpPost]
         [Route("Inventory/GetBom")]
-        public BomQueryResponse GetBom([FromQuery] BomQueryRequest request)
+        public IActionResult GetBom([FromBody] BomQueryRequest request)
         {
-            var billOfMaterialItems1 = _orderWebService.BillOfMaterialItemsDetails(request.ItemId);
-            var billOfMaterialItems11 = billOfMaterialItems1.Result;
-            var data = new BomQuery { BillOfMaterialItems = billOfMaterialItems11.ToArray() };
-            return new BomQueryResponse {  Data = data };
-        }     
+            BomQueryResponse model = new BomQueryResponse();
+            try
+            {
+                var billOfMaterialItems1 = _orderWebService.BillOfMaterialItemsDetails(request.ItemId);
+                var billOfMaterialItems11 = billOfMaterialItems1.Result;
+                model.Data = new BomQuery { BillOfMaterialItems = billOfMaterialItems11.ToArray() };
+                return new Responses().OkResult(model);
+            }
+            catch (Exception ex)
+            {
+                model.Message = ex.Message;
+                model.Status = 350;
+                return new Responses().BadRequestResult(model);
+            }
+        }
     }
 }
