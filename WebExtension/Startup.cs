@@ -69,7 +69,7 @@ namespace WebExtension
                 //CustomPage
                 //c.AddCustomPage(Menu.Associates, "Custom Order Report", "/CustomPage/CustomOrderReport");
                 
-                //Hooks
+                // Hooks
                 c.AddHook<SubmitOrderHook>();
                 c.AddHook<FinalizeAcceptedOrderHook>();
                 c.AddHook<WriteApplication>();
@@ -78,6 +78,9 @@ namespace WebExtension
                 c.AddHook<MarkPackageShippedHook>();
                 c.AddHook<LogRealtimeRankAdvanceHook>();
                 c.AddHook<DailyRun>();
+
+                // Event Handlers
+                c.AddEventHandler("3", "/api/webhooks/Associate/UpdateAssociate"); // Update Associate Event (3)
             });
 
             //Repositories
