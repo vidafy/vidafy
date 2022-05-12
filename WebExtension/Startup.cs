@@ -1,9 +1,12 @@
 using DirectScale.Disco.Extension.Middleware;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Newtonsoft.Json.Serialization;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using WebExtension.Helper;
@@ -61,8 +64,11 @@ namespace WebExtension
             }
             //Remark This section before upload
 
+            services.AddMvc(setupAction => { setupAction.EnableEndpointRouting = false; }).AddJsonOptions(jsonOptions =>
+            {
+                jsonOptions.JsonSerializerOptions.PropertyNamingPolicy = null;
+            }).SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
 
-           
             //DS
             services.AddDirectScale(c =>
             {

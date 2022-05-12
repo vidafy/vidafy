@@ -43,9 +43,10 @@ namespace WebExtension.Controllers
             BomQueryResponse model = new BomQueryResponse();
             try
             {
-                var billOfMaterialItems1 = _orderWebService.BillOfMaterialItemsDetails(request.ItemId);
-                var billOfMaterialItems11 = billOfMaterialItems1.Result;
-                model.Data = new BomQuery { BillOfMaterialItems = billOfMaterialItems11.ToArray() };
+                var billOfMaterialItems = _orderWebService.BillOfMaterialItemsDetails(request.ItemId);
+                var billOfMaterialItemsDetails = billOfMaterialItems.Result;
+                if (billOfMaterialItemsDetails != null)
+                    model.Data = new BomQuery { BillOfMaterialItems = billOfMaterialItemsDetails };
                 return new Responses().OkResult(model);
             }
             catch (Exception ex)
