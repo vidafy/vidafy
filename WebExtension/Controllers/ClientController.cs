@@ -12,13 +12,13 @@ using WebExtension.Services;
 
 namespace WebExtension.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("Command/[controller]")]
     [ApiController]
-    public class ClientController : ControllerBase
+    public class ClientApiController : ControllerBase
     {
         private readonly IOrderWebService _orderWebService;
 
-        public ClientController(IOrderWebService orderWebService)
+        public ClientApiController(IOrderWebService orderWebService)
         {
             _orderWebService = orderWebService ?? throw new ArgumentNullException(nameof(orderWebService));
         }
@@ -30,9 +30,8 @@ namespace WebExtension.Controllers
         {
             var billOfMaterialItems1 = _orderWebService.BillOfMaterialItemsDetails(request.ItemId);
             var billOfMaterialItems11 = billOfMaterialItems1.Result;
-            return new BomQueryResponse { BillOfMaterialItems = billOfMaterialItems11.ToArray() };
-        }
-
-       
+            var data = new BomQuery { BillOfMaterialItems = billOfMaterialItems11.ToArray() };
+            return new BomQueryResponse {  Data = data };
+        }     
     }
 }
