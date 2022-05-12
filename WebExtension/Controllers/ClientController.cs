@@ -40,19 +40,17 @@ namespace WebExtension.Controllers
         [Route("Inventory/GetBom")]
         public IActionResult GetBom([FromBody] BomQueryRequest request)
         {
-            BomQueryResponse model = new BomQueryResponse();
+            BomQuery model = new BomQuery();
             try
             {
                 var billOfMaterialItems = _orderWebService.BillOfMaterialItemsDetails(request.ItemId);
                 var billOfMaterialItemsDetails = billOfMaterialItems.Result;
                 if (billOfMaterialItemsDetails != null)
-                    model.Data = new BomQuery { BillOfMaterialItems = billOfMaterialItemsDetails };
+                    model.BillOfMaterialItems = billOfMaterialItemsDetails;
                 return new Responses().OkResult(model);
             }
             catch (Exception ex)
             {
-                model.Message = ex.Message;
-                model.Status = 350;
                 return new Responses().BadRequestResult(model);
             }
         }
