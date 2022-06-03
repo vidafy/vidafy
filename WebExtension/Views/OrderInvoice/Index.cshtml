@@ -3,22 +3,22 @@
 @{
     ViewBag.PageTitle = "Print Slips";
     Layout = ViewBag.Layout;
-    //var SKU =  Request["SKU"];
+    var SKU =  Context.Request.Query["SKU"];
     DateTime BegDate = new DateTime(1900, 1, 1);
-    //if (!DateTime.TryParse(Request["BegDate"], out BegDate))
-    //{
-    //    BegDate = DateTime.Now.Date;
-    //}
+    if (!DateTime.TryParse(Context.Request.Query["BegDate"], out BegDate))
+    {
+        BegDate = DateTime.Now.Date;
+    }
     DateTime EndDate = DateTime.Today.AddDays(1);
-    //if (!DateTime.TryParse(Request["EndDate"], out EndDate))
-    //{
-    //    EndDate = DateTime.Now.Date;
-    //}
+    if (!DateTime.TryParse(Context.Request.Query["EndDate"], out EndDate))
+    {
+        EndDate = DateTime.Now.Date;
+    }
 
-    //var Category = Request["Category"] ?? "Location";
-    //var CatName = Request["CatName"] ?? " ";
-    //var Code = Request["Code"] ?? "0";
-    //var GetOrders = Request["GetOrders"] ?? " ";
+    var Category = Context.Request.Query["Category"] ;
+    var CatName = Context.Request.Query["CatName"] ;
+    var Code = Context.Request.Query["Code"] ;
+    var GetOrders = Context.Request.Query["GetOrders"];
     var PR = "";
     var PS = "";
     var PI = "";
@@ -31,7 +31,7 @@
     }
 </style>
 
-@*@Html.Partial("Partials/DateInput", new Disco.Extensions.Abstractions.UI.DateInput
+@Html.Partial("Partials/DateInput", new Disco.Extensions.Abstractions.UI.DateInput
 {
    Id = "DateRangePicker",
    Style = "min-width: 175px;",
@@ -40,4 +40,4 @@
    EndName = "EndDate",
    BegDate = BegDate,
    EndDate = EndDate
-})*@
+})
