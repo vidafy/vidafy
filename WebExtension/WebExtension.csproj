@@ -9,6 +9,7 @@
   </ItemGroup>
 
 	<ItemGroup>
+		<PackageReference Include="Disco.Extensions.Abstractions" Version="1.0.459" />
 		<PackageReference Include="RestSharp" Version="106.6.10" />
 		<PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
 		<PackageReference Include="DirectScale.Disco.Extension.Abstractions" Version="1.0.5091" />

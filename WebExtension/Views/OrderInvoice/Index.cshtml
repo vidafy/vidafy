@@ -1,4 +1,43 @@
-﻿@{
+﻿@using Disco.Extensions.Abstractions 
+
+@{
     ViewBag.PageTitle = "Print Slips";
     Layout = ViewBag.Layout;
+    //var SKU =  Request["SKU"];
+    DateTime BegDate = new DateTime(1900, 1, 1);
+    //if (!DateTime.TryParse(Request["BegDate"], out BegDate))
+    //{
+    //    BegDate = DateTime.Now.Date;
+    //}
+    DateTime EndDate = DateTime.Today.AddDays(1);
+    //if (!DateTime.TryParse(Request["EndDate"], out EndDate))
+    //{
+    //    EndDate = DateTime.Now.Date;
+    //}
+
+    //var Category = Request["Category"] ?? "Location";
+    //var CatName = Request["CatName"] ?? " ";
+    //var Code = Request["Code"] ?? "0";
+    //var GetOrders = Request["GetOrders"] ?? " ";
+    var PR = "";
+    var PS = "";
+    var PI = "";
+    var PPS = "";
+    var CSV = "";
 }
+<style>
+    .input-group-btn {
+        display: unset;
+    }
+</style>
+
+@*@Html.Partial("Partials/DateInput", new Disco.Extensions.Abstractions.UI.DateInput
+{
+   Id = "DateRangePicker",
+   Style = "min-width: 175px;",
+   Class = "btn btn-default",
+   Name = "BegDate",
+   EndName = "EndDate",
+   BegDate = BegDate,
+   EndDate = EndDate
+})*@
