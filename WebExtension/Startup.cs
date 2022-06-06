@@ -35,7 +35,7 @@ namespace WebExtension
         {
             // Add cors
             services.AddCors();
-
+            services.AddTransient<OrderWebService>();
 
             #region FOR LOCAL DEBUGGING USE
             //Remark This section before upload
@@ -100,7 +100,7 @@ namespace WebExtension
             services.AddSingleton<IZiplingoEngagementService, ZiplingoEngagementService>();
             services.AddSingleton<IDailyRunService, DailyRunService>();
 
-
+            services.AddScoped<IOrderWebService, OrderWebService>();
 
             services.AddControllersWithViews();
 

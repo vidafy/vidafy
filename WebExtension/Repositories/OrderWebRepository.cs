@@ -41,9 +41,11 @@ namespace WebExtension.Repositories
         {
             // ComplexQuery qry;
             var qryst = "";
-
+            begin = begin.AddMonths(-1);
             var orderNos = new List<int>();
             end = end.AddDays(1);
+            name = "All";
+
             if ((string)name == "All")
             {
                 using (var dbConnection = new SqlConnection(_dataService.GetClientConnectionString().Result))

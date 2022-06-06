@@ -3,6 +3,7 @@
 @using Disco.Data.Extensibility.Data.SQL
 @using WebExtension.Services
 @using WebExtension.Views.Model
+@inject OrderWebService OrderService
 
 @{
     ViewBag.PageTitle = "Print Slips";
@@ -34,7 +35,6 @@
 <div class="row">
     <div class="col-lg-12">
         <h1 class="page-header">
-
         </h1>
     </div>
 </div>
@@ -60,9 +60,9 @@
                                 <option value="-1" onchange="SetCategoryItems('0', 'All');">All</option>
                                 @foreach (var AC in ViewData["WarehouseDetails"] as IEnumerable<WebExtension.Views.Model.ActiveCountry>)
                                 {
-                                <option onchange="SetCategoryItems('@(AC.Code)', '@(AC.Name)');" value="@(AC.Code)">@(AC.Name)</option>
+                                    <option onchange="SetCategoryItems('@(AC.Code)', '@(AC.Name)');" value="@(AC.Code)">@(AC.Name)</option>
                                 }
-  
+
                             </select>
 
                         </div>
@@ -105,19 +105,19 @@
                         <th>Address</th>
                         <th>Country</th>
                         <th>Notes</th>
-                        <th></th>
+                        @*<th></th>*@
                     </tr>
                     @{
                         var countryCode = "0";
-                        var orders = new Disco.Extensions.Abstractions.Orders.OrderInfo[] { };
-                        if (getOrders == "GetOrders")
-                        {
+                        var orders = new DirectScale.Disco.Extension.Order[] { };
+                        //if (getOrders == "GetOrders")
+                        //{
 
+                        orders = OrderService.GetShippableOrders(begDate, endDate, code, catName, category);
+                        //orders = WebExtension.Utilities.OrderSearch.GetShippableOrders(begDate, endDate, code, catName, category);
 
-                            orders = WebExtension.Utilities.OrderSearch.GetShippableOrders(begDate, endDate, code, catName, category);
-
-                            countryCode = orders.Any() ? orders[0].BillAddress.CountryCode : "0";
-                        }
+                        countryCode = orders.Any() ? orders[0].BillAddress.CountryCode : "0";
+                        // }
                     }
                     @foreach (var O in orders)
                     {
@@ -125,10 +125,12 @@
                             <td>@(O.OrderDate.ToString("d"))</td>
                             <td><a href="/Corporate/CRM/OrderDetail?order=@(O.OrderNumber)&id=@(O.AssociateId)">@(O.OrderNumber)</a></td>
                             <td><a href="/Corporate/CRM/Detail?id=@(O.AssociateId)">@(O.Name)</a></td>
-                            <td>@(O.BillAddress.Line1), @(O.BillAddress.City) @(Disco.Extensions.ServiceLocator.Instance.CountryService.GetStateName(O.BillAddress.CountryCode, O.BillAddress.State)) @(O.BillAddress.Zip)</td>
+                            <td>@(O.BillAddress.AddressLine1), @(O.BillAddress.City) 
+                            @*@(Disco.Extensions.ServiceLocator.Instance.CountryService.GetStateName(O.BillAddress.CountryCode, O.BillAddress.State))*@ 
+                            @(O.BillAddress.PostalCode)</td>
                             <td>@(O.BillAddress.CountryCode)</td>
                             <td>@(O.SpecialInstructions)</td>
-                            <td><button class="btn btn-default" type="button" onclick="PrintPage('/Corporate/Other?l=0&id=Inventory/Invoice&OrderNumber=@(O.OrderNumber)')">Print</button></td>
+                            @*<td><button class="btn btn-default" type="button" onclick="PrintPage('/Corporate/Other?l=0&id=Inventory/Invoice&OrderNumber=@(O.OrderNumber)')">Print</button></td>*@
                         </tr>
                     }
                 </table>
