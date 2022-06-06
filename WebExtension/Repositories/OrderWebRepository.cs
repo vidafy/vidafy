@@ -15,14 +15,19 @@ namespace WebExtension.Repositories
         List<int> GetFilteredOrderIds(string search, DateTime beginDate, DateTime endDate);
         List<Bom> billOfMaterialItems(int itemId);
         List<ActiveCountry> GetWarehouseItemDetails();
+        //Disco.Extensions.Abstractions.Orders.OrderInfo[] GetShippableOrders(DateTime begin, DateTime end, object code, object name, object category);
     }
     public class OrderWebRepository : IOrderWebRepository
     {
         private readonly IDataService _dataService;
+        private readonly Disco.Extensions.Abstractions.Orders.Services.IOrderService _orderService;
 
-        public OrderWebRepository(IDataService dataService)
+        public OrderWebRepository(IDataService dataService
+            //, Disco.Extensions.Abstractions.Orders.Services.IOrderService orderService
+            )
         {
             _dataService = dataService ?? throw new ArgumentNullException(nameof(dataService));
+          //  _orderService = orderService ?? throw new ArgumentNullException(nameof(orderService));
         }
 
         public List<ActiveCountry> GetWarehouseItemDetails()
@@ -34,6 +39,69 @@ namespace WebExtension.Repositories
                 return dbConnection.Query<ActiveCountry>(queryStatement).ToList();
             }
         }
+        //private Disco.Extensions.Abstractions.Orders.OrderInfo[] GetOrdersByDateRange(DateTime begin, DateTime end, object code, object name, object category)
+        //{
+        //   // ComplexQuery qry;
+        //    var qryst = "";
+
+        //    var orderNos = new List<int>();
+        //    end = end.AddDays(1);
+        //    if ((string)name == "All")
+        //    {
+        //        using (var dbConnection = new SqlConnection(_dataService.GetClientConnectionString().Result))
+        //        {
+        //            var parameters = new
+        //            {
+        //                begin,
+        //                end
+        //            };
+        //            qryst = "SELECT distinct O.recordnumber from ORD_ORder O join ORD_OrderPackages P on O.recordnumber = P.OrderNumber where O.OrderDate >= @begin AND O.OrderDate < @end ";
+        //            orderNos =  dbConnection.Query<int>(qryst, parameters).ToList();
+        //        }
+        //    }
+        //    else
+        //    {
+        //        using (var dbConnection = new SqlConnection(_dataService.GetClientConnectionString().Result))
+        //        {
+        //            var parameters = new
+        //            {
+        //                begin,
+        //                end,
+        //                code
+        //            };
+        //            qryst = "SELECT distinct O.recordnumber from ORD_ORder O join ORD_OrderPackages P on O.recordnumber = P.OrderNumber where O.OrderDate >= @begin AND O.OrderDate < @end ";
+        //            qryst = qryst + " AND P.WarehouseID = @code ";
+        //            orderNos = dbConnection.Query<int>(qryst, parameters).ToList();
+        //        }
+        //    }
+        //    var x = _orderService.GetOrdersWSort(orderNos.ToArray(), "ASC");
+            
+        //    List<Disco.Extensions.Abstractions.Orders.OrderInfo> newList = new List<Disco.Extensions.Abstractions.Orders.OrderInfo>();
+        //    foreach (var orderInfo in x)
+        //    {
+        //        if (!orderInfo.IsShipped)
+        //        {
+        //            newList.Add(orderInfo);
+        //        }
+
+        //    }
+        //    return newList.ToArray();
+        //}
+
+        //public Disco.Extensions.Abstractions.Orders.OrderInfo[] GetShippableOrders(DateTime begin, DateTime end, object code, object name, object category)
+        //{
+        //    var result = new List<Disco.Extensions.Abstractions.Orders.OrderInfo>();
+
+        //    foreach (var order in GetOrdersByDateRange(begin, end, code, name, category))
+        //    {
+        //        if (order.InvoiceDate > DateTime.MinValue)
+        //        {
+        //            result.Add(order);
+        //        }
+        //    }
+
+        //    return result.ToArray();
+        //}
         public List<int> GetFilteredOrderIds(string search, DateTime beginDate, DateTime endDate)
         {
             using (var dbConnection = new SqlConnection(_dataService.GetClientConnectionString().Result))
