@@ -20,14 +20,12 @@ namespace WebExtension.Repositories
     public class OrderWebRepository : IOrderWebRepository
     {
         private readonly IDataService _dataService;
-        private readonly Disco.Extensions.Abstractions.Orders.Services.IOrderService _orderService;
+        private readonly IOrderService _orderService;
 
-        public OrderWebRepository(IDataService dataService
-            //, Disco.Extensions.Abstractions.Orders.Services.IOrderService orderService
-            )
+        public OrderWebRepository(IDataService dataService, IOrderService orderService)
         {
             _dataService = dataService ?? throw new ArgumentNullException(nameof(dataService));
-          //  _orderService = orderService ?? throw new ArgumentNullException(nameof(orderService));
+            _orderService = orderService ?? throw new ArgumentNullException(nameof(orderService));
         }
 
         public List<ActiveCountry> GetWarehouseItemDetails()
