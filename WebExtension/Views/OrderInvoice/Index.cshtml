@@ -49,28 +49,31 @@
             <input type="hidden" id="CatName" value="@(catName)" name="CatName">
             <input type="hidden" id="GetOrders" value="@(getOrders)" name="GetOrders">
             <div class="form-group input-group pull-left" style="margin-right: 15px;">
-                <span class="input-group-btn">
+                <div class="input-group-btn">
                     <a href="#" class="btn btn-default dropdown-toggle" data-toggle="dropdown" style="border-radius: 5px;margin-bottom: 3px;">
                         Select @(category) <span id="spanCatValue"> @(catName) </span><span class="caret" style="margin-left: 5px;"></span>
                     </a>
 
                     @{
+                        <div class="inline-block align-top w-64 sm:w-auto">
+                            <select id="WearhouseLookup" name="WearhouseLookup" onchange="SetCategoryItems('0', 'All');">
+                                <option value="-1" onchange="SetCategoryItems('0', 'All');">All</option>
+                                @foreach (var AC in ViewData["WarehouseDetails"] as IEnumerable<WebExtension.Views.Model.ActiveCountry>)
+                                {
+                                <option onchange="SetCategoryItems('@(AC.Code)', '@(AC.Name)');" value="@(AC.Code)">@(AC.Name)</option>
+                                }
+  
+                            </select>
 
-                        <ul class="dropdown-menu" role="menu">
-                            <li><a href="" onclick="SetCategoryItems('0', 'All'); return false;">All</a></li>
-                            @foreach (var AC in ViewData["WarehouseDetails"] as IEnumerable<WebExtension.Views.Model.ActiveCountry>)
-                            {
-                                <li><a href="" onclick="SetCategoryItems('@(AC.Code)', '@(AC.Name)'); return false;">@(AC.Name)</a></li>
-                            }
-                        </ul>
+                        </div>
 
                     }
 
 
-                </span>
+                </div>
 
 
-                @*@Html.Partial("Partials/DateInput", new DateInput
+                @Html.Partial("Partials/DateInput", new DateInput
                 {
                     Id = "DateRangePicker",
                     Style = "min-width: 175px;",
@@ -79,7 +82,7 @@
                     EndName = "EndDate",
                     BegDate = begDate,
                     EndDate = endDate
-                })*@
+                })
 
 
                 <button class="btn btn-primary" name="Submit" onclick="Submitform(); return false;" style="margin-left: 3px;">List Orders</button>
@@ -131,7 +134,7 @@
                 </table>
             </div>
         </div>
-    </div>
+    </div>*@
     <div class="modal fade" id="fileDownloadModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -148,7 +151,7 @@
                 </div>
             </div>
         </div>
-    </div>*@
+    </div>
 
     <script>
         function downLoadCsv(start, end, country, CatName, Category, language) {
