@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using WebExtension.Models;
 using WebExtension.Repositories;
+using WebExtension.Views.Model;
 
 namespace WebExtension.Services
 {
@@ -13,6 +14,7 @@ namespace WebExtension.Services
     {
         Task<List<OrderViewModel>> GetFilteredOrders(string search, DateTime beginDate, DateTime endDate);
         Task<List<Bom>> BillOfMaterialItemsDetails(int itemId);
+        List<ActiveCountry> GetWareHouseDetails();
     }
     public class OrderWebService : IOrderWebService
     {
@@ -25,6 +27,11 @@ namespace WebExtension.Services
             _orderWebRepository = orderWebRepository ?? throw new ArgumentNullException(nameof(orderWebRepository));
             _orderService = orderService ?? throw new ArgumentNullException(nameof(orderService));
             _currencyService = currencyService ?? throw new ArgumentNullException(nameof(currencyService));
+        }
+
+        public  List<ActiveCountry> GetWareHouseDetails()
+        {
+            return _orderWebRepository.GetWarehouseItemDetails();
         }
 
         public async Task<List<OrderViewModel>> GetFilteredOrders(string search, DateTime beginDate, DateTime endDate)

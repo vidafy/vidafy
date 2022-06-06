@@ -11,7 +11,7 @@ namespace WebExtension.Services
 {
     public interface IExtensionOrderService
     {
-        public Task<Invoice> GetInvoiceData(int orderNumber);
+        Task<Invoice> GetInvoiceData(int orderNumber);
     }
     public class OrderInvoiceService: IExtensionOrderService
     {

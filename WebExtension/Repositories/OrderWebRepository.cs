@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
+using WebExtension.Views.Model;
 
 namespace WebExtension.Repositories
 {
@@ -13,6 +14,7 @@ namespace WebExtension.Repositories
     {
         List<int> GetFilteredOrderIds(string search, DateTime beginDate, DateTime endDate);
         List<Bom> billOfMaterialItems(int itemId);
+        List<ActiveCountry> GetWarehouseItemDetails();
     }
     public class OrderWebRepository : IOrderWebRepository
     {
@@ -21,6 +23,16 @@ namespace WebExtension.Repositories
         public OrderWebRepository(IDataService dataService)
         {
             _dataService = dataService ?? throw new ArgumentNullException(nameof(dataService));
+        }
+
+        public List<ActiveCountry> GetWarehouseItemDetails()
+        {
+            using (var dbConnection = new SqlConnection(_dataService.GetClientConnectionString().Result))
+            {
+                var searchCategory = new List<ActiveCountry>();
+                var queryStatement = $@"Select WarehouseName  Name, recordnumber Code from  Inv_wareHouse";
+                return dbConnection.Query<ActiveCountry>(queryStatement).ToList();
+            }
         }
         public List<int> GetFilteredOrderIds(string search, DateTime beginDate, DateTime endDate)
         {
