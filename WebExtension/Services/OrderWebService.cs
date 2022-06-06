@@ -15,6 +15,9 @@ namespace WebExtension.Services
         Task<List<OrderViewModel>> GetFilteredOrders(string search, DateTime beginDate, DateTime endDate);
         Task<List<Bom>> BillOfMaterialItemsDetails(int itemId);
         List<ActiveCountry> GetWareHouseDetails();
+
+       Order[] GetShippableOrders(DateTime begin, DateTime end, object code, object name, object category);
+
     }
     public class OrderWebService : IOrderWebService
     {
@@ -32,6 +35,11 @@ namespace WebExtension.Services
         public  List<ActiveCountry> GetWareHouseDetails()
         {
             return _orderWebRepository.GetWarehouseItemDetails();
+        }
+
+        public Order[] GetShippableOrders(DateTime begin, DateTime end, object code, object name, object category)
+        {
+            return _orderWebRepository.GetShippableOrders(begin, end, code, name, category);
         }
 
         public async Task<List<OrderViewModel>> GetFilteredOrders(string search, DateTime beginDate, DateTime endDate)

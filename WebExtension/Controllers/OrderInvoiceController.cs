@@ -25,6 +25,7 @@ namespace WebExtension.Controllers
         public IActionResult Index()
         {  
             ViewData["WarehouseDetails"] = _ordrWebService.GetWareHouseDetails();
+            //ViewData["ShippableOrderDetails"] = _ordrWebService.GetShippableOrders()
             return View();
         }
     }
