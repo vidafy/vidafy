@@ -56,17 +56,6 @@
 
                     @{
 
-                        <select name="Warehouse" id="Warehouse">
-                            <option value="volvo">Volvo</option>
-                            <option value="saab">Saab</option>
-                            <option value="opel">Opel</option>
-                            <option value="audi">Audi</option>
-                            @foreach (var AC in ViewData["WarehouseDetails"] as IEnumerable<WebExtension.Views.Model.ActiveCountry>)
-                            {
-                                <li><a href="" onclick="SetCategoryItems('@(AC.Code)', '@(AC.Name)'); return false;">@(AC.Name)</a></li>
-                            }
-                        </select>
-
                         <ul class="dropdown-menu" role="menu">
                             <li><a href="" onclick="SetCategoryItems('0', 'All'); return false;">All</a></li>
                             @foreach (var AC in ViewData["WarehouseDetails"] as IEnumerable<WebExtension.Views.Model.ActiveCountry>)
