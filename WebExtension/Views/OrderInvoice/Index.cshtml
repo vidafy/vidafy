@@ -20,16 +20,22 @@
         endDate = DateTime.Now.Date;
     }
 
-    object category = ViewData["category"] ?? "Location";
-    object catName = ViewData["catName"] ?? " ";
-    object code = ViewData["code"] ?? "0";
-    var getOrders = ViewData["getOrders"] ?? " ";
+    var category = Context.Request.Query["Category"];
+    var catName = Context.Request.Query["CatName"];
+    var code = Context.Request.Query["Code"];
+    var getOrders = Context.Request.Query["GetOrders"];
+
+    //object category = ViewData["category"] ?? "Location";
+    //object catName = ViewData["catName"] ?? " ";
+    //object code = ViewData["code"] ?? "0";
+    //var getOrders = ViewData["getOrders"] ?? " ";
 }
 <style>
     .input-group-btn {
         display: unset;
     }
 </style>
+
 <div class="row">
     <div class="col-lg-12">
         <h1 class="page-header">
@@ -41,11 +47,11 @@
     <div class="col-sm-12">
         <form id="SearchFrm" method="post">
             @*<input type="hidden" name="l" value="@((int)Disco.Extensions.Abstractions.Hooks.Menu.Inventory)" />*@
-            <input type="hidden" name="id" value="Inventory/PackingSlips" />
-            <input type="hidden" id="Category" value="Warehouse" name="Category">
-            <input type="hidden" id="Code" value="@(code)" name="Code">
-            <input type="hidden" id="CatName" value="@(catName)" name="CatName">
-            <input type="hidden" id="GetOrders" value="@(getOrders)" name="GetOrders">
+            <input type="text" name="id" value="Inventory/PackingSlips" />
+            <input type="text" id="Category" value="Warehouse" name="Category">
+            <input type="text" id="Code" value="@(code)" name="Code">
+            <input type="text" id="CatName" value="@(catName)" name="CatName">
+            <input type="text" id="GetOrders" value="@(getOrders)" name="GetOrders">
             <div class="form-group input-group pull-left" style="margin-right: 15px;">
                 <div class="input-group-btn">
                     <a href="#" class="btn btn-default dropdown-toggle" data-toggle="dropdown" style="border-radius: 5px;margin-bottom: 3px;">
@@ -124,9 +130,11 @@
                             <td>@(O.OrderDate.ToString("d"))</td>
                             <td><a href="/Corporate/CRM/OrderDetail?order=@(O.OrderNumber)&id=@(O.AssociateId)">@(O.OrderNumber)</a></td>
                             <td><a href="/Corporate/CRM/Detail?id=@(O.AssociateId)">@(O.Name)</a></td>
-                            <td>@(O.BillAddress.AddressLine1), @(O.BillAddress.City), 
-                            @(OrderService.GetCountryByCode(O.BillAddress.CountryCode)),
-                            @(O.BillAddress.PostalCode)</td>
+                            <td>
+                                @(O.BillAddress.AddressLine1), @(O.BillAddress.City),
+                                @(OrderService.GetCountryByCode(O.BillAddress.CountryCode)),
+                                @(O.BillAddress.PostalCode)
+                            </td>
                             <td>@(O.BillAddress.CountryCode)</td>
                             <td>@(O.SpecialInstructions)</td>
                             <td><button class="btn btn-default" type="button" onclick="PrintPage('/Corporate/Other?l=0&id=Inventory/Invoice&OrderNumber=@(O.OrderNumber)')">Print</button></td>
