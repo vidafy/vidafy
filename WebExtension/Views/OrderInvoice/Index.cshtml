@@ -1,6 +1,4 @@
 ﻿@using DirectScale.Disco.Extension.Services
-@using Disco.Extensions.Abstractions.UI
-@using Disco.Data.Extensibility.Data.SQL
 @using WebExtension.Services
 @using WebExtension.Views.Model
 @inject OrderWebService OrderService
@@ -42,7 +40,7 @@
 <div class="row">
     <div class="col-sm-12">
         <form id="SearchFrm" method="post">
-            <input type="hidden" name="l" value="@((int)Disco.Extensions.Abstractions.Hooks.Menu.Inventory)" />
+            @*<input type="hidden" name="l" value="@((int)Disco.Extensions.Abstractions.Hooks.Menu.Inventory)" />*@
             <input type="hidden" name="id" value="Inventory/PackingSlips" />
             <input type="hidden" id="Category" value="Warehouse" name="Category">
             <input type="hidden" id="Code" value="@(code)" name="Code">
