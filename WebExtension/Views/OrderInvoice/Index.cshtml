@@ -124,8 +124,8 @@
                             <td>@(O.OrderDate.ToString("d"))</td>
                             <td><a href="/Corporate/CRM/OrderDetail?order=@(O.OrderNumber)&id=@(O.AssociateId)">@(O.OrderNumber)</a></td>
                             <td><a href="/Corporate/CRM/Detail?id=@(O.AssociateId)">@(O.Name)</a></td>
-                            <td>@(O.BillAddress.AddressLine1), @(O.BillAddress.City) 
-                            @*@(Disco.Extensions.ServiceLocator.Instance.CountryService.GetStateName(O.BillAddress.CountryCode, O.BillAddress.State))*@ 
+                            <td>@(O.BillAddress.AddressLine1), @(O.BillAddress.City), 
+                            @(OrderService.GetCountryByCode(O.BillAddress.CountryCode)),
                             @(O.BillAddress.PostalCode)</td>
                             <td>@(O.BillAddress.CountryCode)</td>
                             <td>@(O.SpecialInstructions)</td>

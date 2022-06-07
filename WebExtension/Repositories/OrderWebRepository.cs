@@ -16,6 +16,7 @@ namespace WebExtension.Repositories
         List<Bom> billOfMaterialItems(int itemId);
         List<ActiveCountry> GetWarehouseItemDetails();
         Order[] GetShippableOrders(DateTime begin, DateTime end, object code, object name, object category);
+        List<ActiveCountry> GetCountryNames();
     }
     public class OrderWebRepository : IOrderWebRepository
     {
@@ -37,6 +38,17 @@ namespace WebExtension.Repositories
                 return dbConnection.Query<ActiveCountry>(queryStatement).ToList();
             }
         }
+
+        public List<ActiveCountry> GetCountryNames()
+        {
+            using (var dbConnection = new SqlConnection(_dataService.GetClientConnectionString().Result))
+            {
+                var searchCategory = new List<ActiveCountry>();
+                var queryStatement = $@"select C.CountryCode as Code, C.CountryName as Name from ActiveCountries AC INNER JOIN Countries C on AC.CountryCode = C.CountryCode";
+                return dbConnection.Query<ActiveCountry>(queryStatement).ToList();
+            }
+        }
+
         private Order[] GetOrdersByDateRange(DateTime begin, DateTime end, object code, object name, object category)
         {
             // ComplexQuery qry;
