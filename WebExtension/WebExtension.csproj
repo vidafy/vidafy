@@ -9,13 +9,6 @@
   </ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Disco.Commissions.Components" Version="1.0.570" />
-		<PackageReference Include="Disco.Commissions.Components.Abstractions" Version="1.0.352" />
-		<PackageReference Include="Disco.Common" Version="1.0.100" />
-		<PackageReference Include="Disco.Common.Data" Version="1.0.100" />
-		<PackageReference Include="Disco.Data" Version="1.0.139" />
-		<PackageReference Include="Disco.Data.Adapter" Version="1.0.139" />
-		<PackageReference Include="Disco.Data.Extensibility" Version="1.0.139" />
 		<PackageReference Include="Disco.Extensions.Abstractions" Version="1.0.459" />
 		<PackageReference Include="RestSharp" Version="106.6.10" />
 		<PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.3" />
