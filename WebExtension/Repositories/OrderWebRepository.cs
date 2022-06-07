@@ -56,7 +56,7 @@ namespace WebExtension.Repositories
             begin = begin.AddDays(-5);
             var orderNos = new List<int>();
             end = end.AddDays(1);
-            name = "All";
+            //name = "All";
 
             if ((string)name == "All")
             {

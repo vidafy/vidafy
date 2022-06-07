@@ -20,15 +20,10 @@
         endDate = DateTime.Now.Date;
     }
 
-    var category = Context.Request.Query["Category"];
-    var catName = Context.Request.Query["CatName"];
-    var code = Context.Request.Query["Code"];
-    var getOrders = Context.Request.Query["GetOrders"];
-
-    //object category = ViewData["category"] ?? "Location";
-    //object catName = ViewData["catName"] ?? " ";
-    //object code = ViewData["code"] ?? "0";
-    //var getOrders = ViewData["getOrders"] ?? " ";
+    object category = ViewData["category"] ?? "Location";
+    object catName = ViewData["catName"] ?? " ";
+    object code = ViewData["code"] ?? "0";
+    var getOrders = ViewData["getOrders"] ?? " ";
 }
 <style>
     .input-group-btn {
@@ -64,7 +59,7 @@
                                 <option value="-1" onchange="SetCategoryItems('0', 'All');">All</option>
                                 @foreach (var AC in ViewData["WarehouseDetails"] as IEnumerable<WebExtension.Views.Model.ActiveCountry>)
                                 {
-                                    <option onchange="SetCategoryItems('@(AC.Code)', '@(AC.Name)');" value="@(AC.Code)">@(AC.Name)</option>
+                                    <option onclick="SetCategoryItems('@(AC.Code)', '@(AC.Name)');" value="@(AC.Code)">@(AC.Name)</option>
                                 }
 
                             </select>
