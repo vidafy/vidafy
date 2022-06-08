@@ -103,7 +103,12 @@ namespace WebExtension
             services.AddScoped<IOrderWebService, OrderWebService>();
 
             services.AddControllersWithViews();
-
+            services.AddRazorPages()
+                .AddRazorPagesOptions(options =>
+                {
+                    options.RootDirectory = "/Views";
+                    options.Conventions.AuthorizeFolder("/Views/OrderInvoice");
+                });
             //Swagger
             services.AddSwaggerGen();
 
