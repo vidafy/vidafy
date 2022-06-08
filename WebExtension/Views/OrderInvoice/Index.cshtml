@@ -174,11 +174,11 @@
     <script type="text/javascript">
 
 
-               function PrintPage(url) {
-                        $('#ReportFrame').attr("src", url);
-                    }
+                       function PrintPage(url) {
+                    $('#ReportFrame').attr("src", url);
+                }
 
-                function downLoadCsv(start, end, country, CatName, Category, language) {
+                        function downLoadCsv(start, end, country, CatName, Category, language) {
                     var test = "";
                     if (country === "") {
                         alert("Please Select a Country.");
@@ -208,7 +208,7 @@
                     }
                 }
 
-                function printExternal(url) {
+                        function printExternal(url) {
                     var printWindow = window.open(url,
                         'Print',
                         'left=200, top=200, width=1280px, height=800px, toolbar=0, resizable=0');
@@ -220,7 +220,7 @@
                         true);
                 }
 
-                function SetCategoy(code) {
+                        function SetCategoy(code) {
                     $("#GetOrders").val(" ");
                     $('#spanCat').text(code);
                     $('#CatName').val("All");
@@ -229,13 +229,13 @@
                     $('#SearchFrm').submit();
                 }
 
-                function SetCategoryItems(Code, Name) {
+                        function SetCategoryItems(Code, Name) {
                     $('#CatName').val(Name);
                     $('#Code').val(Code);
                     $('#spanCatValue').text(Name);
                     // $('#SearchFrm').submit();
                 }
-                function Submitform() {
+                        function Submitform() {
                     $("#GetOrders").val("GetOrders");
                     console.log($("#GetOrders").val());
                     $('#SearchFrm').submit();

@@ -9,6 +9,8 @@ using Microsoft.Extensions.Logging;
 using System.Diagnostics;
 using WebExtension.Models;
 using WebExtension.Services;
+using Microsoft.AspNetCore.Cors;
+
 namespace WebExtension.Controllers
 {
     public class OrderInvoiceController : Controller
@@ -22,6 +24,7 @@ namespace WebExtension.Controllers
         }
 
        [ExtensionAuthorize]
+       [EnableCors("AllowOrigin")]
         public IActionResult Index(string Category, string CatName, string Code, string GetOrders)
         {  
             ViewData["WarehouseDetails"] = _ordrWebService.GetWareHouseDetails();
