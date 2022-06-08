@@ -34,7 +34,12 @@ namespace WebExtension
         public void ConfigureServices(IServiceCollection services)
         {
             // Add cors
-            services.AddCors();
+            services.AddCors(options=> 
+            {
+                options.AddPolicy("AllowOrigin",
+                   builder => builder.WithOrigins("https://vidafy.corpadmin.directscalestage.com", 
+                   "https://vidafy.clientextension.directscalestage.com"));
+                });
             services.AddTransient<OrderWebService>();
 
             #region FOR LOCAL DEBUGGING USE
