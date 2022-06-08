@@ -33,6 +33,13 @@
     .input-group-btn {
         display: unset;
     }
+
+    .dropdown-toggle.btn-default {
+        background-color: white !important;
+    }
+    .btn {
+        text-align: left !important;
+    }
 </style>
 
 <div class="row">
@@ -52,30 +59,30 @@
             <input type="text" id="CatName" value="@(catName)" name="CatName">
             <input type="text" id="GetOrders" value="@(getOrders)" name="GetOrders">
             <div class="form-group input-group pull-left" style="margin-right: 15px;">
-                <div class="input-group-btn">
+                @*<div class="input-group-btn">
                     <a href="#" class="btn btn-default dropdown-toggle" data-toggle="dropdown" style="border-radius: 5px;margin-bottom: 3px;">
                         Select @(category) <span id="spanCatValue"> @(catName) </span><span class="caret" style="margin-left: 5px;"></span>
                     </a>
 
-                    @{
-                        <div class="inline-block align-top w-64 sm:w-auto">
-                            <select id="WearhouseLookup" name="WearhouseLookup" onchange="SetCategoryItems('0', 'All');">
-                                <option value="-1" onchange="SetCategoryItems('0', 'All');">All</option>
-                                @foreach (var AC in ViewData["WarehouseDetails"] as IEnumerable<WebExtension.Views.Model.ActiveCountry>)
-                                {
-                                    <option onclick="SetCategoryItems('@(AC.Code)', '@(AC.Name)');" value="@(AC.Code)">@(AC.Name)</option>
-                                }
 
-                            </select>
-
-                        </div>
-
-                    }
                     <button class="btn btn-primary" name="PrintAll" onclick="Submitform(); return false;" style="margin-left: 3px;">Print All</button>
 
 
-                </div>
+                </div>*@
+                
+                @{
+                    <div>
+                        <select id="WarehouseLookup" name="WarehouseLookup" onchange="SetCategoryItems('@(code)', '@(catName)');" class="btn btn-default dropdown-toggle" data-toggle="dropdown" style="border-radius: 5px;margin-bottom: 3px;">
+                            <option value="0" onclick="SetCategoryItems('0', 'All');">All</option>
+                            @foreach (var ac in (IEnumerable<ActiveCountry>) ViewData["WarehouseDetails"])
+                            {
+                                <option onclick="SetCategoryItems('@(ac.Code)', '@(ac.Name)');" value="@(ac.Code)">@(ac.Name)</option>
+                            }
 
+                        </select>
+
+                    </div>
+                }
 
                 @Html.Partial("Partials/DateInput", new DateInput
                 {
@@ -89,7 +96,7 @@
                 })
 
 
-                <button class="btn btn-primary" name="Submit" onclick="Submitform(); return false;" style="margin-left: 3px;">List Orders</button>
+                <button class="btn btn-primary" name="Submit" onclick="Submitform(this); return false;" style="margin-left: 3px;">List Orders</button>
 
 
 
@@ -164,81 +171,86 @@
 
     <script>
         $(document).ready(function () {
+
+            var selectedItem = '@code';
+            
+            $('#WarehouseLookup').val(selectedItem);
+
             $('#ReportFrame').load(function () {
-                if ($('#ReportFrame').attr("src") != '') {
+                if ($('#ReportFrame').attr("src") !== '') {
                     frames['ReportFrame'].print();
                 }
             });
-        }
+        })
     </script>
     <script type="text/javascript">
 
 
-               function PrintPage(url) {
-                        $('#ReportFrame').attr("src", url);
-                    }
+       function PrintPage(url) {
+                $('#ReportFrame').attr("src", url);
+            }
 
-                function downLoadCsv(start, end, country, CatName, Category, language) {
-                    var test = "";
-                    if (country === "") {
-                        alert("Please Select a Country.");
-                    } else {
-                        $.ajax({
-                            url: '/Command/ClientAPI/orders/getorderscsv',
-                            dataType: "json",
-                            type: "POST",
-                            data: JSON.stringify({ begin: start, end: end, Code: country, Name: CatName, Category: Category }),
-                            success: function (r) {
-                                if (r.Status === 0) {
-                                    $("#fileDownloadsDiv").append("<div><a href='/Corporate/DownloadTempFile?fileName=" +
-                                        r.Data +
-                                        "'>" +
-                                        r.Data +
-                                        "</a></div>");
-                                    showModal = true;
-                                    if (showModal) {
-                                        $('#fileDownloadModal').modal('show');
-                                    }
-                                } else {
-                                    alert(r.Message);
-                                }
-                            },
-                            contentType: "application/json; charset=utf-8",
-                        });
-                    }
-                }
+        function downLoadCsv(start, end, country, catName, category, language) {
+            var test = "";
+            if (country === "") {
+                alert("Please Select a Country.");
+            } else {
+                $.ajax({
+                    url: '/Command/ClientAPI/orders/getorderscsv',
+                    dataType: "json",
+                    type: "POST",
+                    data: JSON.stringify({ begin: start, end: end, Code: country, Name: catName, Category: category }),
+                    success: function (r) {
+                        if (r.Status === 0) {
+                            $("#fileDownloadsDiv").append("<div><a href='/Corporate/DownloadTempFile?fileName=" +
+                                r.Data +
+                                "'>" +
+                                r.Data +
+                                "</a></div>");
+                            showModal = true;
+                            if (showModal) {
+                                $('#fileDownloadModal').modal('show');
+                            }
+                        } else {
+                            alert(r.Message);
+                        }
+                    },
+                    contentType: "application/json; charset=utf-8",
+                });
+            }
+        }
 
-                function printExternal(url) {
-                    var printWindow = window.open(url,
-                        'Print',
-                        'left=200, top=200, width=1280px, height=800px, toolbar=0, resizable=0');
-                    printWindow.addEventListener('load',
-                        function () {
-                            printWindow.print();
-                            printWindow.close();
-                        },
-                        true);
-                }
+        function printExternal(url) {
+            var printWindow = window.open(url,
+                'Print',
+                'left=200, top=200, width=1280px, height=800px, toolbar=0, resizable=0');
+            printWindow.addEventListener('load',
+                function () {
+                    printWindow.print();
+                    printWindow.close();
+                },
+                true);
+        }
 
-                function SetCategoy(code) {
-                    $("#GetOrders").val(" ");
-                    $('#spanCat').text(code);
-                    $('#CatName').val("All");
-                    $('#Code').val("0");
-                    $('#Category').val(code);
-                    $('#SearchFrm').submit();
-                }
+        function SetCategoy(code) {
+            $("#GetOrders").val(" ");
+            $('#spanCat').text(code);
+            $('#CatName').val("All");
+            $('#Code').val("0");
+            $('#Category').val(code);
+            $('#SearchFrm').submit();
+        }
 
-                function SetCategoryItems(Code, Name) {
-                    $('#CatName').val(Name);
-                    $('#Code').val(Code);
-                    $('#spanCatValue').text(Name);
-                    // $('#SearchFrm').submit();
-                }
-                function Submitform() {
-                    $("#GetOrders").val("GetOrders");
-                    console.log($("#GetOrders").val());
-                    $('#SearchFrm').submit();
-                }
+        function SetCategoryItems(code, name) {
+            $('#CatName').val(name);
+            $('#Code').val(code);
+            $('#spanCatValue').text(name);
+        }
+        function Submitform() {
+            $("#GetOrders").val("GetOrders");
+            console.log($("#GetOrders").val());
+            $('#SearchFrm').submit();
+                    
+        }
     </script>
 </div>
