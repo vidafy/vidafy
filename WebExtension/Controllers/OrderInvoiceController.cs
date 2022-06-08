@@ -24,7 +24,6 @@ namespace WebExtension.Controllers
         }
 
        [ExtensionAuthorize]
-       [EnableCors("AllowOrigin")]
         public IActionResult Index(string Category, string CatName, string Code, string GetOrders)
         {  
             ViewData["WarehouseDetails"] = _ordrWebService.GetWareHouseDetails();

@@ -21,6 +21,7 @@ namespace WebExtension
 {
     public class Startup
     {
+        readonly string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
         public Startup(IConfiguration configuration, IWebHostEnvironment env)
         {
             Configuration = configuration;
@@ -34,12 +35,19 @@ namespace WebExtension
         public void ConfigureServices(IServiceCollection services)
         {
             // Add cors
-            services.AddCors(options=> 
+
+            services.AddCors(options =>
             {
-                options.AddPolicy("AllowOrigin",
-                   builder => builder.WithOrigins("https://vidafy.corpadmin.directscalestage.com", 
-                   "https://vidafy.clientextension.directscalestage.com"));
-                });
+                options.AddPolicy(name: MyAllowSpecificOrigins,
+                                  policy =>
+                                  {
+                                      policy.WithOrigins("https://vidafy.corpadmin.directscalestage.com",
+                                                          "https://vidafy.clientextension.directscalestage.com");
+                                  });
+            });
+
+            // services.AddResponseCaching();
+            services.AddControllers();
             services.AddTransient<OrderWebService>();
 
             #region FOR LOCAL DEBUGGING USE
