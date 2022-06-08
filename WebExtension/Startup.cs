@@ -67,7 +67,7 @@ namespace WebExtension
             services.AddDirectScale(c =>
             {
                 //CustomPage
-                //c.AddCustomPage(Menu.Associates, "Custom Order Report", "/CustomPage/CustomOrderReport");
+                c.AddCustomPage(DirectScale.Disco.Extension.Middleware.Models.Menu.Inventory, "Print Slips", "/OrderInvoice/index");
                 
                 // Hooks
                 c.AddHook<SubmitOrderHook>();
@@ -103,12 +103,12 @@ namespace WebExtension
             services.AddScoped<IOrderWebService, OrderWebService>();
 
             services.AddControllersWithViews();
-            services.AddRazorPages()
-                .AddRazorPagesOptions(options =>
-                {
-                    options.RootDirectory = "/Views";
-                    options.Conventions.AuthorizeFolder("/Views/OrderInvoice");
-                });
+            //services.AddRazorPages()
+            //    .AddRazorPagesOptions(options =>
+            //    {
+            //        options.RootDirectory = "/WebExtension";
+            //        options.Conventions.AuthorizeFolder("/WebExtension/Views");
+            //    });
             //Swagger
             services.AddSwaggerGen();
 

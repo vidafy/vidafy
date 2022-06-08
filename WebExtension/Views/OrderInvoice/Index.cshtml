@@ -156,69 +156,85 @@
             </div>
         </div>
     </div>
+    <iframe src="" class="PrintFrame" id="ReportFrame" name="ReportFrame"></iframe>
 
     <script>
-        function downLoadCsv(start, end, country, CatName, Category, language) {
-            var test = "";
-            if (country === "") {
-                alert("Please Select a Country.");
-            } else {
-                $.ajax({
-                    url: '/Command/ClientAPI/orders/getorderscsv',
-                    dataType: "json",
-                    type: "POST",
-                    data: JSON.stringify({ begin: start, end: end, Code: country, Name: CatName, Category: Category }),
-                    success: function (r) {
-                        if (r.Status === 0) {
-                            $("#fileDownloadsDiv").append("<div><a href='/Corporate/DownloadTempFile?fileName=" +
-                                r.Data +
-                                "'>" +
-                                r.Data +
-                                "</a></div>");
-                            showModal = true;
-                            if (showModal) {
-                                $('#fileDownloadModal').modal('show');
-                            }
-                        } else {
-                            alert(r.Message);
-                        }
-                    },
-                    contentType: "application/json; charset=utf-8",
-                });
-            }
+        $(document).ready(function () {
+            $('#ReportFrame').load(function () {
+                if ($('#ReportFrame').attr("src") != '') {
+                    frames['ReportFrame'].print();
+                }
+            });
         }
+    </script>
+    <script type="text/javascript">
 
-        function printExternal(url) {
-            var printWindow = window.open(url,
-                'Print',
-                'left=200, top=200, width=1280px, height=800px, toolbar=0, resizable=0');
-            printWindow.addEventListener('load',
-                function () {
-                    printWindow.print();
-                    printWindow.close();
-                },
-                true);
-        }
 
-        function SetCategoy(code) {
-            $("#GetOrders").val(" ");
-            $('#spanCat').text(code);
-            $('#CatName').val("All");
-            $('#Code').val("0");
-            $('#Category').val(code);
-            $('#SearchFrm').submit();
-        }
+               function PrintPage(url) {
+                        $('#ReportFrame').attr("src", url);
+                    }
 
-        function SetCategoryItems(Code, Name) {
-            $('#CatName').val(Name);
-            $('#Code').val(Code);
-            $('#spanCatValue').text(Name);
-            // $('#SearchFrm').submit();
-        }
-        function Submitform() {
-            $("#GetOrders").val("GetOrders");
-            console.log($("#GetOrders").val());
-            $('#SearchFrm').submit();
-        }
+                function downLoadCsv(start, end, country, CatName, Category, language) {
+                    var test = "";
+                    if (country === "") {
+                        alert("Please Select a Country.");
+                    } else {
+                        $.ajax({
+                            url: '/Command/ClientAPI/orders/getorderscsv',
+                            dataType: "json",
+                            type: "POST",
+                            data: JSON.stringify({ begin: start, end: end, Code: country, Name: CatName, Category: Category }),
+                            success: function (r) {
+                                if (r.Status === 0) {
+                                    $("#fileDownloadsDiv").append("<div><a href='/Corporate/DownloadTempFile?fileName=" +
+                                        r.Data +
+                                        "'>" +
+                                        r.Data +
+                                        "</a></div>");
+                                    showModal = true;
+                                    if (showModal) {
+                                        $('#fileDownloadModal').modal('show');
+                                    }
+                                } else {
+                                    alert(r.Message);
+                                }
+                            },
+                            contentType: "application/json; charset=utf-8",
+                        });
+                    }
+                }
+
+                function printExternal(url) {
+                    var printWindow = window.open(url,
+                        'Print',
+                        'left=200, top=200, width=1280px, height=800px, toolbar=0, resizable=0');
+                    printWindow.addEventListener('load',
+                        function () {
+                            printWindow.print();
+                            printWindow.close();
+                        },
+                        true);
+                }
+
+                function SetCategoy(code) {
+                    $("#GetOrders").val(" ");
+                    $('#spanCat').text(code);
+                    $('#CatName').val("All");
+                    $('#Code').val("0");
+                    $('#Category').val(code);
+                    $('#SearchFrm').submit();
+                }
+
+                function SetCategoryItems(Code, Name) {
+                    $('#CatName').val(Name);
+                    $('#Code').val(Code);
+                    $('#spanCatValue').text(Name);
+                    // $('#SearchFrm').submit();
+                }
+                function Submitform() {
+                    $("#GetOrders").val("GetOrders");
+                    console.log($("#GetOrders").val());
+                    $('#SearchFrm').submit();
+                }
     </script>
 </div>
