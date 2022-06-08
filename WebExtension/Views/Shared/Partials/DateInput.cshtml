@@ -1,5 +1,4 @@
-﻿
-@*http://www.daterangepicker.com/*@
+﻿@*http://www.daterangepicker.com/*@
 @{
     var type = Model.Type;
     var ID = Model.Id;// "DateInput";
@@ -29,10 +28,42 @@
     var ID__END = $"{ID}__END";
 
 }
+
+
+
+<script src="/Scripts/jquery-1.10.2.min.js"></script>
+<script src="https://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+<script src="/Scripts/jquery-ui.min.js" type="text/javascript"></script>
+<link href="/Styles/jquery.treeview.css" rel="stylesheet" />
+<script src="/Scripts/jquery.cookie.js" type="text/javascript"></script>
+<script src="/Scripts/jquery.toaster.js" type="text/javascript"></script>
+<script src="/Scripts/jquery.treeview.js" type="text/javascript"></script>
+<script src="/Scripts/jquery-treeview-async-0.1.0.js" type="text/javascript"></script>
+<link href="/Styles/ui.daterangepicker.css" rel="stylesheet" type="text/css" />
+<script src="/Scripts/daterangepicker.jQuery.js" type="text/javascript"></script>
+<script src="/Scripts/date.js" type="text/javascript"></script>
+<script src="/Scripts/form.js" type="text/javascript"></script>
+<link href="/Styles/bootstrapCS.css" rel="stylesheet" />
+<script src="/Scripts/bootstrapJS.js"></script>
+<script src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js" type="text/javascript"></script>
+<script src="https://cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.js" type="text/javascript"></script>
+<link href="https://cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.css" rel="stylesheet" type="text/css" />
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" rel="stylesheet" />
+<script src="/Scripts/slide-loader.js"></script>
+<link href="/Styles/morris.css" rel="stylesheet" />
+<script src="/Scripts/morrisJS.js"></script>
+<link href="/Styles/BaseCSS.css" rel="stylesheet" />
+<script src="/Scripts/BaseJS.js"></script>
+<script src="/Scripts/raphael-2.1.0.js"></script>
+<script src="/Scripts/metisMenu.js"></script>
+<script src="/Scripts/chosen.jquery.js" type="text/javascript"></script>
+<link href="/Styles/chosen.css" rel="stylesheet" />
+<script src="/Scripts/nav.js" type="text/javascript"></script>
 <style>
     .dateInputCtl:hover {
         background-color: white !important;
     }
+
     .dropdownCaret {
         background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABoAAAAPCAMAAADNjy/UAAAAHlBMVEWCkqKDk6OJmKeeqreos7+qtcD09ff3+Pn+/v7///+3ssFLAAAAPElEQVR42sXQKxIAMQiDYZ6Bvf+FV8TR1rY45jP/RL7jXSfP5tfpg8qyKVaDaENINMqaAY1Q7Ashgndr/GJLDRU/4pTLAAAAAElFTkSuQmCC);
         background-repeat: no-repeat;
@@ -46,8 +77,7 @@
         left: 8px;
     }
 </style>
-<script src="/Scripts/jquery-1.10.2.min.js"></script>
-<script src="/Scripts/moment.js"></script>
+
 @if (type == "range")
 {
     <script type="text/javascript">
@@ -118,7 +148,7 @@
 }
 else if (type == "futurerange")
 {
-<script type="text/javascript">
+    <script type="text/javascript">
 
         function @(ID)_SetValue(begin, end)
         {
@@ -174,19 +204,19 @@ else if (type == "futurerange")
             "drops": "@drops"
           }, cb);
         });
-</script>
+    </script>
 
-<div id="@ID" class="dateInputCtl @itemClass" style="@itemStyle">
-    <i class="bi bi-calendar3 mr-1"></i>
-    <span class="hideSmall"></span><div class="dropdownCaret hideSmall"></div>
-</div>
+    <div id="@ID" class="dateInputCtl @itemClass" style="@itemStyle">
+        <i class="bi bi-calendar3 mr-1"></i>
+        <span class="hideSmall"></span><div class="dropdownCaret hideSmall"></div>
+    </div>
 
-<input type="hidden" id="@ID__BEG" name="@itemName" value="@realBegDate">
-<input type="hidden" id="@ID__END" name="@itemEndName" value="@realEndDate" />
+    <input type="hidden" id="@ID__BEG" name="@itemName" value="@realBegDate">
+    <input type="hidden" id="@ID__END" name="@itemEndName" value="@realEndDate" />
 }
 else if (type == "single")
 {
-<script type="text/javascript">
+    <script type="text/javascript">
 
         function @(ID)_SetValue(begin, end)
         {
@@ -234,19 +264,19 @@ else if (type == "single")
             }, cb);
         });
 
-</script>
+    </script>
 
-<div id="@ID" class="dateInputCtl @itemClass" style="@itemStyle">
-    <i class="bi bi-calendar3 mr-1"></i>
-    <span class="hideSmall"></span><div class="dropdownCaret hideSmall"></div>
-</div>
+    <div id="@ID" class="dateInputCtl @itemClass" style="@itemStyle">
+        <i class="bi bi-calendar3 mr-1"></i>
+        <span class="hideSmall"></span><div class="dropdownCaret hideSmall"></div>
+    </div>
 
-<input type="hidden" id="@ID__BEG" name="@itemName" value="@realBegDate">
-<input type="hidden" id="@ID__END" name="@itemEndName" value="@realEndDate" />
+    <input type="hidden" id="@ID__BEG" name="@itemName" value="@realBegDate">
+    <input type="hidden" id="@ID__END" name="@itemEndName" value="@realEndDate" />
 }
 else if (type == "singledateinput")
 {
-<script type="text/javascript">
+    <script type="text/javascript">
 
         function @(ID)_SetValue(begin, end)
         {
@@ -293,11 +323,11 @@ else if (type == "singledateinput")
             }, cb);
         });
 
-</script>
+    </script>
 
-<div id="@ID" class="dateInputCtl @itemClass" style="@itemStyle">
-    <span></span><i class="bi bi-calendar3 pull-right"></i>
-    <i class="bi bi-calendar3 mr-1"></i>
-</div>
-<input type="hidden" id="@ID__BEG" name="@itemName" value="@realBegDate">
+    <div id="@ID" class="dateInputCtl @itemClass" style="@itemStyle">
+        <span></span><i class="bi bi-calendar3 pull-right"></i>
+        <i class="bi bi-calendar3 mr-1"></i>
+    </div>
+    <input type="hidden" id="@ID__BEG" name="@itemName" value="@realBegDate">
 }

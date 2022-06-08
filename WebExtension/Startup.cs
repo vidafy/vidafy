@@ -100,7 +100,7 @@ namespace WebExtension
             services.AddSingleton<IZiplingoEngagementService, ZiplingoEngagementService>();
             services.AddSingleton<IDailyRunService, DailyRunService>();
 
-            services.AddScoped<IOrderWebService, OrderWebService>();
+            //services.AddScoped<IOrderWebService, OrderWebService>();
 
             services.AddControllersWithViews();
             //services.AddRazorPages()
