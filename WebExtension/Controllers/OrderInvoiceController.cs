@@ -55,5 +55,33 @@ namespace WebExtension.Controllers
 
             return View();
         }
+
+
+        [ExtensionAuthorize]
+        public IActionResult InvoiceAll([FromQuery] string orderNumbers)
+        {
+            List<string> listOrder = new List<string>();
+            listOrder = orderNumbers.Split('|').ToList();
+            List<Invoice> Invoices = new List<Invoice>();
+
+            foreach (var orderNumber in listOrder)
+            {
+                int numberOnOrder;
+                bool isParsable = Int32.TryParse(orderNumber, out numberOnOrder);
+                if (isParsable)
+                {
+                    Invoice invoiceData = _extOrderService.GetInvoiceData(numberOnOrder);
+                    if (invoiceData == null || invoiceData.OrderNumber == 0)
+                    {
+                    }
+                    else
+                    {
+                        Invoices.Add(invoiceData);
+                    }
+                }
+            }
+            ViewData["InvoiceDataAll"] = Invoices;
+            return View();
+        }
     }
 }

@@ -1,0 +1,122 @@
+﻿@page
+@model WebExtension.Views.Model.Invoice
+@using WebExtension.Views.Model
+@{
+}
+<div class="container">
+    <h2 class="center">Shipping Invoice</h2>
+    <table>
+        <tr>
+            <td style="width:70%; margin-top:-38px;"><img src='/CMS/Images/JWPro-Square500-Black8e7a4f.png' alt='Jack Winn Color' /></td><!--Logo-->
+            <td>
+                <!--Order Details-->
+                <div style='height:40px;'>
+                    <span class="bold">Acct #</span>
+                    <span class="bold">@Model.BackOfficeId</span>
+                    <span class="bold">@Model.FirstLastName</span>
+                </div>
+                <div class="row"><div class="heading">Phone #</div><div class="value">@Model.PhoneNumber</div></div>
+                <div class="row"><div class="heading">Email</div><div class="value">@Model.Email </div></div>
+                <div class="row"><div class="heading">Order #</div><div class="value">@Model.OrderNumber </div></div>
+                <div class="row"><div class="heading">Date</div><div class="value">@Model.Date.ToString("d") </div></div>
+                <div class="row"><div class="heading">Method</div><div class="value">@Model.ShippingMethod</div></div>
+                <div class="row"><div class="heading">Weight</div><div class="value">@Model.Weight</div></div>
+                <div class="row"><div class="heading">Status</div><div class="value">@Model.Status</div></div>
+            </td>
+        </tr>
+    </table>
+    <table>
+        <tr>
+            <td>
+                <div class="bold">Ship To</div>
+                <div>@Model.ShipToAddress.CompanyName</div>
+                <div>@Model.ShipToAddress.FullName</div>
+                <div>@Model.ShipToAddress.Address</div>
+                <div>@Model.ShipToAddress.Address2</div>
+                <div>@Model.ShipToAddress.City, @Model.ShipToAddress.State  @Model.ShipToAddress.Zip</div>
+            </td><!--Ship To-->
+            <td>
+                <div class="bold">Bill To</div>
+                <div>@Model.BillToAddress.CompanyName</div>
+                <div>@Model.BillToAddress.FullName</div>
+                <div>@Model.BillToAddress.Address</div>
+                <div>@Model.BillToAddress.Address2</div>
+                <div>@Model.BillToAddress.City, @Model.BillToAddress.State  @Model.BillToAddress.Zip</div>
+            </td><!--Bill To-->
+        </tr>
+    </table>
+    <table>
+        <thead>
+            <tr style="background-color:#888585 !important">
+                <td>Item #</td>
+                <td>Qty</td>
+                <td>Description</td>
+                <td>Price</td>
+                <td>Total</td>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (InvoiceItem item in Model.Items)
+            {
+            <tr class="item">
+                <td>@(item.ItemNumber)</td>
+                <td>@(item.Qty)</td>
+                <td>@(item.Description) </td>
+                <td>@(item.Price)</td>
+                <td>@(item.Total)</td>
+            </tr>
+            foreach (InvoiceBOM bom in @item.BOMs)
+            {
+            <tr class="bom">
+                <td>@(bom.Name)</td><!--name-->
+                <td>@(bom.Qty)</td><!--Qty-->
+                <td colspan="3">@(bom.Description)</td><!--Description-->
+            </tr>
+            }
+            }
+        </tbody>
+    </table>
+    <!-- Totals -->
+    <table style="margin-top:50px">
+        <tr>
+            <td style="width:70%">
+                <!-- Payment details -->
+                <table class="clear_margin">
+                    <thead>
+                        <tr>
+                            <td>Payment</td>
+                            <td>Type</td>
+                            <td>Amount</td>
+                        </tr>
+                    </thead>
+                    @foreach (InvoicePaymentDetails detail in @Model.PaymentDetails)
+                    {
+                    <tr>
+                        <td>@(detail.PaymentDate.ToString("d"))</td>
+                        <td>@(detail.Type)</td>
+                        <td>@(detail.Amount)</td>
+                    </tr>
+                    }
+                </table>
+            </td>
+            <td>
+                <!--Totals-->
+                <div class="row"><div class="heading">Subtotal</div><div class="value">@(@Model.InvoiceAmount.Subtotal)</div></div>
+                <div class="row"><div class="heading">Tax</div><div class="value">@(@Model.InvoiceAmount.Tax)</div></div>
+                <div class="row"><div class="heading">Shipping</div><div class="value">@(@Model.InvoiceAmount.Shipping)</div></div>
+                <div class="row"><div class="heading">Handling</div><div class="value">@(@Model.InvoiceAmount.Handling)</div></div>
+                <div class="row" style="margin-top:15px; font-size:12pt">
+                    <div class="heading">Total</div><div class="value bold">
+                        @(@Model.InvoiceAmount.Total)
+                    </div>
+                </div>
+                <div class="row"><div class="heading">Payments</div><div class="value">@(@Model.InvoiceAmount.Payments)</div></div>
+                <div class="row"><div class="heading">Balance Due</div><div class="value">@(@Model.InvoiceAmount.BalanceDue)</div></div>
+            </td>
+        </tr>
+    </table>
+    <!-- Notes -->
+    <div class="notes">
+        @Model.AdditionalInformation
+    </div>
+</div>

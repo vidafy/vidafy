@@ -1,0 +1,20 @@
+﻿@using DirectScale.Disco.Extension.Services
+@using WebExtension.Services
+@using WebExtension.Views.Model
+@inject OrderWebService OrderService
+
+@{
+    ViewBag.PageTitle = "Invoice";
+    List<Invoice> invoice = (List<Invoice>)ViewData["InvoiceDataAll"];
+    }
+
+    <style type="text/css" src="/css/invoice.css"></style>
+
+    <div class="container">
+        <h2 class="center">Shipping Invoices</h2>
+        @foreach(var invoiceitem in invoice)
+            {
+                <partial name="_InvoicePartial" model="invoiceitem" />
+            }
+    </div>
+
