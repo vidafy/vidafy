@@ -5,13 +5,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using WebExtension.Models.OrderInvoice;
+using WebExtension.Views.Model;
 
 namespace WebExtension.Services
 {
     public interface IExtensionOrderService
     {
-        Task<Invoice> GetInvoiceData(int orderNumber);
+        Invoice GetInvoiceData(int orderNumber);
     }
     public class OrderInvoiceService: IExtensionOrderService
     {
@@ -28,14 +28,14 @@ namespace WebExtension.Services
             _bomService = bomService ?? throw new ArgumentNullException(nameof(bomService));
         }
 
-        public async Task<Invoice> GetInvoiceData(int orderNumber)
+        public  Invoice GetInvoiceData(int orderNumber)
         {
-            var orderInfo = await _orderService.GetOrderByOrderNumber(orderNumber);
-            var distributorSummary = await _associateService.GetAssociate(orderInfo.AssociateId);
-            var shippingInformation = await GetShippingInformation(distributorSummary, orderInfo.Packages);
+            Task<Order> orderInfo = _orderService.GetOrderByOrderNumber(orderNumber);
+            Task<Associate> distributorSummary = _associateService.GetAssociate(orderInfo.Result.AssociateId);
+            var shippingInformation = GetShippingInformation(distributorSummary.Result, orderInfo.Result.Packages);
 
             var invoiceAmount = new InvoiceAmounts();
-            foreach (var total in orderInfo.Totals)
+            foreach (var total in orderInfo.Result.Totals)
             {
                 invoiceAmount.Subtotal = $"{total.SubTotal:C2}";
                 invoiceAmount.Tax = $"{total.Tax:C2}";
@@ -46,7 +46,7 @@ namespace WebExtension.Services
             }
 
             var invoicePayments = new List<InvoicePaymentDetails>();
-            foreach (var payment in orderInfo.Payments)
+            foreach (var payment in orderInfo.Result.Payments)
             {
                 invoicePayments.Add(new InvoicePaymentDetails
                 {
@@ -57,10 +57,10 @@ namespace WebExtension.Services
             }
 
             var invoiceItems = new List<InvoiceItem>();
-            foreach (var lineItem in orderInfo.LineItems)
+            foreach (var lineItem in orderInfo.Result.LineItems)
             {
-                var boms = await _bomService.GetBOM(lineItem.ItemId);
-                var invoiceBoms = boms.Select(bom => new InvoiceBOM
+                Task <Bom[]> boms = _bomService.GetBOM(lineItem.ItemId);
+                var invoiceBoms = boms.Result.Select(bom => new InvoiceBOM
                 {
                     Description = bom.EnglishDescription,
                     Name = bom.Sku,
@@ -80,37 +80,37 @@ namespace WebExtension.Services
             }
 
             var invoiceStatus = "Pending";
-            if (orderInfo.IsShipped)
+            if (orderInfo.Result.IsShipped)
             {
                 invoiceStatus = "Shipped";
             }
-            else if (orderInfo.IsPaid)
+            else if (orderInfo.Result.IsPaid)
             {
                 invoiceStatus = "Paid";
             }
 
             var invoice = new Invoice
             {
-                AdditionalInformation = orderInfo.SpecialInstructions,
-                BackOfficeId = distributorSummary.BackOfficeId,
+                AdditionalInformation = orderInfo.Result.SpecialInstructions,
+                BackOfficeId = distributorSummary.Result.BackOfficeId,
                 BillToAddress = new InvoiceAddress
                 {
-                    Address = orderInfo.BillAddress.AddressLine1,
-                    Address2 = orderInfo.BillAddress.AddressLine2,
-                    City = orderInfo.BillAddress.City,
-                    CompanyName = distributorSummary.CompanyName,
-                    FullName = distributorSummary.Name,
-                    State = orderInfo.BillAddress.State,
-                    Zip = orderInfo.BillAddress.PostalCode
+                    Address = orderInfo.Result.BillAddress.AddressLine1,
+                    Address2 = orderInfo.Result.BillAddress.AddressLine2,
+                    City = orderInfo.Result.BillAddress.City,
+                    CompanyName = distributorSummary.Result.CompanyName,
+                    FullName = distributorSummary.Result.Name,
+                    State = orderInfo.Result.BillAddress.State,
+                    Zip = orderInfo.Result.BillAddress.PostalCode
                 },
                 Date = DateTime.Today,
-                Email = distributorSummary.EmailAddress,
-                FirstLastName = distributorSummary.Name,
+                Email = distributorSummary.Result.EmailAddress,
+                FirstLastName = distributorSummary.Result.Name,
                 InvoiceAmount = invoiceAmount,
                 Items = invoiceItems,
-                OrderNumber = orderInfo.OrderNumber,
+                OrderNumber = orderInfo.Result.OrderNumber,
                 PaymentDetails = invoicePayments,
-                PhoneNumber = orderInfo.BillPhone,
+                PhoneNumber = orderInfo.Result.BillPhone,
                 ShippingMethod = shippingInformation.ShippingMethodDescription,
                 ShipToAddress = shippingInformation.ShippingAddress,
                 Status = invoiceStatus,
@@ -120,7 +120,7 @@ namespace WebExtension.Services
             return invoice;
         }
 
-        private async Task<ShippingInformation> GetShippingInformation(Associate distributorSummary, List<OrderPackage> orderPackages)
+        private ShippingInformation GetShippingInformation(Associate distributorSummary, List<OrderPackage> orderPackages)
         {
             var defaultAddress = distributorSummary.ShipAddress;
             var invoiceAddress = new InvoiceAddress
@@ -151,7 +151,7 @@ namespace WebExtension.Services
                 invoiceAddress.Zip = firstOrderPackage.ShippingAddress.PostalCode;
 
                 // Set ShipMethodDescription
-                shippingMethod = (await _shippingService.GetShippingMethod(firstOrderPackage.ShipMethodId))?.DisplayText ?? "Not Specified";
+                shippingMethod = (_shippingService.GetShippingMethod(firstOrderPackage.ShipMethodId))?.Result.DisplayText ?? "Not Specified";
 
                 // Set Total Weight
                 packageWeight += orderPackages.Sum(orderPackage => orderPackage.Weight);

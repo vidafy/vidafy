@@ -36,15 +36,15 @@ namespace WebExtension
         {
             // Add cors
 
-            services.AddCors(options =>
-            {
-                options.AddPolicy(name: MyAllowSpecificOrigins,
-                                  policy =>
-                                  {
-                                      policy.WithOrigins("https://vidafy.corpadmin.directscalestage.com",
-                                                          "https://vidafy.clientextension.directscalestage.com");
-                                  });
-            });
+            //services.AddCors(options =>
+            //{
+            //    options.AddPolicy(name: MyAllowSpecificOrigins,
+            //                      policy =>
+            //                      {
+            //                          policy.WithOrigins("https://vidafy.corpadmin.directscalestage.com",
+            //                                              "https://vidafy.clientextension.directscalestage.com");
+            //                      });
+            //});
 
             // services.AddResponseCaching();
             services.AddControllers();
