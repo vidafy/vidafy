@@ -4,7 +4,7 @@
 @inject OrderWebService OrderService
 
 @{
-    ViewBag.PageTitle = "Print Slips";
+    ViewBag.PageTitle = "Order Invoice";
     Layout = ViewBag.Layout;
     var WarehouseDetails = ViewData["WarehouseDetails"];
 
@@ -25,6 +25,47 @@
     object code = ViewData["code"] ?? "0";
     var getOrders = ViewData["getOrders"] ?? " ";
 }
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Order Invoice</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.0/font/bootstrap-icons.css" />
+<link rel="icon" type="image/png" href="/CMS//Images/favicon.png" />
+
+<script src="/Scripts/jquery-1.10.2.min.js"></script>
+<script src="https://code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+<script src="/Scripts/jquery-ui.min.js" type="text/javascript"></script>
+<link href="/Styles/jquery.treeview.css" rel="stylesheet" />
+<script src="/Scripts/jquery.cookie.js" type="text/javascript"></script>
+<script src="/Scripts/jquery.toaster.js" type="text/javascript"></script>
+<script src="/Scripts/jquery.treeview.js" type="text/javascript"></script>
+<script src="/Scripts/jquery-treeview-async-0.1.0.js" type="text/javascript"></script>
+<link href="/Styles/ui.daterangepicker.css" rel="stylesheet" type="text/css" />
+<link href="/Content/Tailwind/post.css" rel="stylesheet" type="text/css" />
+<script src="/Scripts/daterangepicker.jQuery.js" type="text/javascript"></script>
+<script src="/Scripts/date.js" type="text/javascript"></script>
+<script src="/Scripts/form.js" type="text/javascript"></script>
+<link href="/Styles/bootstrapCS.css" rel="stylesheet" />
+<script src="/Scripts/bootstrapJS.js"></script>
+<script src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js" type="text/javascript"></script>
+<script src="https://cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.js" type="text/javascript"></script>
+<link href="https://cdn.jsdelivr.net/bootstrap.daterangepicker/2/daterangepicker.css" rel="stylesheet" type="text/css" />
+<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" rel="stylesheet" />
+<script src="/Scripts/slide-loader.js"></script>
+<link href="/Styles/morris.css" rel="stylesheet" />
+<script src="/Scripts/morrisJS.js"></script>
+<link href="/Styles/BaseCSS.css" rel="stylesheet" />
+<script src="/Scripts/BaseJS.js"></script>
+<script src="/Scripts/raphael-2.1.0.js"></script>
+<script src="/Scripts/metisMenu.js"></script>
+<script src="/Scripts/chosen.jquery.js" type="text/javascript"></script>
+<link href="/Styles/chosen.css" rel="stylesheet" />
+<script src="/Scripts/nav.js" type="text/javascript"></script>
+
+<link href="/Content/SlideNavagator.css" rel="stylesheet" type="text/css" />
+
+
+<link href="/Styles/bootstrap-misc.css" rel="stylesheet">
+<link href="/Styles/bootstrap-theme.css" rel="stylesheet">
+
 
 <style>
     .input-group-btn {
@@ -34,43 +75,63 @@
     .dropdown-toggle.btn-default {
         background-color: white !important;
     }
+
     .btn {
         text-align: left !important;
     }
+
+    .row {
+        margin-right: 0 !important;
+        margin-left: 0 !important;
+    }
+
+    .daterangepicker .calendar {
+        max-width: 300px;
+    }
+
+    .page-toolbar {
+        position: inherit;
+    }
+
 </style>
 
 <div class="row">
     <div class="col-lg-12">
-        <h1 class="page-header">
-        </h1>
+        <div class="page-toolbar">
+            <span id="pageHeader" class="text-4xl font-bold sm:block md:inline truncate">Order Invoice</span>
+        </div>
     </div>
 </div>
 
 <div class="row">
     <div class="col-sm-12">
+
         <form id="SearchFrm" method="post">
             @*<input type="hidden" name="l" value="@((int)Disco.Extensions.Abstractions.Hooks.Menu.Inventory)" />*@
-            <input type="text" name="id" value="Inventory/PackingSlips" />
-            <input type="text" id="Category" value="Warehouse" name="Category">
-            <input type="text" id="Code" value="@(code)" name="Code">
-            <input type="text" id="CatName" value="@(catName)" name="CatName">
-            <input type="text" id="GetOrders" value="@(getOrders)" name="GetOrders">
-            <div class="form-group input-group pull-left" style="margin-right: 15px;">
+            <div class="col-sm-4" style="margin-top: 60px;">
+                <input type="text" name="id" value="Inventory/PackingSlips"/>
+                <input type="text" id="Category" value="Warehouse" name="Category">
+                <input type="text" id="Code" value="@(code)" name="Code">
+                <input type="text" id="CatName" value="@(catName)" name="CatName">
+                <input type="text" id="GetOrders" value="@(getOrders)" name="GetOrders">
+            </div>
+
+            <div class="form-group input-group pull-left col-sm-9" style="margin-right: 15px; margin-top: 20px;">
                 @*<div class="input-group-btn">
-                    <a href="#" class="btn btn-default dropdown-toggle" data-toggle="dropdown" style="border-radius: 5px;margin-bottom: 3px;">
-                        Select @(category) <span id="spanCatValue"> @(catName) </span><span class="caret" style="margin-left: 5px;"></span>
-                    </a>
+                        <a href="#" class="btn btn-default dropdown-toggle" data-toggle="dropdown" style="border-radius: 5px;margin-bottom: 3px;">
+                            Select @(category) <span id="spanCatValue"> @(catName) </span><span class="caret" style="margin-left: 5px;"></span>
+                        </a>
 
 
-                    <button class="btn btn-primary" name="PrintAll" onclick="Submitform(); return false;" style="margin-left: 3px;">Print All</button>
+                        <button class="btn btn-primary" name="PrintAll" onclick="Submitform(); return false;" style="margin-left: 3px;">Print All</button>
 
 
-                </div>*@
-                
+                    </div>*@
+
                 @{
-                    <div>
-                        <select id="WarehouseLookup" name="WarehouseLookup" onchange="SetCategoryItems('@(code)', '@(catName)');" class="btn btn-default dropdown-toggle" data-toggle="dropdown" style="border-radius: 5px;margin-bottom: 3px;">
-                            <option value="0" onclick="SetCategoryItems('0', 'All');">All</option>
+                    <div class="col-sm-3">
+                        <select id="WarehouseLookup" name="WarehouseLookup" onchange="SetCategoryItems('@(code)', '@(catName)');" class="btn btn-default dropdown-toggle" data-toggle="dropdown" style="border-radius: 5px; margin-bottom: 3px;">
+                            <option value="0" onclick="SetCategoryItems('0', 'Select Warehouse All');">Select Warehouse All</option>
                             @foreach (var ac in (IEnumerable<ActiveCountry>) ViewData["WarehouseDetails"])
                             {
                                 <option onclick="SetCategoryItems('@(ac.Code)', '@(ac.Name)');" value="@(ac.Code)">@(ac.Name)</option>
@@ -78,22 +139,29 @@
 
                         </select>
 
+
                     </div>
+                    <div class="col-sm-6">
+                        @Html.Partial("Partials/DateInput", new DateInput
+                        {
+                            Id = "DateRangePicker",
+                            Style = "min-width: 175px;",
+                            Class = "btn btn-default",
+                            Name = "BegDate",
+                            EndName = "EndDate",
+                            BegDate = begDate,
+                            EndDate = endDate
+                        })
+
+                        <button class="btn btn-primary" name="Submit" onclick="Submitform(this);return false;" style="margin-left: 3px;">List Orders</button>
+                    </div>
+
                 }
 
-                @Html.Partial("Partials/DateInput", new DateInput
-                {
-                    Id = "DateRangePicker",
-                    Style = "min-width: 175px;",
-                    Class = "btn btn-default",
-                    Name = "BegDate",
-                    EndName = "EndDate",
-                    BegDate = begDate,
-                    EndDate = endDate
-                })
 
 
-                <button class="btn btn-primary" name="Submit" onclick="Submitform(this); return false;" style="margin-left: 3px;">List Orders</button>
+
+
 
 
 
@@ -170,7 +238,7 @@
         $(document).ready(function () {
 
             var selectedItem = '@code';
-            
+
             $('#WarehouseLookup').val(selectedItem);
 
             $('#ReportFrame').load(function () {
@@ -183,9 +251,9 @@
     <script type="text/javascript">
 
 
-       function PrintPage(url) {
-                $('#ReportFrame').attr("src", url);
-            }
+        function PrintPage(url) {
+            $('#ReportFrame').attr("src", url);
+        }
 
         function downLoadCsv(start, end, country, catName, category, language) {
             var test = "";
@@ -247,7 +315,7 @@
             $("#GetOrders").val("GetOrders");
             console.log($("#GetOrders").val());
             $('#SearchFrm').submit();
-                    
+
         }
     </script>
 </div>
