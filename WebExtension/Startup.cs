@@ -94,6 +94,20 @@ namespace WebExtension
 
                 // Event Handlers
                 c.AddEventHandler("3", "/api/webhooks/Associate/UpdateAssociate"); // Update Associate Event (3)
+
+
+                //services.AddCors(options =>
+                //{
+                //    options.AddPolicy(name: MyAllowSpecificOrigins,
+                //                      policy =>
+                //                      {
+                //                          policy.WithOrigins("https://vidafy.corpadmin.directscalestage.com",
+                //                                              "https://vidafy.clientextension.directscalestage.com");
+                //                      });
+                //});
+
+                // services.AddResponseCaching();
+                services.AddControllers();
             });
 
             //Repositories
@@ -150,6 +164,15 @@ namespace WebExtension
                 .AllowAnyMethod());
 
             app.UseHttpsRedirection();
+
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                OnPrepareResponse = ctx =>
+                {
+                    ctx.Context.Response.Headers.Add("Access-Control-Allow-Origin", "*");
+                }
+            });
+
             app.UseStaticFiles();
 
             app.UseRouting();
