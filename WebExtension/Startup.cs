@@ -49,6 +49,7 @@ namespace WebExtension
             // services.AddResponseCaching();
             services.AddControllers();
             services.AddTransient<OrderWebService>();
+            services.AddTransient<OrderInvoiceService>();
 
             #region FOR LOCAL DEBUGGING USE
             //Remark This section before upload
@@ -123,6 +124,7 @@ namespace WebExtension
             services.AddSingleton<ICustomLogService, CustomLogService>();
             services.AddSingleton<IAssociateWebService, AssociateWebService>();
             services.AddSingleton<IOrderWebService, OrderWebService>();
+            services.AddSingleton<IExtensionOrderService, OrderInvoiceService>();
             services.AddScoped<IHttpClientService, HttpClientService>();
             services.AddSingleton<IZiplingoEngagementService, ZiplingoEngagementService>();
             services.AddSingleton<IDailyRunService, DailyRunService>();
