@@ -12,6 +12,8 @@ using RestSharp.Authenticators;
 using System.Net;
 using System.Net.Security;
 using WebExtension.Repositories;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
 
 namespace WebExtension.Services.ZiplingoEngagementService
 {
@@ -31,7 +33,7 @@ namespace WebExtension.Services.ZiplingoEngagementService
         void ExpirationCardTrigger(List<CardInfo> cardinfo);
         LogRealtimeRankAdvanceHookResponse LogRealtimeRankAdvanceEvent(LogRealtimeRankAdvanceHookRequest req);
         void UpdateAssociateType(int associateId, string oldAssociateType, string newAssociateType);
-        void ExecuteCommissionEarned();
+        Task<string> ExecuteCommissionEarned();
     }
     public class ZiplingoEngagementService : IZiplingoEngagementService
     {
@@ -1110,13 +1112,21 @@ namespace WebExtension.Services.ZiplingoEngagementService
             }
         }
 
-        public async void ExecuteCommissionEarned()
+        public async Task<string> ExecuteCommissionEarned()
         {
+            var resp = "";
             try
             {
+                
                 var settings = _ZiplingoEngagementRepository.GetSettings();
 
+                
                 var payments = await _paymentProcessingService.FindPaidPayments(DateTime.Now.Date.AddDays(-1), DateTime.Now.Date, "");
+                if (payments.Count() < 0)
+                {
+                    _customLogRepository.CustomErrorLog(0, 0, "Error with in ExecuteCommissionEarned", "Payments are empty");
+                }
+
 
                 foreach (var payment in payments)
                 {
@@ -1129,12 +1139,19 @@ namespace WebExtension.Services.ZiplingoEngagementService
                     var jsonReq = JsonConvert.SerializeObject(request);
 
                     CallZiplingoEngagementApi(jsonReq, "Campaign/ExecuteTrigger");
+
+                    resp += jsonReq;
                 }
+                
             }
             catch (Exception e)
             {
                 _customLogRepository.CustomErrorLog(0, 0, "Error with in ExecuteCommissionEarned", e.Message);
             }
+
+            return resp;
         }
+
+        
     }
 }
