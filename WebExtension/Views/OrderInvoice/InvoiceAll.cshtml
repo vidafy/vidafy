@@ -6,131 +6,14 @@
 @{
     ViewBag.PageTitle = "Invoice";
     List<Invoice> invoice = (List<Invoice>)ViewData["InvoiceDataAll"];
+}
+
+<link href="/Styles/print.css" rel="stylesheet" />
+<h2 class="center">Shipping Invoices</h2>
+<div class="container">
+    @foreach (Invoice invoiceitem in invoice)
+    {
+        <partial name="_InvoicePartial" model="invoiceitem" />
     }
-
-    <style type="text/css" src="/css/invoice.css"></style>
-
-    <div class="container">
-        <h2 class="center">Shipping Invoices</h2>
-        @foreach(var invoiceitem in invoice)
-            {
-                <div class="container">
-                    <table>
-                        <tr>
-                            <td style="width:70%; margin-top:-38px;"><img src='/CMS/Images/JWPro-Square500-Black8e7a4f.png' alt='Jack Winn Color' /></td><!--Logo-->
-                            <td>
-                                <!--Order Details-->
-                                <div style='height:40px;'>
-                                    <span class="bold">Acct #</span>
-                                    <span class="bold">@invoiceitem.BackOfficeId</span>
-                                    <span class="bold">@invoiceitem.FirstLastName</span>
-                                </div>
-                                <div class="row"><div class="heading">Phone #</div><div class="value">@invoiceitem.PhoneNumber</div></div>
-                                <div class="row"><div class="heading">Email</div><div class="value">@invoiceitem.Email </div></div>
-                                <div class="row"><div class="heading">Order #</div><div class="value">@invoiceitem.OrderNumber </div></div>
-                                <div class="row"><div class="heading">Date</div><div class="value">@invoiceitem.Date.ToString("d") </div></div>
-                                <div class="row"><div class="heading">Method</div><div class="value">@invoiceitem.ShippingMethod</div></div>
-                                <div class="row"><div class="heading">Weight</div><div class="value">@invoiceitem.Weight</div></div>
-                                <div class="row"><div class="heading">Status</div><div class="value">@invoiceitem.Status</div></div>
-                            </td>
-                        </tr>
-                    </table>
-                    <table>
-                        <tr>
-                            <td>
-                                <div class="bold">Ship To</div>
-                                <div>@invoiceitem.ShipToAddress.CompanyName</div>
-                                <div>@invoiceitem.ShipToAddress.FullName</div>
-                                <div>@invoiceitem.ShipToAddress.Address</div>
-                                <div>@invoiceitem.ShipToAddress.Address2</div>
-                                <div>@invoiceitem.ShipToAddress.City, @invoiceitem.ShipToAddress.State  @invoiceitem.ShipToAddress.Zip</div>
-                            </td><!--Ship To-->
-                            <td>
-                                <div class="bold">Bill To</div>
-                                <div>@invoiceitem.BillToAddress.CompanyName</div>
-                                <div>@invoiceitem.BillToAddress.FullName</div>
-                                <div>@invoiceitem.BillToAddress.Address</div>
-                                <div>@invoiceitem.BillToAddress.Address2</div>
-                                <div>@invoiceitem.BillToAddress.City, @invoiceitem.BillToAddress.State  @invoiceitem.BillToAddress.Zip</div>
-                            </td><!--Bill To-->
-                        </tr>
-                    </table>
-                    <table>
-                        <thead>
-                            <tr style="background-color:#888585 !important">
-                                <td>Item #</td>
-                                <td>Qty</td>
-                                <td>Description</td>
-                                <td>Price</td>
-                                <td>Total</td>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (InvoiceItem item in invoiceitem.Items)
-                            {
-                                <tr class="item">
-                                    <td>@(item.ItemNumber)</td>
-                                    <td>@(item.Qty)</td>
-                                    <td>@(item.Description) </td>
-                                    <td>@(item.Price)</td>
-                                    <td>@(item.Total)</td>
-                                </tr>
-                                foreach (InvoiceBOM bom in @item.BOMs)
-                                {
-                                    <tr class="bom">
-                                        <td>@(bom.Name)</td><!--name-->
-                                        <td>@(bom.Qty)</td><!--Qty-->
-                                        <td colspan="3">@(bom.Description)</td><!--Description-->
-                                    </tr>
-                                }
-                            }
-                        </tbody>
-                    </table>
-                    <!-- Totals -->
-                    <table style="margin-top:50px">
-                        <tr>
-                            <td style="width:70%">
-                                <!-- Payment details -->
-                                <table class="clear_margin">
-                                    <thead>
-                                        <tr>
-                                            <td>Payment</td>
-                                            <td>Type</td>
-                                            <td>Amount</td>
-                                        </tr>
-                                    </thead>
-                                    @foreach (InvoicePaymentDetails detail in invoiceitem.PaymentDetails)
-                                    {
-                                        <tr>
-                                            <td>@(detail.PaymentDate.ToString("d"))</td>
-                                            <td>@(detail.Type)</td>
-                                            <td>@(detail.Amount)</td>
-                                        </tr>
-                                    }
-                                </table>
-                            </td>
-                            <td>
-                                <!--Totals-->
-                                <div class="row"><div class="heading">Subtotal</div><div class="value">@(invoiceitem.InvoiceAmount.Subtotal)</div></div>
-                                <div class="row"><div class="heading">Tax</div><div class="value">@(invoiceitem.InvoiceAmount.Tax)</div></div>
-                                <div class="row"><div class="heading">Shipping</div><div class="value">@(invoiceitem.InvoiceAmount.Shipping)</div></div>
-                                <div class="row"><div class="heading">Handling</div><div class="value">@(invoiceitem.InvoiceAmount.Handling)</div></div>
-                                <div class="row" style="margin-top:15px; font-size:12pt">
-                                    <div class="heading">Total</div><div class="value bold">
-                                        @(invoiceitem.InvoiceAmount.Total)
-                                    </div>
-                                </div>
-                                <div class="row"><div class="heading">Payments</div><div class="value">@(invoiceitem.InvoiceAmount.Payments)</div></div>
-                                <div class="row"><div class="heading">Balance Due</div><div class="value">@(invoiceitem.InvoiceAmount.BalanceDue)</div></div>
-                            </td>
-                        </tr>
-                    </table>
-                    <!-- Notes -->
-                    <div class="notes">
-                        @(invoiceitem.AdditionalInformation)
-                    </div>
-                </div>
-                <div style="margin-top: 10px;margin-bottom: 10px; border-bottom: 2px solid black; "></div>
-            }
-    </div>
+</div>
 
