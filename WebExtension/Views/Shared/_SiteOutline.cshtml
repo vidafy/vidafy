@@ -162,6 +162,9 @@
     @RenderSection("HeaderContent", required: false)
 </head>
 <body class="font-Poppins bg-super-light-grey pb-20">
+    <div class="page-toolbar">
+        <span id="pageHeader" class="text-4xl font-bold sm:block md:inline truncate">@Html.Raw(ViewBag.PageTitle)</span>
+    </div>
     @RenderBody()
     <iframe src="" class="PrintFrame" id="ReportFrame" name="ReportFrame"></iframe>
 </body>

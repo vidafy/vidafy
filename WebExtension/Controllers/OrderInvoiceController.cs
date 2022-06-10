@@ -28,13 +28,15 @@ namespace WebExtension.Controllers
         }
 
        [ExtensionAuthorize]
-        public IActionResult Index(string Category, string CatName, string Code, string GetOrders)
+        public IActionResult Index(string category, string catName, string code, string getOrders, string begDate, string endDate)
         {  
             ViewData["WarehouseDetails"] = _ordrWebService.GetWareHouseDetails();
-            ViewData["category"] = Category ;
-            ViewData["catName"] = CatName; ;
-            ViewData["code"] = Code ;
-            ViewData["getOrders"] = GetOrders;
+            ViewData["category"] = category ;
+            ViewData["catName"] = catName; ;
+            ViewData["code"] = code ;
+            ViewData["getOrders"] = getOrders;
+            ViewData["begDate"] = begDate;
+            ViewData["endDate"] = endDate;
             //ViewData["ShippableOrderDetails"] = _ordrWebService.GetShippableOrders()
             return View();
         }

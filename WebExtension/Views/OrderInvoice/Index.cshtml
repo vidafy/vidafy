@@ -1,43 +1,33 @@
-﻿@using DirectScale.Disco.Extension.Services
+﻿@using DirectScale.Disco.Extension
+@using DirectScale.Disco.Extension.Services
 @using WebExtension.Services
 @using WebExtension.Views.Model
 @inject OrderWebService OrderService
 
 @{
     ViewBag.PageTitle = "Print Slips";
-  
-    Layout = "~/Views/Shared/_SiteOutline.cshtml";
-    var WarehouseDetails = ViewData["WarehouseDetails"];
 
-    var sku = ViewData["sku"] as int?;
-    var begDate = new DateTime(1900, 1, 1);
-    if (!DateTime.TryParse(ViewData["begDate"] as string, out begDate))
+    Layout = "~/Views/Shared/_SiteOutline.cshtml";
+
+    if (!DateTime.TryParse(ViewData["begDate"] as string, out var begDate))
     {
         begDate = DateTime.Now.Date;
     }
-    var endDate = DateTime.Today.AddDays(1);
-    if (!DateTime.TryParse(ViewData["endDate"] as string, out endDate))
+    if (!DateTime.TryParse(ViewData["endDate"] as string, out var endDate))
     {
         endDate = DateTime.Now.Date;
     }
 
-    object category = ViewData["category"] ?? "Location";
-    object catName = ViewData["catName"] ?? " ";
-    object code = ViewData["code"] ?? "0";
+    var category = ViewData["category"] ?? "Location";
+    var catName = ViewData["catName"] ?? " ";
+    var code = ViewData["code"] ?? "0";
     var getOrders = ViewData["getOrders"] ?? " ";
-}
-@{
+
     var countryCode = "0";
-    var orders = new DirectScale.Disco.Extension.Order[] { };
-    //if (getOrders == "GetOrders")
-    //{
-
-    orders = OrderService.GetShippableOrders(begDate, endDate, code, catName, category);
-    //orders = WebExtension.Utilities.OrderSearch.GetShippableOrders(begDate, endDate, code, catName, category);
-
+    var orders = OrderService.GetShippableOrders(begDate, endDate, code, catName, category);
     countryCode = orders.Any() ? orders[0].BillAddress.CountryCode : "0";
-    // }
 }
+
 
 <style>
     .input-group-btn {
@@ -65,42 +55,49 @@
         position: inherit;
     }
 
+    ::-webkit-scrollbar {
+        width: 0;
+        height: 0;
+    }
+
 </style>
 
-<div class="row">
-    <div class="col-lg-12">
-        <div class="page-toolbar">
-            <span id="pageHeader" class="text-4xl font-bold sm:block md:inline truncate">Print Slips</span>
-        </div>
-    </div>
-</div>
 
-<div class="row">
-    <div class="col-sm-12">
-
+<div class="page-container">
+    <div class="p-8">
         <form id="SearchFrm" method="post">
             @*<input type="hidden" name="l" value="@((int)Disco.Extensions.Abstractions.Hooks.Menu.Inventory)" />*@
-            <div class="col-sm-4" style="margin-top: 60px;">
-                <input type="hidden" name="id" value="Inventory/PackingSlips"/>
+            <div class="col-sm-4">
+                <input type="hidden" name="id" value="Inventory/PackingSlips" />
                 <input type="hidden" id="Category" value="Warehouse" name="Category">
                 <input type="hidden" id="Code" value="@(code)" name="Code">
                 <input type="hidden" id="CatName" value="@(catName)" name="CatName">
                 <input type="hidden" id="GetOrders" value="@(getOrders)" name="GetOrders">
             </div>
 
-            <div class="form-group input-group pull-left col-sm-9" style="margin-right: 15px; margin-top: 20px;">
+            <div class="form-group input-group pull-left col-sm-9" style="margin-right: 15px;">
                 @{
                     <div class="col-sm-3">
-                        <select id="WarehouseLookup" name="WarehouseLookup" onchange="SetCategoryItems('@(code)', '@(catName)');" class="btn btn-default dropdown-toggle" data-toggle="dropdown" style="border-radius: 5px; margin-bottom: 3px;">
-                            <option value="0" onclick="SetCategoryItems('0', 'Select Warehouse All');">Select Warehouse All</option>
-                            @foreach (var ac in (IEnumerable<ActiveCountry>) ViewData["WarehouseDetails"])
-                            {
-                                <option onclick="SetCategoryItems('@(ac.Code)', '@(ac.Name)');" value="@(ac.Code)">@(ac.Name)</option>
-                            }
+                        @*<select id="WarehouseLookup" name="WarehouseLookup" onchange="SetCategoryItems('@(code)', '@(catName)');" class="btn btn-default dropdown-toggle" data-toggle="dropdown" style="border-radius: 5px; margin-bottom: 3px;">
+                                <option value="0" onclick="SetCategoryItems('0', 'Select Warehouse All');">Select Warehouse All</option>
+                                @foreach (var ac in (IEnumerable<ActiveCountry>) ViewData["WarehouseDetails"])
+                                {
+                                    <option onclick="SetCategoryItems('@(ac.Code)', '@(ac.Name)');" value="@(ac.Code)">@(ac.Name)</option>
+                                }
 
-                        </select>
+                            </select>*@
 
+                        <div class="inline-block align-top w-64 sm:w-auto">
 
+                            <select id="WarehouseLookup" name="WarehouseLookup" onchange="SetCategoryItems('@(code)', '@(catName)');">
+                                <option value="0" onclick="SetCategoryItems('0', 'Select Warehouse All');">Select Warehouse All</option>
+                                @foreach (var w in (IEnumerable<ActiveCountry>)ViewData["WarehouseDetails"])
+                                {
+                                    <option onclick="SetCategoryItems('@(w.Code)', '@(w.Name)');" value="@(w.Code)">@(w.Name)</option>
+                                }
+                            </select>
+
+                        </div>
                     </div>
                     <div class="col-sm-8">
                         @Html.Partial("Partials/DateInput", new DateInput
@@ -117,7 +114,7 @@
                         <button class="btn btn-primary" name="Submit" onclick="Submitform(this);return false;" style="margin-left: 3px;">List Orders</button>
                         @*<button class="btn btn-primary" name="PrintAll" onclick="Submitform(); return false;" style="margin-left: 3px;">Print All</button>*@
                         @*<button class="btn btn-primary" name="PrintAll" onclick="printExternal('other?l=0&id=Inventory/RegistrationDocument&startDate=@(begDate.ToString("d"))&endDate=@(endDate.ToString("d"))&countryCode=@(countryCode)')">Print Registration</button>
-                        <button class="btn btn-primary" name="PrintAll" onclick="printExternal('other?l=0&id=Inventory/PickLists&startDate=@(begDate.ToString("d"))&endDate=@(endDate.ToString("d"))&countryCode=@(countryCode)&Code=@(code)&Name=@(catName)&Category=@(category)')">Print Pick Slips</button>*@
+                            <button class="btn btn-primary" name="PrintAll" onclick="printExternal('other?l=0&id=Inventory/PickLists&startDate=@(begDate.ToString("d"))&endDate=@(endDate.ToString("d"))&countryCode=@(countryCode)&Code=@(code)&Name=@(catName)&Category=@(category)')">Print Pick Slips</button>*@
                         <button class="btn btn-primary" name="PrintAll" onclick="printExternal('other?l=0&id=Inventory/BatchPrintInvoice&startDate=@(begDate.ToString("d"))&endDate=@(endDate.ToString("d"))&countryCode=@(countryCode)&Code=@(code)&Name=@(catName)&Category=@(category)')">Print Invoices</button>
                     </div>
 
@@ -127,62 +124,58 @@
             </div>
         </form>
     </div>
-
-
     <div class="row">
-        <div class="col-sm-12">
-            <div class="table-responsive">
-                <table id="vendorList" class="table table-striped">
-                    <tr>
-                        <th>Date</th>
-                        <th>Order Number</th>
-                        <th>Name</th>
-                        <th>Address</th>
-                        <th>Country</th>
-                        <th>Notes</th>
-                        <th></th>
-                    </tr>
+        <table id="vendorList" class="table table-striped">
+            <tr>
+                <th>Date</th>
+                <th>Order Number</th>
+                <th>Name</th>
+                <th>Address</th>
+                <th>Country</th>
+                <th>Notes</th>
+                <th></th>
+            </tr>
 
-                    @foreach (var O in orders)
-                    {
-                        <tr>
-                            <td>@(O.OrderDate.ToString("d"))</td>
-                            <td><a href="/Corporate/CRM/OrderDetail?order=@(O.OrderNumber)&id=@(O.AssociateId)">@(O.OrderNumber)</a></td>
-                            <td><a href="/Corporate/CRM/Detail?id=@(O.AssociateId)">@(O.Name)</a></td>
-                            <td>
-                                @(O.BillAddress.AddressLine1), @(O.BillAddress.City),
-                                @(OrderService.GetCountryByCode(O.BillAddress.CountryCode)),
-                                @(O.BillAddress.PostalCode)
-                            </td>
-                            <td>@(O.BillAddress.CountryCode)</td>
-                            <td>@(O.SpecialInstructions)</td>
-                            <td><button class="btn btn-default" type="button" onclick="PrintPage('/OrderInvoice/Invoice?OrderNumber=@(O.OrderNumber)')">Print</button></td>
-                        </tr>
-                    }
-                </table>
+            @foreach (var O in orders)
+            {
+                <tr>
+                    <td>@(O.OrderDate.ToString("d"))</td>
+                    <td><a href="/Corporate/CRM/OrderDetail?order=@(O.OrderNumber)&id=@(O.AssociateId)">@(O.OrderNumber)</a></td>
+                    <td><a href="/Corporate/CRM/Detail?id=@(O.AssociateId)">@(O.Name)</a></td>
+                    <td>
+                        @(O.BillAddress.AddressLine1), @(O.BillAddress.City),
+                        @(OrderService.GetCountryByCode(O.BillAddress.CountryCode)),
+                        @(O.BillAddress.PostalCode)
+                    </td>
+                    <td>@(O.BillAddress.CountryCode)</td>
+                    <td>@(O.SpecialInstructions)</td>
+                    <td><button class="btn btn-default" type="button" onclick="PrintPage('/OrderInvoice/Invoice?OrderNumber=@(O.OrderNumber)')">Print</button></td>
+                </tr>
+            }
+        </table>
+    </div>
+
+</div>
+
+<div class="modal fade" id="fileDownloadModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Orders CSV File</h4>
+            </div>
+            <div class="modal-body">
+                <div id="fileDownloadsDiv">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
             </div>
         </div>
     </div>
-    <div class="modal fade" id="fileDownloadModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title" id="myModalLabel">Orders CSV File</h4>
-                </div>
-                <div class="modal-body">
-                    <div id="fileDownloadsDiv">
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                </div>
-            </div>
-        </div>
-    </div>
-    
+</div>
 
-    <script>
+<script>
         $(document).ready(function () {
 
             var selectedItem = '@code';
@@ -190,71 +183,71 @@
             $('#WarehouseLookup').val(selectedItem);
 
         })
-    </script>
-    <script type="text/javascript">
+</script>
+<script type="text/javascript">
 
 
-        function downLoadCsv(start, end, country, catName, category, language) {
-            var test = "";
-            if (country === "") {
-                alert("Please Select a Country.");
-            } else {
-                $.ajax({
-                    url: '/Command/ClientAPI/orders/getorderscsv',
-                    dataType: "json",
-                    type: "POST",
-                    data: JSON.stringify({ begin: start, end: end, Code: country, Name: catName, Category: category }),
-                    success: function (r) {
-                        if (r.Status === 0) {
-                            $("#fileDownloadsDiv").append("<div><a href='/Corporate/DownloadTempFile?fileName=" +
-                                r.Data +
-                                "'>" +
-                                r.Data +
-                                "</a></div>");
-                            showModal = true;
-                            if (showModal) {
-                                $('#fileDownloadModal').modal('show');
-                            }
-                        } else {
-                            alert(r.Message);
+    function downLoadCsv(start, end, country, catName, category, language) {
+        var test = "";
+        if (country === "") {
+            alert("Please Select a Country.");
+        } else {
+            $.ajax({
+                url: '/Command/ClientAPI/orders/getorderscsv',
+                dataType: "json",
+                type: "POST",
+                data: JSON.stringify({ begin: start, end: end, Code: country, Name: catName, Category: category }),
+                success: function (r) {
+                    if (r.Status === 0) {
+                        $("#fileDownloadsDiv").append("<div><a href='/Corporate/DownloadTempFile?fileName=" +
+                            r.Data +
+                            "'>" +
+                            r.Data +
+                            "</a></div>");
+                        showModal = true;
+                        if (showModal) {
+                            $('#fileDownloadModal').modal('show');
                         }
-                    },
-                    contentType: "application/json; charset=utf-8",
-                });
-            }
-        }
-
-        function printExternal(url) {
-            var printWindow = window.open(url,
-                'Print',
-                'left=200, top=200, width=1280px, height=800px, toolbar=0, resizable=0');
-            printWindow.addEventListener('load',
-                function () {
-                    printWindow.print();
-                    printWindow.close();
+                    } else {
+                        alert(r.Message);
+                    }
                 },
-                true);
+                contentType: "application/json; charset=utf-8",
+            });
         }
+    }
 
-        function SetCategoy(code) {
-            $("#GetOrders").val(" ");
-            $('#spanCat').text(code);
-            $('#CatName').val("All");
-            $('#Code').val("0");
-            $('#Category').val(code);
-            $('#SearchFrm').submit();
-        }
+    function printExternal(url) {
+        var printWindow = window.open(url,
+            'Print',
+            'left=200, top=200, width=1280px, height=800px, toolbar=0, resizable=0');
+        printWindow.addEventListener('load',
+            function () {
+                printWindow.print();
+                printWindow.close();
+            },
+            true);
+    }
 
-        function SetCategoryItems(code, name) {
-            $('#CatName').val(name);
-            $('#Code').val(code);
-            $('#spanCatValue').text(name);
-        }
-        function Submitform() {
-            $("#GetOrders").val("GetOrders");
-            console.log($("#GetOrders").val());
-            $('#SearchFrm').submit();
+    function SetCategoy(code) {
+        $("#GetOrders").val(" ");
+        $('#spanCat').text(code);
+        $('#CatName').val("All");
+        $('#Code').val("0");
+        $('#Category').val(code);
+        $('#SearchFrm').submit();
+    }
 
-        }
-    </script>
-</div>
+    function SetCategoryItems(code, name) {
+        $('#CatName').val(name);
+        $('#Code').val(code);
+        $('#spanCatValue').text(name);
+    }
+    function Submitform() {
+        $("#GetOrders").val("GetOrders");
+        console.log($("#GetOrders").val());
+        $('#SearchFrm').submit();
+
+    }
+</script>
+
