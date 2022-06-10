@@ -25,8 +25,8 @@ namespace WebExtension.Controllers
         {
             try
             {
-                _ziplingoEngagementService.ExecuteCommissionEarned();
-                return Ok();
+                var resp = _ziplingoEngagementService.ExecuteCommissionEarned();
+                return Ok(resp);
             }
             catch(Exception ex)
             {
