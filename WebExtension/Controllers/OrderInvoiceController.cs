@@ -53,7 +53,7 @@ namespace WebExtension.Controllers
             }
 
             Title = $"Order Invoice: #{invoiceData.OrderNumber} - {invoiceData.FirstLastName} - {invoiceData.Date}";
-            ViewData["InvoiceData"] = invoiceData;
+            ViewData["InvoiceData"] = (WebExtension.Views.Model.Invoice)invoiceData;
 
             return View();
         }

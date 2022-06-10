@@ -1,7 +1,9 @@
-﻿@page
+﻿@using WebExtension.Views.Model
 @model WebExtension.Views.Model.Invoice
-@using WebExtension.Views.Model
 @{
+
+    var invoice = ViewData["InvoiceData"]
+        as WebExtension.Views.Model.Invoice;
 }
 <div class="container">
     <h2 class="center">Shipping Invoice</h2>
@@ -58,21 +60,21 @@
         <tbody>
             @foreach (InvoiceItem item in Model.Items)
             {
-            <tr class="item">
-                <td>@(item.ItemNumber)</td>
-                <td>@(item.Qty)</td>
-                <td>@(item.Description) </td>
-                <td>@(item.Price)</td>
-                <td>@(item.Total)</td>
-            </tr>
-            foreach (InvoiceBOM bom in @item.BOMs)
-            {
-            <tr class="bom">
-                <td>@(bom.Name)</td><!--name-->
-                <td>@(bom.Qty)</td><!--Qty-->
-                <td colspan="3">@(bom.Description)</td><!--Description-->
-            </tr>
-            }
+                <tr class="item">
+                    <td>@(item.ItemNumber)</td>
+                    <td>@(item.Qty)</td>
+                    <td>@(item.Description) </td>
+                    <td>@(item.Price)</td>
+                    <td>@(item.Total)</td>
+                </tr>
+                foreach (InvoiceBOM bom in @item.BOMs)
+                {
+                    <tr class="bom">
+                        <td>@(bom.Name)</td><!--name-->
+                        <td>@(bom.Qty)</td><!--Qty-->
+                        <td colspan="3">@(bom.Description)</td><!--Description-->
+                    </tr>
+                }
             }
         </tbody>
     </table>
@@ -91,11 +93,11 @@
                     </thead>
                     @foreach (InvoicePaymentDetails detail in @Model.PaymentDetails)
                     {
-                    <tr>
-                        <td>@(detail.PaymentDate.ToString("d"))</td>
-                        <td>@(detail.Type)</td>
-                        <td>@(detail.Amount)</td>
-                    </tr>
+                        <tr>
+                            <td>@(detail.PaymentDate.ToString("d"))</td>
+                            <td>@(detail.Type)</td>
+                            <td>@(detail.Amount)</td>
+                        </tr>
                     }
                 </table>
             </td>
