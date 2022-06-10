@@ -21,7 +21,6 @@ namespace WebExtension
 {
     public class Startup
     {
-        readonly string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
         public Startup(IConfiguration configuration, IWebHostEnvironment env)
         {
             Configuration = configuration;
@@ -36,15 +35,7 @@ namespace WebExtension
         {
             // Add cors
 
-            //services.AddCors(options =>
-            //{
-            //    options.AddPolicy(name: MyAllowSpecificOrigins,
-            //                      policy =>
-            //                      {
-            //                          policy.WithOrigins("https://vidafy.corpadmin.directscalestage.com",
-            //                                              "https://vidafy.clientextension.directscalestage.com");
-            //                      });
-            //});
+            services.AddCors();
 
             // services.AddResponseCaching();
             services.AddControllers();
@@ -95,19 +86,6 @@ namespace WebExtension
 
                 // Event Handlers
                 c.AddEventHandler("3", "/api/webhooks/Associate/UpdateAssociate"); // Update Associate Event (3)
-
-
-                //services.AddCors(options =>
-                //{
-                //    options.AddPolicy(name: MyAllowSpecificOrigins,
-                //                      policy =>
-                //                      {
-                //                          policy.WithOrigins("https://vidafy.corpadmin.directscalestage.com",
-                //                                              "https://vidafy.clientextension.directscalestage.com");
-                //                      });
-                //});
-
-                // services.AddResponseCaching();
                 services.AddControllers();
             });
 
@@ -129,15 +107,7 @@ namespace WebExtension
             services.AddSingleton<IZiplingoEngagementService, ZiplingoEngagementService>();
             services.AddSingleton<IDailyRunService, DailyRunService>();
 
-            //services.AddScoped<IOrderWebService, OrderWebService>();
-
             services.AddControllersWithViews();
-            //services.AddRazorPages()
-            //    .AddRazorPagesOptions(options =>
-            //    {
-            //        options.RootDirectory = "/WebExtension";
-            //        options.Conventions.AuthorizeFolder("/WebExtension/Views");
-            //    });
             //Swagger
             services.AddSwaggerGen();
 
@@ -183,11 +153,25 @@ namespace WebExtension
 
             //DS
             app.UseDirectScale();
-            app.Use(async (context, next) =>
+
+            //Move to .config file
+            if (CurrentEnvironment.IsDevelopment())
             {
-                context.Response.Headers.Add("X-Frame-Options", "ALLOW-FROM https://vidafy.clientextension.directscalestage.com");
-                await next();
-            });
+               app.Use(async (context, next) =>
+                {
+                    context.Response.Headers.Add("X-Frame-Options", "ALLOW-FROM https://vidafy.clientextension.directscalestage.com");
+                    context.Response.Headers.Add("X-Frame-Options", "ALLOW-FROM https://vidafy.clientextension.directscaledev.com");
+                    await next();
+                });
+            }
+            else
+            {
+                app.Use(async (context, next) =>
+                {
+                    context.Response.Headers.Add("X-Frame-Options", "ALLOW-FROM https://vidafy.clientextension.directscale.com");
+                    await next();
+                });
+            }
 
             //Swagger
             app.UseSwagger();
