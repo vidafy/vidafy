@@ -138,19 +138,20 @@
 
             @foreach (var O in orders)
             {
-                <tr>
-                    <td>@(O.OrderDate.ToString("d"))</td>
-                    <td><a href="/Corporate/CRM/OrderDetail?order=@(O.OrderNumber)&id=@(O.AssociateId)">@(O.OrderNumber)</a></td>
-                    <td><a href="/Corporate/CRM/Detail?id=@(O.AssociateId)">@(O.Name)</a></td>
-                    <td>
-                        @(O.BillAddress.AddressLine1), @(O.BillAddress.City),
-                        @(OrderService.GetCountryByCode(O.BillAddress.CountryCode)),
-                        @(O.BillAddress.PostalCode)
-                    </td>
-                    <td>@(O.BillAddress.CountryCode)</td>
-                    <td>@(O.SpecialInstructions)</td>
-                    <td><button class="btn btn-default" type="button" onclick="PrintPage('/OrderInvoice/Invoice?OrderNumber=@(O.OrderNumber)')">Print</button></td>
-                </tr>
+        <tr>
+            <td>@(O.OrderDate.ToString("d"))</td>
+            <td><a href="/Corporate/CRM/OrderDetail?order=@(O.OrderNumber)&id=@(O.AssociateId)">@(O.OrderNumber)</a></td>
+            <td><a href="/Corporate/CRM/Detail?id=@(O.AssociateId)">@(O.Name)</a></td>
+            <td>
+                @(O.BillAddress.AddressLine1), @(O.BillAddress.City),
+                @(OrderService.GetCountryByCode(O.BillAddress.CountryCode)),
+                @(O.BillAddress.PostalCode)
+            </td>
+            <td>@(O.BillAddress.CountryCode)</td>
+            <td>@(O.SpecialInstructions)</td>
+            @*<td><button class="btn btn-default" type="button" onclick="PrintPage('/OrderInvoice/Invoice?OrderNumber=@(O.OrderNumber)')">Print</button></td>*@
+            <td><button class="btn btn-default" type="button" onclick="PrintPage('/Corporate/Other?l=0&id=Invoice&OrderNumber=@(O.OrderNumber)')">Print</button></td>
+        </tr>
             }
         </table>
     </div>

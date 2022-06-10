@@ -45,7 +45,7 @@ namespace WebExtension.Controllers
         [ExtensionAuthorize]
         public  IActionResult Invoice([FromQuery] int orderNumber)
         {
-            Invoice invoiceData = _extOrderService.GetInvoiceData(orderNumber);
+            var invoiceData = _extOrderService.GetInvoiceData(orderNumber);
 
             if (invoiceData == null || invoiceData.OrderNumber == 0)
             {
@@ -62,27 +62,23 @@ namespace WebExtension.Controllers
         [ExtensionAuthorize]
         public IActionResult InvoiceAll([FromQuery] string orderNumbers)
         {
-            List<string> listOrder = new List<string>();
-            listOrder = orderNumbers.Split('|').ToList();
-            List<Invoice> Invoices = new List<Invoice>();
+            var listOrder = orderNumbers.Split('|').ToList();
+            var invoices = new List<Invoice>();
 
             foreach (var orderNumber in listOrder)
             {
-                int numberOnOrder;
-                bool isParsable = Int32.TryParse(orderNumber, out numberOnOrder);
-                if (isParsable)
+                var isParsable = int.TryParse(orderNumber, out var numberOnOrder);
+                if (!isParsable) continue;
+                var invoiceData = _extOrderService.GetInvoiceData(numberOnOrder);
+                if (invoiceData == null || invoiceData.OrderNumber == 0)
                 {
-                    Invoice invoiceData = _extOrderService.GetInvoiceData(numberOnOrder);
-                    if (invoiceData == null || invoiceData.OrderNumber == 0)
-                    {
-                    }
-                    else
-                    {
-                        Invoices.Add(invoiceData);
-                    }
+                }
+                else
+                {
+                    invoices.Add(invoiceData);
                 }
             }
-            ViewData["InvoiceDataAll"] = Invoices;
+            ViewData["InvoiceDataAll"] = invoices;
             return View();
         }
     }
