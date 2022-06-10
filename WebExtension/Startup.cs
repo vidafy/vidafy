@@ -154,13 +154,13 @@ namespace WebExtension
             //DS
             app.UseDirectScale();
 
-            //Move to .config file
+            //Move to .config file and make dynamic
             if (CurrentEnvironment.IsDevelopment())
             {
                app.Use(async (context, next) =>
                 {
                     context.Response.Headers.Add("X-Frame-Options", "ALLOW-FROM https://vidafy.clientextension.directscalestage.com");
-                    context.Response.Headers.Add("X-Frame-Options", "ALLOW-FROM https://vidafy.clientextension.directscaledev.com");
+                   // context.Response.Headers.Add("X-Frame-Options", "ALLOW-FROM https://vidafy.clientextension.directscaledev.com");
                     await next();
                 });
             }
