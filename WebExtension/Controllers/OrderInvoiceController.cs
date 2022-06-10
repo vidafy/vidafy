@@ -8,6 +8,7 @@ using Microsoft.Extensions.Logging;
 using System.Diagnostics;
 using WebExtension.Services;
 using WebExtension.Views.Model;
+using WebExtension.Helper;
 
 namespace WebExtension.Controllers
 {
@@ -27,7 +28,7 @@ namespace WebExtension.Controllers
         }
 
        [ExtensionAuthorize]
-
+       [AllowCrossSiteIFrame]
         public IActionResult Index(string Category, string CatName, string Code, string GetOrders)
         {  
             ViewData["WarehouseDetails"] = _ordrWebService.GetWareHouseDetails();
