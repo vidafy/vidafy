@@ -183,6 +183,11 @@ namespace WebExtension
 
             //DS
             app.UseDirectScale();
+            app.Use(async (context, next) =>
+            {
+                context.Response.Headers.Add("X-Frame-Options", "ALLOW-FROM https://vidafy.clientextension.directscalestage.com");
+                await next();
+            });
 
             //Swagger
             app.UseSwagger();

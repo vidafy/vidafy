@@ -28,7 +28,6 @@ namespace WebExtension.Controllers
         }
 
        [ExtensionAuthorize]
-       [AllowCrossSiteIFrame]
         public IActionResult Index(string Category, string CatName, string Code, string GetOrders)
         {  
             ViewData["WarehouseDetails"] = _ordrWebService.GetWareHouseDetails();
