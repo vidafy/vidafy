@@ -11,7 +11,7 @@ namespace WebExtension.Services
 {
     public interface IExtensionOrderService
     {
-        Invoice GetInvoiceData(int orderNumber);
+        Task<Invoice> GetInvoiceData(int orderNumber);
     }
     public class OrderInvoiceService: IExtensionOrderService
     {
@@ -28,14 +28,14 @@ namespace WebExtension.Services
             _bomService = bomService ?? throw new ArgumentNullException(nameof(bomService));
         }
 
-        public  Invoice GetInvoiceData(int orderNumber)
+        public  async Task<Invoice> GetInvoiceData(int orderNumber)
         {
-            Task<Order> orderInfo = _orderService.GetOrderByOrderNumber(orderNumber);
-            Task<Associate> distributorSummary = _associateService.GetAssociate(orderInfo.Result.AssociateId);
-            var shippingInformation = GetShippingInformation(distributorSummary.Result, orderInfo.Result.Packages);
+            var orderInfo = await _orderService.GetOrderByOrderNumber(orderNumber);
+            var distributorSummary = await _associateService.GetAssociate(orderInfo.AssociateId);
+            var shippingInformation = await GetShippingInformation(distributorSummary, orderInfo.Packages);
 
             var invoiceAmount = new InvoiceAmounts();
-            foreach (var total in orderInfo.Result.Totals)
+            foreach (var total in orderInfo.Totals)
             {
                 invoiceAmount.Subtotal = $"{total.SubTotal:C2}";
                 invoiceAmount.Tax = $"{total.Tax:C2}";
@@ -46,7 +46,7 @@ namespace WebExtension.Services
             }
 
             var invoicePayments = new List<InvoicePaymentDetails>();
-            foreach (var payment in orderInfo.Result.Payments)
+            foreach (var payment in orderInfo.Payments)
             {
                 invoicePayments.Add(new InvoicePaymentDetails
                 {
@@ -57,7 +57,7 @@ namespace WebExtension.Services
             }
 
             var invoiceItems = new List<InvoiceItem>();
-            foreach (var lineItem in orderInfo.Result.LineItems)
+            foreach (var lineItem in orderInfo.LineItems)
             {
                 Task <Bom[]> boms = _bomService.GetBOM(lineItem.ItemId);
                 var invoiceBoms = boms.Result.Select(bom => new InvoiceBOM
@@ -80,37 +80,37 @@ namespace WebExtension.Services
             }
 
             var invoiceStatus = "Pending";
-            if (orderInfo.Result.IsShipped)
+            if (orderInfo.IsShipped)
             {
                 invoiceStatus = "Shipped";
             }
-            else if (orderInfo.Result.IsPaid)
+            else if (orderInfo.IsPaid)
             {
                 invoiceStatus = "Paid";
             }
 
             var invoice = new Invoice
             {
-                AdditionalInformation = orderInfo.Result.SpecialInstructions,
-                BackOfficeId = distributorSummary.Result.BackOfficeId,
+                AdditionalInformation = orderInfo.SpecialInstructions,
+                BackOfficeId = distributorSummary.BackOfficeId,
                 BillToAddress = new InvoiceAddress
                 {
-                    Address = orderInfo.Result.BillAddress.AddressLine1,
-                    Address2 = orderInfo.Result.BillAddress.AddressLine2,
-                    City = orderInfo.Result.BillAddress.City,
-                    CompanyName = distributorSummary.Result.CompanyName,
-                    FullName = distributorSummary.Result.Name,
-                    State = orderInfo.Result.BillAddress.State,
-                    Zip = orderInfo.Result.BillAddress.PostalCode
+                    Address = orderInfo.BillAddress.AddressLine1,
+                    Address2 = orderInfo.BillAddress.AddressLine2,
+                    City = orderInfo.BillAddress.City,
+                    CompanyName = distributorSummary.CompanyName,
+                    FullName = distributorSummary.Name,
+                    State = orderInfo.BillAddress.State,
+                    Zip = orderInfo.BillAddress.PostalCode
                 },
                 Date = DateTime.Today,
-                Email = distributorSummary.Result.EmailAddress,
-                FirstLastName = distributorSummary.Result.Name,
+                Email = distributorSummary.EmailAddress,
+                FirstLastName = distributorSummary.Name,
                 InvoiceAmount = invoiceAmount,
                 Items = invoiceItems,
-                OrderNumber = orderInfo.Result.OrderNumber,
+                OrderNumber = orderInfo.OrderNumber,
                 PaymentDetails = invoicePayments,
-                PhoneNumber = orderInfo.Result.BillPhone,
+                PhoneNumber = orderInfo.BillPhone,
                 ShippingMethod = shippingInformation.ShippingMethodDescription,
                 ShipToAddress = shippingInformation.ShippingAddress,
                 Status = invoiceStatus,
@@ -120,7 +120,7 @@ namespace WebExtension.Services
             return invoice;
         }
 
-        private ShippingInformation GetShippingInformation(Associate distributorSummary, List<OrderPackage> orderPackages)
+        private async Task<ShippingInformation> GetShippingInformation(Associate distributorSummary, List<OrderPackage> orderPackages)
         {
             var defaultAddress = distributorSummary.ShipAddress;
             var invoiceAddress = new InvoiceAddress

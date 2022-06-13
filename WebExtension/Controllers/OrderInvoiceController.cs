@@ -28,7 +28,7 @@ namespace WebExtension.Controllers
         }
 
        [ExtensionAuthorize]
-        public IActionResult Index(string category, string catName, string code, string getOrders, string begDate, string endDate)
+        public async Task<IActionResult> Index(string category, string catName, string code, string getOrders, string begDate, string endDate)
         {  
             ViewData["WarehouseDetails"] = _ordrWebService.GetWareHouseDetails();
             ViewData["category"] = category ;
@@ -37,15 +37,14 @@ namespace WebExtension.Controllers
             ViewData["getOrders"] = getOrders;
             ViewData["begDate"] = begDate;
             ViewData["endDate"] = endDate;
-            //ViewData["ShippableOrderDetails"] = _ordrWebService.GetShippableOrders()
-            return View();
+            return await Task.Run(() => View());
         }
 
 
         [ExtensionAuthorize]
-        public  IActionResult Invoice([FromQuery] int orderNumber)
+        public async Task<IActionResult> Invoice([FromQuery] int orderNumber)
         {
-            var invoiceData = _extOrderService.GetInvoiceData(orderNumber);
+            var invoiceData = await _extOrderService.GetInvoiceData(orderNumber);
 
             if (invoiceData == null || invoiceData.OrderNumber == 0)
             {
@@ -55,12 +54,12 @@ namespace WebExtension.Controllers
             Title = $"Order Invoice: #{invoiceData.OrderNumber} - {invoiceData.FirstLastName} - {invoiceData.Date}";
             ViewData["InvoiceData"] = (WebExtension.Views.Model.Invoice)invoiceData;
 
-            return View();
+            return await Task.Run(() => View());
         }
 
 
         [ExtensionAuthorize]
-        public IActionResult InvoiceAll([FromQuery] string orderNumbers)
+        public async Task<IActionResult> InvoiceAll([FromQuery] string orderNumbers)
         {
             var listOrder = orderNumbers.Split('|').ToList();
             var invoices = new List<Invoice>();
@@ -69,7 +68,7 @@ namespace WebExtension.Controllers
             {
                 var isParsable = int.TryParse(orderNumber, out var numberOnOrder);
                 if (!isParsable) continue;
-                var invoiceData = _extOrderService.GetInvoiceData(numberOnOrder);
+                var invoiceData = await _extOrderService.GetInvoiceData(numberOnOrder);
                 if (invoiceData == null || invoiceData.OrderNumber == 0)
                 {
                 }
@@ -79,7 +78,7 @@ namespace WebExtension.Controllers
                 }
             }
             ViewData["InvoiceDataAll"] = invoices;
-            return View();
+            return await Task.Run(() => View());
         }
     }
 }
