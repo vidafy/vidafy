@@ -164,14 +164,14 @@ namespace WebExtension
                     await next();
                  });
             }
-            else
-            {
-                app.Use(async (context, next) =>
-                {
-                    context.Response.Headers.Add("X-Frame-Options", "ALLOW-FROM https://vidafy.corpadmin.directscale.com");
-                    await next();
-                });
-            }
+            //else
+            //{
+            //    app.Use(async (context, next) =>
+            //    {
+            //        context.Response.Headers.Add("X-Frame-Options", "ALLOW-FROM https://vidafy.corpadmin.directscale.com");
+            //        await next();
+            //    });
+            //}
 
             //Swagger
             app.UseSwagger();
