@@ -29,6 +29,11 @@
     var printList = "";
 
 }
+<head>
+    ...
+    <META HTTP-EQUIV="Access-Control-Allow-Origin" CONTENT="https://vidafy.corpadmin.directscalestage.com">
+    ...
+</head>
 
 
 <style>
@@ -121,7 +126,7 @@
                         <button class="btn btn-primary" name="PrintAll" onclick="printExternal('other?l=0&id=Inventory/PickLists&startDate=@(begDate.ToString("d"))&endDate=@(endDate.ToString("d"))&countryCode=@(countryCode)&Code=@(code)&Name=@(catName)&Category=@(category)')">Print Pick Slips</button>*@
                         @*<button class="btn btn-primary" name="PrintAll" onclick="printExternal('other?l=0&id=Inventory/BatchPrintInvoice&startDate=@(begDate.ToString("d"))&endDate=@(endDate.ToString("d"))&countryCode=@(countryCode)&Code=@(code)&Name=@(catName)&Category=@(category)')">Print Invoices</button>*@
                         @*<button class="btn btn-primary" name="PrintAll" type="button" onclick="PrintPage('/Corporate/Other?l=0&id=InvoiceAll&OrderNumber=@printList')">Print Invoices</button>*@
-                        <button class="btn btn-primary" name="PrintAll" type="button" onclick="PrintPage('/OrderInvoice/InvoiceAll&OrderNumber=@printList')">Print Invoices</button>
+                        <button class="btn btn-primary" name="PrintAll" type="button" onclick="PrintPage('/OrderInvoice/InvoiceAll?OrderNumbers=@printList')">Print Invoices</button>
 
                     </div>
 
