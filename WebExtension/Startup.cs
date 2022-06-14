@@ -16,6 +16,7 @@ using WebExtension.Repositories;
 using WebExtension.Services;
 using WebExtension.Services.DailyRun;
 using WebExtension.Services.ZiplingoEngagementService;
+using System;
 
 namespace WebExtension
 {
@@ -41,6 +42,7 @@ namespace WebExtension
             services.AddControllers();
             services.AddTransient<OrderWebService>();
             services.AddTransient<OrderInvoiceService>();
+
 
             #region FOR LOCAL DEBUGGING USE
             //Remark This section before upload
@@ -118,6 +120,8 @@ namespace WebExtension
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            string environmentURL = Environment.GetEnvironmentVariable("DirectScaleServiceUrl");
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -154,23 +158,11 @@ namespace WebExtension
             //DS
             app.UseDirectScale();
 
-            //Move to .config file and make dynamic
-            //if (CurrentEnvironment.IsDevelopment())
-            //{
-            //app.Use(async (context, next) =>
-            // {
-            //     context.Response.Headers.Add("X-Frame-Options", "ALLOW-FROM https://vidafy.corpadmin.directscalestage.com");
-            //     await next();
-            // });
-            //}
-            //else
-            //{
-            //    app.Use(async (context, next) =>
-            //    {
-            //        context.Response.Headers.Add("X-Frame-Options", "ALLOW-FROM https://vidafy.corpadmin.directscale.com");
-            //        await next();
-            //    });
-            //}
+            app.Use(async (context, next) =>
+             {
+                 context.Response.Headers.Add("X-Frame-Options", "ALLOW-FROM " + environmentURL); // https://vidafy.corpadmin.directscalestage.com
+                 await next();
+             });
 
             //Swagger
             app.UseSwagger();
