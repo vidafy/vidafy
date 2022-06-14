@@ -7,12 +7,12 @@ using System.Threading.Tasks;
 
 namespace WebExtension.Controllers
 {
-    [ExtensionAuthorize]
-    [Route("api/example")]
+    [Route("api/[controller]")]
     [ApiController]
     public class ExampleController : ControllerBase
     {
-        [HttpPost("testEndpoint")]
+        [HttpGet]
+        [Route("test/GetHello")]
         public async Task<ActionResult> TestEndpoint()
         {
           return await Task.Run(() => (Ok("Hello World!")));
