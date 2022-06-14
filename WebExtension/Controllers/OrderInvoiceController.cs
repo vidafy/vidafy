@@ -31,7 +31,6 @@ namespace WebExtension.Controllers
        [ExtensionAuthorize]
         public async Task<IActionResult> Index(string category, string catName, string code, string getOrders, string begDate, string endDate)
         {
-            HttpContext.Response.Headers.Add("X-Frame-Options", "ALLOW-FROM https://vidafy.corpadmin.directscalestage.com");
             ViewData["WarehouseDetails"] = _ordrWebService.GetWareHouseDetails();
             ViewData["category"] = category ;
             ViewData["catName"] = catName; ;
@@ -46,7 +45,6 @@ namespace WebExtension.Controllers
         [ExtensionAuthorize]
         public async Task<IActionResult> Invoice([FromQuery] int orderNumber)
         {
-            HttpContext.Response.Headers.Add("X-Frame-Options", "ALLOW-FROM https://vidafy.clientextension.directscalestage.com");
             var invoiceData = await _extOrderService.GetInvoiceData(orderNumber);
 
             if (invoiceData == null || invoiceData.OrderNumber == 0)
