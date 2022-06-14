@@ -10,6 +10,11 @@
     var invoice = ViewData["InvoiceData"]
         as WebExtension.Views.Model.Invoice;
 }
+<head>
+    ...
+    <META HTTP-EQUIV="Access-Control-Allow-Origin" CONTENT="https://vidafy.corpadmin.directscalestage.com">
+    ...
+</head>
 
 <link href="/Styles/print.css" rel="stylesheet" />
 <h2 class="center">Shipping Invoice</h2>
