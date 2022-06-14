@@ -63,11 +63,11 @@
                 $(selector).chosen(config[selector]);
             }
 
-            //$('#ReportFrame').load(function () {
-            //    if ($('#ReportFrame').attr("src") != '') {
-            //        frames['ReportFrame'].print();
-            //    }
-            //});
+            $('#ReportFrame').load(function () {
+                if ($('#ReportFrame').attr("src") != '') {
+                    frames['ReportFrame'].print();
+                }
+            });
 
             $('#refreshCacheBtn').click(function (event) {
                 event.preventDefault();
@@ -89,12 +89,8 @@
 
         function PrintPage(url) {
             $('#ReportFrame').attr("src", url);
-            var divToPrint = document.getElementById("ReportFrame");
-            newWin = window.open("");
-            newWin.document.write(divToPrint.outerHTML);
-            newWin.print();
-            newWin.close();
         }
+
         function showAdminTools() {
             $('#CMSNav').show();
 
@@ -171,7 +167,6 @@
     </div>
     @RenderBody()
     <iframe src="" class="PrintFrame" id="ReportFrame" name="ReportFrame"></iframe>
-    @*<div class="PrintFrame" id="ReportFrame" name="ReportFrame"></div>*@
 </body>
 
 </html>
