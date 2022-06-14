@@ -160,8 +160,9 @@ namespace WebExtension
                 app.Use(async (context, next) =>
                  {
                      context.Response.Headers.Add("X-Frame-Options", "ALLOW-FROM https://vidafy.corpadmin.directscalestage.com");
-                    // context.Response.Headers.Add("X-Frame-Options", "ALLOW-FROM https://vidafy.clientextension.directscaledev.com");
-                    await next();
+                     context.Response.Headers.Add("X-Frame-Options", "ALLOW-FROM https://vidafy.clientextension.directscalestage.com");
+                     // context.Response.Headers.Add("X-Frame-Options", "ALLOW-FROM https://vidafy.clientextension.directscaledev.com");
+                     await next();
                  });
             //}
             //else
