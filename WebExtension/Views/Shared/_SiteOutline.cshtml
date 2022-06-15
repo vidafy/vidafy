@@ -93,10 +93,7 @@
 
         function printData()
         {
-            var divToPrint = document.getElementById("printTable");
-            alert(divToPrint);
-            var divToPrint1 = $('#printTable');
-            alert(divToPrint1);
+            var divToPrint = $('#printTable');
             var newWin = window.open("");
             newWin.document.write(divToPrint.outerHTML);
             newWin.print();
