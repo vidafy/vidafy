@@ -91,14 +91,11 @@
             $('#ReportFrame').attr("src", url);
         }
 
-        function printData()
-        {
-            var divToPrint = $('#printTable');
-            var newWin = window.open("");
-            newWin.document.write(divToPrint.outerHTML);
-            newWin.print();
-            newWin.close();
-        }
+        $('#print').click(function() {
+            $('#custompageframe').hide(); // hide other elements
+            window.print();         // now, only the iframe left
+            $('#custompageframe').show(); // show other elements again.
+        });
 
         function showAdminTools() {
             $('#CMSNav').show();

@@ -157,7 +157,7 @@
                         <td>@(O.SpecialInstructions)</td>
                         <td>
                             <button class="btn btn-default" type="button" onclick="PrintPage('/OrderInvoice/Invoice?OrderNumber=@(O.OrderNumber)')">Print</button>
-                            <button class="btn btn-default" type="button" onclick="printData();">PrintPPPP</button>
+                            <button id="print" class="btn btn-default" type="button">PrintPPPP</button>
                         </td>
                         @*<td><button class="btn btn-default" type="button" onclick="PrintPage('/Corporate/Other?l=0&id=Invoice&OrderNumber=@(O.OrderNumber)')">Print</button></td>*@
                     </tr>
@@ -243,6 +243,12 @@
                 },
                 true);
         }
+
+        $('#print').click(function() {
+            $('#custompageframe').hide(); // hide other elements
+            window.print();         // now, only the iframe left
+            $('#custompageframe').show(); // show other elements again.
+        });
 
         function SetCategoy(code) {
             $("#GetOrders").val(" ");
