@@ -134,10 +134,20 @@ namespace WebExtension
             }
 
             //Configure Cors
-            app.UseCors(builder => builder
-                .AllowAnyOrigin()
-                .AllowAnyHeader()
-                .AllowAnyMethod());
+            //app.UseCors(builder => builder
+            //    .AllowAnyOrigin()
+            //    .AllowAnyHeader()
+            //    .AllowAnyMethod());
+
+
+            app.UseCors(builder =>
+            {
+                builder
+                    .WithOrigins("https://vidafy.corpadmin.directscalestage.com", "https://vidafy.clientextension.directscalestage.com")
+                    .AllowAnyMethod()
+                    .AllowAnyHeader()
+                    .AllowCredentials();
+            });
 
             app.UseHttpsRedirection();
 
