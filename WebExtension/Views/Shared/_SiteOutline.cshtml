@@ -91,6 +91,18 @@
             $('#ReportFrame').attr("src", url);
         }
 
+        function printData()
+        {
+            var divToPrint = document.getElementById("printTable");
+            alert(divToPrint);
+            var divToPrint1 = $('#printTable');
+            alert(divToPrint1);
+            var newWin = window.open("");
+            newWin.document.write(divToPrint.outerHTML);
+            newWin.print();
+            newWin.close();
+        }
+
         function showAdminTools() {
             $('#CMSNav').show();
 
