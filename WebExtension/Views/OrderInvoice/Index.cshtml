@@ -155,7 +155,10 @@
                         </td>
                         <td>@(O.BillAddress.CountryCode)</td>
                         <td>@(O.SpecialInstructions)</td>
-                        <td><button class="btn btn-default" type="button" onclick="PrintPage('/OrderInvoice/Invoice?OrderNumber=@(O.OrderNumber)')">Print</button></td>
+                        <td>
+                            <button class="btn btn-default" type="button" onclick="PrintPage('/OrderInvoice/Invoice?OrderNumber=@(O.OrderNumber)')">Print</button>
+                            <button class="btn btn-default" type="button" onclick="printData();">PrintPPPP</button>
+                        </td>
                         @*<td><button class="btn btn-default" type="button" onclick="PrintPage('/Corporate/Other?l=0&id=Invoice&OrderNumber=@(O.OrderNumber)')">Print</button></td>*@
                     </tr>
                     printList = printList + O.OrderNumber.ToString() + "|";
@@ -232,11 +235,25 @@
                 'left=200, top=200, width=1280px, height=800px, toolbar=0, resizable=0');
             printWindow.addEventListener('load',
                 function () {
+                    window.frames["printf"].focus();
+                    window.frames["printf"].print();
+                    var newWin = window.frames['printf'];
                     printWindow.print();
                     printWindow.close();
                 },
                 true);
         }
+
+        function printData()
+        {
+            var divToPrint = document.getElementById("custompageframe");
+            var newWin = window.open("");
+            newWin.document.write(divToPrint.outerHTML);
+            newWin.print();
+            newWin.close();
+        }
+
+
 
         function SetCategoy(code) {
             $("#GetOrders").val(" ");
