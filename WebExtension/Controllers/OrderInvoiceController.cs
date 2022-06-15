@@ -6,12 +6,14 @@ using System.Threading.Tasks;
 using DirectScale.Disco.Extension.Middleware;
 using Microsoft.Extensions.Logging;
 using System.Diagnostics;
+using WebExtension.Code;
 using WebExtension.Services;
 using WebExtension.Views.Model;
 using WebExtension.Helper;
 
 namespace WebExtension.Controllers
 {
+    [AllowIframeFromUri]
     public class OrderInvoiceController : Controller
     {
         private readonly IOrderWebService _ordrWebService;
