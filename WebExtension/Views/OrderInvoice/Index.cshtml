@@ -60,6 +60,7 @@
             width: 0;
             height: 0;
         }
+
     </style>
     @foreach (var O in orders)
     {
@@ -245,22 +246,29 @@
         }
 
         $('#print').click(function () {
-            alert(1);
             $('#ReportFrame').attr('src', 'https://vidafy.corpadmin.directscalestage.com/Corporate/Other?l=8&id=Order%20Invoice&OrderNumber=226332');
-            $('#ReportFrame').load(function () {
-                console.log(window.frames['ReportFrame']);
-                try {
-                    window.frames['ReportFrame'].print();
-                } catch (e) {
-                    console.log(e);
-                    try {
-                        window.frames['ReportFrame'].contentWindow.print();
-                    } catch (e) {
-                        console.log(e);
-                    }
-                }
+            window.frames["ReportFrame"].focus();
+            try {
+                window.frames["ReportFrame"].print();
+            }
+            catch(e){
+                window.print();
+            }
+            
+            //$('#ReportFrame').load(function () {
+                
+            //    try {
+            //        window.frames['ReportFrame'].print();
+            //    } catch (e) {
+                    
+            //        try {
+            //            window.frames['ReportFrame'].contentWindow.print();
+            //        } catch (e) {
+                        
+            //        }
+            //    }
 
-            });
+            //});
         });
 
         function SetCategoy(code) {
