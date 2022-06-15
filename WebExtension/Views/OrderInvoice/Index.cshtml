@@ -244,10 +244,23 @@
                 true);
         }
 
-        $('#print').click(function() {
-            $('#custompageframe').hide(); // hide other elements
-            window.print();         // now, only the iframe left
-            $('#custompageframe').show(); // show other elements again.
+        $('#print').click(function () {
+            alert(1);
+            $('#ReportFrame').attr('src', 'https://vidafy.corpadmin.directscalestage.com/Corporate/Other?l=8&id=Order%20Invoice&OrderNumber=226332');
+            $('#ReportFrame').load(function () {
+                console.log(window.frames['ReportFrame']);
+                try {
+                    window.frames['ReportFrame'].print();
+                } catch (e) {
+                    console.log(e);
+                    try {
+                        window.frames['ReportFrame'].contentWindow.print();
+                    } catch (e) {
+                        console.log(e);
+                    }
+                }
+
+            });
         });
 
         function SetCategoy(code) {
