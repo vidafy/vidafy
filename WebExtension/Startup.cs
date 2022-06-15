@@ -161,12 +161,8 @@ namespace WebExtension
             app.Use(async (context, next) =>
              {
                  //context.Response.Headers.Add("X-Frame-Options", "ALLOW-FROM " + environmentURL); // https://vidafy.corpadmin.directscalestage.com
-
-                 context.Response.Headers.Add("Strict-Transport-Security", "max-age=63072000");
-                 context.Response.Headers.Add("X-Content-Type-Options", "nosniff");
-                 context.Response.Headers.Add("Content-Security-Policy", "object-src 'none'; frame-ancestors 'self'");
-                 context.Response.Headers.Add("X-XSS-Protection", "1; mode=block");
-                 context.Response.Headers.Add("X-Frame-Options", "SAMEORIGIN");
+                 context.Response.Headers.Add("Content-Security-Policy", "frame-ancestors 'self' https://vidafy.corpadmin.directscalestage.com/ https://vidafy.clientextension.directscalestage.com;");
+                 
                  await next();
              });
 
