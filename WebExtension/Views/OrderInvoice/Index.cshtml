@@ -232,20 +232,16 @@
  
             $("#getdata").click(function()
             {
-                $.ajax(
-                    {
-                        url:"https://vidafy.corpadmin.directscalestage.com/Corporate/Other?l=8&id=Order%20Invoice",
-                        dataType:"json",
-                        contentType:contentType,
-                        success:function(data)
-                        {
-                            alert("Data from Server"+JSON.stringify(data));
-                        },
-                        error:function(jqXhr,textStatus,errorThrown)
-                        {
-                            alert("You can not send Cross Domain AJAX requests : "+errorThrown);
-                        }
-                    });
+                $.ajax({
+                    type: 'GET',
+                    url: 'https://vidafy.corpadmin.directscalestage.com/Corporate/Other?l=8&id=Order%20Invoice',
+                    success: function(response) {
+                        alert(response);
+                    }
+                }).fail(function() {
+                    alert("failed!");
+                });
+
  
             });
 
@@ -271,21 +267,15 @@
  
             $("#getdata1").click(function()
             {
-                $.ajax(
-                    {
-                        url:"https://vidafy.clientextension.directscalestage.com/OrderInvoice/Invoice?OrderNumber=226332",
-                        dataType:"json",
-                        contentType:contentType,
-                        success:function(data)
-                        {
-                            alert("Data from Server"+JSON.stringify(data));
-                        },
-                        error:function(jqXhr,textStatus,errorThrown)
-                        {
-                            alert("You can not send Cross Domain AJAX requests : "+errorThrown);
-                        }
-                    });
- 
+                $.ajax({
+                    type: 'GET',
+                    url: 'https://vidafy.clientextension.directscalestage.com/OrderInvoice/Invoice?OrderNumber=226332',
+                    success: function(response) {
+                        alert(response);
+                    }
+                }).fail(function() {
+                    alert("failed!");
+                });
             });
 
         });
