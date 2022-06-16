@@ -158,8 +158,11 @@
                     <td>@(O.SpecialInstructions)</td>
                     <td>
                         @*<button class="btn btn-default" type="button" onclick="PrintPage('/OrderInvoice/Invoice?OrderNumber=@(O.OrderNumber)')">Print</button>*@
-                        <button class="btn btn-default" type="button" onclick="printDetail1('@(O.OrderNumber)');">PrintMMMM</button>
-                        <button class="btn btn-default" type="button" onclick="printDetail('@(O.OrderNumber)');">PrintPPPP</button>
+                        @*<button class="btn btn-default" type="button" onclick="printDetail1('@(O.OrderNumber)');">PrintMMMM</button>
+                        <button class="btn btn-default" type="button" onclick="printDetail('@(O.OrderNumber)');">PrintPPPP</button>*@
+                        
+                        <input id="getdata" type="button"  value="Send X GET"/>
+                        <input id="postdata" type="button" value="Send X POST" />
                     </td>
                     @*<td><button class="btn btn-default" type="button" onclick="PrintPage('/Corporate/Other?l=0&id=Invoice&OrderNumber=@(O.OrderNumber)')">Print</button></td>*@
                 </tr>
@@ -192,7 +195,7 @@
         </div>
     </div>
 
-
+<script type='text/javascript' src="http://cdnjs.cloudflare.com/ajax/libs/jquery-ajaxtransport-xdomainrequest/1.0.1/jquery.xdomainrequest.min.js"></script>
 
 <script>
         $(document).ready(function () {
@@ -201,31 +204,53 @@
 
             $('#WarehouseLookup').val(selectedItem);
 
-            $.ajaxPrefilter(function( settings, original, xhr ) {
-                if (['post','put','delete'].includes(settings.type.toLowerCase())
-                    && !settings.crossDomain) {
-                    xhr.setRequestHeader("X-XSRF-TOKEN", getCookie('XSRF-TOKEN'));
-                }
+            var contentType ="application/x-www-form-urlencoded; charset=utf-8";
+ 
+            if(window.XDomainRequest)
+                contentType = "text/plain";
+
+            $("#postdata").click(function()
+            {
+                $.ajax({
+                    url:"https://vidafy.corpadmin.directscalestage.com/Corporate/Other?l=8&id=Order%20Invoice",
+                    data:"OrderNumber=226332",
+                    type:"POST",
+                    dataType:"json",   
+                    contentType:contentType,    
+                    success:function(data)
+                    {
+                        alert("Data from Server"+JSON.stringify(data));
+                    },
+                    error:function(jqXhr,textStatus,errorThrown)
+                    {
+                        alert("You can not send Cross Domain AJAX requests: "+errorThrown);
+                    }
+                });
+ 
+            });
+ 
+            $("#getdata").click(function()
+            {
+                $.ajax(
+                    {
+                        url:"https://vidafy.corpadmin.directscalestage.com/Corporate/Other?l=8&id=Order%20Invoice?OrderNumber=226332",
+                        dataType:"json",
+                        contentType:contentType,
+                        success:function(data)
+                        {
+                            alert("Data from Server"+JSON.stringify(data));
+                        },
+                        error:function(jqXhr,textStatus,errorThrown)
+                        {
+                            alert("You can not send Cross Domain AJAX requests : "+errorThrown);
+                        }
+                    });
+ 
             });
 
         });
 
-    function getCookie(name) {
-        alert(1);
-            var cookieValue = null;
-            if (document.cookie && document.cookie != '') {
-                var cookies = document.cookie.split(';');
-                for (var i = 0; i < cookies.length; i++) {
-                    var cookie = jQuery.trim(cookies[i]);
-                    // Does this cookie string begin with the name we want?
-                    if (cookie.substring(0, name.length + 1) == (name + '=')) {
-                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                        break;
-                    }
-                }
-            }
-            return cookieValue;
-        }
+    
 
     </script>
     <script type="text/javascript">
