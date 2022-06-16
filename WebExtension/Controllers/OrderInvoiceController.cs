@@ -60,6 +60,12 @@ namespace WebExtension.Controllers
             return await Task.Run(() => View());
         }
 
+        [HttpPost]
+        public ActionResult Details(int orderNumber)
+        {
+            
+            return PartialView("_Details", _extOrderService.GetInvoiceData(orderNumber));
+        }
 
         [ExtensionAuthorize]
         public async Task<IActionResult> InvoiceAll([FromQuery] string orderNumbers)
