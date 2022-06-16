@@ -160,11 +160,11 @@
                         @*<button class="btn btn-default" type="button" onclick="PrintPage('/OrderInvoice/Invoice?OrderNumber=@(O.OrderNumber)')">Print</button>*@
                         @*<button class="btn btn-default" type="button" onclick="printDetail1('@(O.OrderNumber)');">PrintMMMM</button>
                         <button class="btn btn-default" type="button" onclick="printDetail('@(O.OrderNumber)');">PrintPPPP</button>*@
-                        
+                        <input id="print" type="button" value="Cross Domain" />
                         <input id="getdata" type="button"  value="Send X GET"/>
                         <input id="postdata" type="button" value="Send X POST" />
-                        <input id="getdata1" type="button"  value="Send X GET"/>
-                        <input id="postdata1" type="button" value="Send X POST" />
+                        <input id="getdata1" type="button"  value="Send X GET1"/>
+                        <input id="postdata1" type="button" value="Send X POST1" />
                     </td>
                     @*<td><button class="btn btn-default" type="button" onclick="PrintPage('/Corporate/Other?l=0&id=Invoice&OrderNumber=@(O.OrderNumber)')">Print</button></td>*@
                 </tr>
@@ -206,6 +206,8 @@
 
             $('#WarehouseLookup').val(selectedItem);
 
+
+
             var contentType ="application/x-www-form-urlencoded; charset=utf-8";
  
             if(window.XDomainRequest)
@@ -229,6 +231,8 @@
                 });
  
             });
+
+
  
             $("#getdata").click(function()
             {
@@ -416,24 +420,35 @@
         }
 
         $('#print').click(function () {
-
-
-            //$('#ReportFrame').attr('src', 'https://vidafy.corpadmin.directscalestage.com/Corporate/Other?l=8&id=Order%20Invoice&OrderNumber=226332');
-            ////window.frames["ReportFrame"].focus();
-            ////try {
-            ////    window.frames["ReportFrame"].print();
-            ////}
-            ////catch(e){
-            ////    window.print();
-            ////}
-            
-            //setTimeout(function () {
-            //    $('#ReportFrame').get(0).contentWindow.focus();
-            //    window.print();
-            //    //$("#ReportFrame").get(0).contentWindow.print();
-            //}, 500);
+            if ($.browser.msie && window.XDomainRequest) {
+                // Use Microsoft XDR
+                var xdr = new window.XDomainRequest();
+                xdr.open("get", "https://vidafy.clientextension.directscalestage.com/OrderInvoice/Invoice?OrderNumber=226332");
+                xdr.onload = function () {
+                    var json = $.parseJSON(xdr.responseText);
+                    if (json == null) {
+                        json = $.parseJSON(data.firstChild.textContent);
+                    }
+                    processData(json);
+                };
+                xdr.send();
+            } else {
+                $.ajax({
+                    type: 'GET',
+                    url: "https://vidafy.clientextension.directscalestage.com/OrderInvoice/Invoice?OrderNumber=226332",
+                    processData: true,
+                    data: {},
+                    dataType: "json",
+                    success: function (data) { processData(data); }
+                });
+            }
 
         });
+
+        function processData(data){
+            //Do some stuff with the data
+            alert("Testing......");
+        }
 
         function SetCategoy(code) {
             $("#GetOrders").val(" ");
