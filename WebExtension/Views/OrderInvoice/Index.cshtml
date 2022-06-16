@@ -157,7 +157,8 @@
                     <td>@(O.BillAddress.CountryCode)</td>
                     <td>@(O.SpecialInstructions)</td>
                     <td>
-                        <button class="btn btn-default" type="button" onclick="PrintPage('/OrderInvoice/Invoice?OrderNumber=@(O.OrderNumber)')">Print</button>
+                        @*<button class="btn btn-default" type="button" onclick="PrintPage('/OrderInvoice/Invoice?OrderNumber=@(O.OrderNumber)')">Print</button>*@
+                        <button class="btn btn-default" type="button" onclick="printDetail1('@(O.OrderNumber)');">PrintMMMM</button>
                         <button class="btn btn-default" type="button" onclick="printDetail('@(O.OrderNumber)');">PrintPPPP</button>
                     </td>
                     @*<td><button class="btn btn-default" type="button" onclick="PrintPage('/Corporate/Other?l=0&id=Invoice&OrderNumber=@(O.OrderNumber)')">Print</button></td>*@
@@ -200,7 +201,32 @@
 
             $('#WarehouseLookup').val(selectedItem);
 
-        })
+            $.ajaxPrefilter(function( settings, original, xhr ) {
+                if (['post','put','delete'].includes(settings.type.toLowerCase())
+                    && !settings.crossDomain) {
+                    xhr.setRequestHeader("X-XSRF-TOKEN", getCookie('XSRF-TOKEN'));
+                }
+            });
+
+        });
+
+    function getCookie(name) {
+        alert(1);
+            var cookieValue = null;
+            if (document.cookie && document.cookie != '') {
+                var cookies = document.cookie.split(';');
+                for (var i = 0; i < cookies.length; i++) {
+                    var cookie = jQuery.trim(cookies[i]);
+                    // Does this cookie string begin with the name we want?
+                    if (cookie.substring(0, name.length + 1) == (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+
     </script>
     <script type="text/javascript">
 
@@ -255,6 +281,28 @@
             title: "View Details"
         });
 
+        function printDetail1(orderNumber) {
+            $.ajax({
+                type: 'POST',
+                url: "/OrderInvoice/Details",
+                data: '{orderNumber: "' + orderNumber + '" }',
+                datatype: 'jsonp',
+                async: true,
+                xhrFields: {
+                    withCredentials: true
+                },
+                crossDomain: true,
+                success:function(){
+                    try {
+                        alert('THAAAAA');
+                        alert("ok");
+                    }catch (e){
+                        alert(e);
+                    }
+                } 
+            });  
+        }
+
         function printDetail(orderNumber) {
 
             $.ajax({
@@ -264,8 +312,9 @@
                 contentType: "application/json; charset=utf-8",
                 dataType: "html",
                 crossDomain: true,
+                crossOrigin: true,
                 success: function (response) {
-                    
+                    alert('MAAAAAAA');
                     $('#dialog').html(response);
                     $('#dialog').dialog('open');
                 },
