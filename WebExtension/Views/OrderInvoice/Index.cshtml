@@ -189,16 +189,6 @@
         </div>
     </div>
 
-<iframe src="https://vidafy.corpadmin.directscalestage.com/Corporate/Other?l=8&id=Order%20Invoice&OrderNumber=226332"></iframe>
-<script>
-    window.onload = function () {
-        try {
-            frames[0].print();
-        } catch (e) {
-            alert("Exception thrown: " + e);
-        }
-    }
-</script>
 
 
 <script>
@@ -264,23 +254,27 @@
         });
 
         function printInvoice(orderNumber) {
-            $.ajax({
-                type: "POST",
-                url: "/OrderInvoice/Invoice",
-                data: '{orderNumber: "' + orderNumber + '" }',
-                contentType: "application/json; charset=utf-8",
-                dataType: "html",
-                success: function (response) {
-                    $('#dialog').html(response);
-                    $('#dialog').dialog('open');
-                },
-                failure: function (response) {
-                    alert(response.responseText);
-                },
-                error: function (response) {
-                    alert(response.responseText);
-                }
-            });
+            alert(1);
+            $('#dialog').attr('src', 'https://vidafy.corpadmin.directscalestage.com/Corporate/Other?l=8&id=Order%20Invoice&OrderNumber=226332');
+            $('#dialog').dialog('open');
+
+            //$.ajax({
+            //    type: "POST",
+            //    url: "/OrderInvoice/Invoice",
+            //    data: '{orderNumber: "' + orderNumber + '" }',
+            //    contentType: "application/json; charset=utf-8",
+            //    dataType: "html",
+            //    success: function (response) {
+            //        $('#dialog').html(response);
+            //        $('#dialog').dialog('open');
+            //    },
+            //    failure: function (response) {
+            //        alert(response.responseText);
+            //    },
+            //    error: function (response) {
+            //        alert(response.responseText);
+            //    }
+            //});
         }
 
         $('#print').click(function () {
