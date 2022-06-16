@@ -163,6 +163,8 @@
                         
                         <input id="getdata" type="button"  value="Send X GET"/>
                         <input id="postdata" type="button" value="Send X POST" />
+                        <input id="getdata1" type="button"  value="Send X GET"/>
+                        <input id="postdata1" type="button" value="Send X POST" />
                     </td>
                     @*<td><button class="btn btn-default" type="button" onclick="PrintPage('/Corporate/Other?l=0&id=Invoice&OrderNumber=@(O.OrderNumber)')">Print</button></td>*@
                 </tr>
@@ -213,7 +215,6 @@
             {
                 $.ajax({
                     url:"https://vidafy.corpadmin.directscalestage.com/Corporate/Other?l=8&id=Order%20Invoice",
-                    data:"OrderNumber=226332",
                     type:"POST",
                     dataType:"json",   
                     contentType:contentType,    
@@ -233,7 +234,46 @@
             {
                 $.ajax(
                     {
-                        url:"https://vidafy.corpadmin.directscalestage.com/Corporate/Other?l=8&id=Order%20Invoice?OrderNumber=226332",
+                        url:"https://vidafy.corpadmin.directscalestage.com/Corporate/Other?l=8&id=Order%20Invoice",
+                        dataType:"json",
+                        contentType:contentType,
+                        success:function(data)
+                        {
+                            alert("Data from Server"+JSON.stringify(data));
+                        },
+                        error:function(jqXhr,textStatus,errorThrown)
+                        {
+                            alert("You can not send Cross Domain AJAX requests : "+errorThrown);
+                        }
+                    });
+ 
+            });
+
+            $("#postdata1").click(function()
+            {
+                $.ajax({
+                    url:"https://vidafy.clientextension.directscalestage.com/OrderInvoice/Invoice",
+                    data:"OrderNumber=226332",
+                    type:"POST",
+                    dataType:"json",   
+                    contentType:contentType,    
+                    success:function(data)
+                    {
+                        alert("Data from Server"+JSON.stringify(data));
+                    },
+                    error:function(jqXhr,textStatus,errorThrown)
+                    {
+                        alert("You can not send Cross Domain AJAX requests: "+errorThrown);
+                    }
+                });
+ 
+            });
+ 
+            $("#getdata1").click(function()
+            {
+                $.ajax(
+                    {
+                        url:"https://vidafy.clientextension.directscalestage.com/OrderInvoice/Invoice?OrderNumber=226332",
                         dataType:"json",
                         contentType:contentType,
                         success:function(data)
