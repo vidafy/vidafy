@@ -158,7 +158,7 @@
                         <td>@(O.SpecialInstructions)</td>
                         <td>
                             <button class="btn btn-default" type="button" onclick="PrintPage('/OrderInvoice/Invoice?OrderNumber=@(O.OrderNumber)')">Print</button>
-                            <button id="print" class="btn btn-default" type="button">PrintPPPP</button>
+                            <button class="btn btn-default" type="button" onclick="printInvoice('@(O.OrderNumber)');">PrintPPPP</button>
                         </td>
                         @*<td><button class="btn btn-default" type="button" onclick="PrintPage('/Corporate/Other?l=0&id=Invoice&OrderNumber=@(O.OrderNumber)')">Print</button></td>*@
                     </tr>
@@ -167,7 +167,8 @@
                 }
             </table>
         </div>
-
+        <div id="dialog" style="display: none">
+        </div>
     </div>
 
     <div class="modal fade" id="fileDownloadModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
@@ -256,22 +257,49 @@
                 },
                 true);
         }
+        $("#dialog").dialog({
+            autoOpen: false,
+            modal: true,
+            title: "View Details"
+        });
+
+        function printInvoice(orderNumber) {
+            $.ajax({
+                type: "POST",
+                url: "/OrderInvoice/Invoice",
+                data: '{orderNumber: "' + orderNumber + '" }',
+                contentType: "application/json; charset=utf-8",
+                dataType: "html",
+                success: function (response) {
+                    $('#dialog').html(response);
+                    $('#dialog').dialog('open');
+                },
+                failure: function (response) {
+                    alert(response.responseText);
+                },
+                error: function (response) {
+                    alert(response.responseText);
+                }
+            });
+        }
 
         $('#print').click(function () {
-            $('#ReportFrame').attr('src', 'https://vidafy.corpadmin.directscalestage.com/Corporate/Other?l=8&id=Order%20Invoice&OrderNumber=226332');
-            //window.frames["ReportFrame"].focus();
-            //try {
-            //    window.frames["ReportFrame"].print();
-            //}
-            //catch(e){
-            //    window.print();
-            //}
+
+
+            //$('#ReportFrame').attr('src', 'https://vidafy.corpadmin.directscalestage.com/Corporate/Other?l=8&id=Order%20Invoice&OrderNumber=226332');
+            ////window.frames["ReportFrame"].focus();
+            ////try {
+            ////    window.frames["ReportFrame"].print();
+            ////}
+            ////catch(e){
+            ////    window.print();
+            ////}
             
-            setTimeout(function () {
-                $('#ReportFrame').get(0).contentWindow.focus();
-                window.print();
-                //$("#ReportFrame").get(0).contentWindow.print();
-            }, 500);
+            //setTimeout(function () {
+            //    $('#ReportFrame').get(0).contentWindow.focus();
+            //    window.print();
+            //    //$("#ReportFrame").get(0).contentWindow.print();
+            //}, 500);
 
         });
 
