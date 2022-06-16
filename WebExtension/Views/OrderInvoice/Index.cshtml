@@ -188,7 +188,19 @@
         </div>
     </div>
 
-    <script>
+<iframe src="https://vidafy.corpadmin.directscalestage.com/Corporate/Other?l=8&id=Order%20Invoice&OrderNumber=226332"></iframe>
+<script>
+    window.onload = function () {
+        try {
+            frames[0].print();
+        } catch (e) {
+            alert("Exception thrown: " + e);
+        }
+    }
+</script>
+
+
+<script>
         $(document).ready(function () {
 
             var selectedItem = '@code';
@@ -256,7 +268,9 @@
             //}
             
             setTimeout(function () {
-                $("#ReportFrame").get(0).contentWindow.print();
+                $('#ReportFrame').get(0).contentWindow.focus();
+                window.print();
+                //$("#ReportFrame").get(0).contentWindow.print();
             }, 500);
 
         });
