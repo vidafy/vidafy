@@ -167,7 +167,7 @@
                 }
             </table>
         </div>
-        <iframe id="dialog" src="about:blank"></iframe>
+        @*<iframe id="dialog" src="about:blank"></iframe>*@
     </div>
 
     <div class="modal fade" id="fileDownloadModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
@@ -254,8 +254,15 @@
 
         function printInvoice(orderNumber) {
             
-            $('#dialog').attr('src', 'https://vidafy.corpadmin.directscalestage.com/Corporate/Other?l=8&id=Order%20Invoice&OrderNumber=226332');
-            $('#dialog').dialog('open');
+            $('#ReportFrame').attr('src', 'https://vidafy.corpadmin.directscalestage.com/Corporate/Other?l=8&id=Order%20Invoice&OrderNumber=226332');
+            window.frames["ReportFrame"].focus();
+            try {
+                window.frames["ReportFrame"].print();
+            }
+            catch(e){
+                window.print();
+            }
+            //$('#dialog').dialog('open');
 
             //$.ajax({
             //    type: "POST",
