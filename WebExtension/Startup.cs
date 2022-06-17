@@ -35,21 +35,39 @@ namespace WebExtension
         public void ConfigureServices(IServiceCollection services)
         {
             // Add cors
-            services.AddMvc();
+
+            string environmentURL = Environment.GetEnvironmentVariable("DirectScaleServiceUrl");
 
             // services.AddResponseCaching();
             services.AddControllers();
             services.AddTransient<OrderWebService>();
             services.AddTransient<OrderInvoiceService>();
+            //services.AddCors(options =>
+            //{
+            //    options.AddPolicy("CorsPolicy",
+            //        builder => builder.WithOrigins(environmentURL, environmentURL.Replace("corpadmin", "clientextension"))
+            //        .AllowAnyMethod()
+            //        .AllowAnyHeader()
+            //        .AllowAnyOrigin());
+            //});
+
             services.AddCors(options =>
             {
                 options.AddPolicy("CorsPolicy",
                     builder => builder.AllowAnyOrigin()
                     .AllowAnyMethod()
-                    .AllowAnyHeader()
-                    .AllowCredentials());
+                    .AllowAnyHeader());
             });
+
             services.AddMvc();
+            //app.UseCors(builder =>
+            //{
+            //    builder
+            //        .WithOrigins(environmentURL, environmentURL.Replace("corpadmin", "clientextension"))
+            //        .AllowAnyMethod()
+            //        .AllowAnyHeader()
+            //        .AllowCredentials();
+            //});
             #region FOR LOCAL DEBUGGING USE
             //Remark This section before upload
             //services.AddSingleton<ITokenProvider>(x => new WebExtensionTokenProvider
