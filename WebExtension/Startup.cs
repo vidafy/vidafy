@@ -42,22 +42,22 @@ namespace WebExtension
             services.AddControllers();
             services.AddTransient<OrderWebService>();
             services.AddTransient<OrderInvoiceService>();
-            //services.AddCors(options =>
-            //{
-            //    options.AddPolicy("CorsPolicy",
-            //        builder => builder.WithOrigins(environmentURL, environmentURL.Replace("corpadmin", "clientextension"))
-            //        .AllowAnyMethod()
-            //        .AllowAnyHeader()
-            //        .AllowAnyOrigin());
-            //});
-
             services.AddCors(options =>
             {
                 options.AddPolicy("CorsPolicy",
-                    builder => builder.AllowAnyOrigin()
+                    builder => builder.WithOrigins(environmentURL, environmentURL.Replace("corpadmin", "clientextension"))
                     .AllowAnyMethod()
-                    .AllowAnyHeader());
+                    .AllowAnyHeader()
+                    .AllowAnyOrigin());
             });
+
+            //services.AddCors(options =>
+            //{
+            //    options.AddPolicy("CorsPolicy",
+            //        builder => builder.AllowAnyOrigin()
+            //        .AllowAnyMethod()
+            //        .AllowAnyHeader());
+            //});
 
             services.AddMvc();
             //app.UseCors(builder =>
