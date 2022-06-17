@@ -4,68 +4,67 @@
 @using WebExtension.Views.Model
 @inject OrderWebService OrderService
 
-    @{
-        ViewBag.PageTitle = "Print Slips";
+@{
+    ViewBag.PageTitle = "Print Slips";
 
-        Layout = "~/Views/Shared/_SiteOutline.cshtml";
+    Layout = "~/Views/Shared/_SiteOutline.cshtml";
 
-        if (!DateTime.TryParse(ViewData["begDate"] as string, out var begDate))
-        {
-            begDate = DateTime.Now.Date;
-        }
-        if (!DateTime.TryParse(ViewData["endDate"] as string, out var endDate))
-        {
-            endDate = DateTime.Now.Date;
-        }
-
-        var category = ViewData["category"] ?? "Location";
-        var catName = ViewData["catName"] ?? " ";
-        var code = ViewData["code"] ?? "0";
-        var getOrders = ViewData["getOrders"] ?? " ";
-
-        var countryCode = "0";
-        var orders = OrderService.GetShippableOrders(begDate, endDate, code, catName, category);
-        countryCode = orders.Any() ? orders[0].BillAddress.CountryCode : "0";
-        var printList = "";
-
-    }
-
-    <style>
-        .input-group-btn {
-            display: unset;
-        }
-
-        .dropdown-toggle.btn-default {
-            background-color: white !important;
-        }
-
-        .btn {
-            text-align: left !important;
-        }
-
-        .row {
-            margin-right: 0 !important;
-            margin-left: 0 !important;
-        }
-
-        .daterangepicker .calendar {
-            max-width: 300px;
-        }
-
-        .page-toolbar {
-            position: inherit;
-        }
-
-        ::-webkit-scrollbar {
-            width: 0;
-            height: 0;
-        }
-
-    </style>
-    @foreach (var O in orders)
+    if (!DateTime.TryParse(ViewData["begDate"] as string, out var begDate))
     {
-        printList = printList + O.OrderNumber.ToString() + "|";
+        begDate = DateTime.Now.Date;
     }
+    if (!DateTime.TryParse(ViewData["endDate"] as string, out var endDate))
+    {
+        endDate = DateTime.Now.Date;
+    }
+
+    var category = ViewData["category"] ?? "Location";
+    var catName = ViewData["catName"] ?? " ";
+    var code = ViewData["code"] ?? "0";
+    var getOrders = ViewData["getOrders"] ?? " ";
+
+    var countryCode = "0";
+    var orders = OrderService.GetShippableOrders(begDate, endDate, code, catName, category);
+    countryCode = orders.Any() ? orders[0].BillAddress.CountryCode : "0";
+    var printList = "";
+
+}
+
+<style>
+    .input-group-btn {
+        display: unset;
+    }
+
+    .dropdown-toggle.btn-default {
+        background-color: white !important;
+    }
+
+    .btn {
+        text-align: left !important;
+    }
+
+    .row {
+        margin-right: 0 !important;
+        margin-left: 0 !important;
+    }
+
+    .daterangepicker .calendar {
+        max-width: 300px;
+    }
+
+    .page-toolbar {
+        position: inherit;
+    }
+
+    ::-webkit-scrollbar {
+        width: 0;
+        height: 0;
+    }
+</style>
+@foreach (var O in orders)
+{
+    printList = printList + O.OrderNumber.ToString() + "|";
+}
 
 <div class="page-container">
     <div class="p-8">
@@ -83,13 +82,13 @@
                 @{
                     <div class="col-sm-3">
                         @*<select id="WarehouseLookup" name="WarehouseLookup" onchange="SetCategoryItems('@(code)', '@(catName)');" class="btn btn-default dropdown-toggle" data-toggle="dropdown" style="border-radius: 5px; margin-bottom: 3px;">
-                                    <option value="0" onclick="SetCategoryItems('0', 'Select Warehouse All');">Select Warehouse All</option>
-                                    @foreach (var ac in (IEnumerable<ActiveCountry>) ViewData["WarehouseDetails"])
-                                    {
-                                        <option onclick="SetCategoryItems('@(ac.Code)', '@(ac.Name)');" value="@(ac.Code)">@(ac.Name)</option>
-                                    }
+                                <option value="0" onclick="SetCategoryItems('0', 'Select Warehouse All');">Select Warehouse All</option>
+                                @foreach (var ac in (IEnumerable<ActiveCountry>) ViewData["WarehouseDetails"])
+                                {
+                                    <option onclick="SetCategoryItems('@(ac.Code)', '@(ac.Name)');" value="@(ac.Code)">@(ac.Name)</option>
+                                }
 
-                                </select>*@
+                            </select>*@
 
                         <div class="inline-block align-top w-64 sm:w-auto">
 
@@ -118,7 +117,7 @@
                         <button class="btn btn-primary" name="Submit" onclick="Submitform(this);return false;" style="margin-left: 3px;">List Orders</button>
                         @*<button class="btn btn-primary" name="PrintAll" onclick="Submitform(); return false;" style="margin-left: 3px;">Print All</button>*@
                         @*<button class="btn btn-primary" name="PrintAll" onclick="printExternal('other?l=0&id=Inventory/RegistrationDocument&startDate=@(begDate.ToString("d"))&endDate=@(endDate.ToString("d"))&countryCode=@(countryCode)')">Print Registration</button>
-                                <button class="btn btn-primary" name="PrintAll" onclick="printExternal('other?l=0&id=Inventory/PickLists&startDate=@(begDate.ToString("d"))&endDate=@(endDate.ToString("d"))&countryCode=@(countryCode)&Code=@(code)&Name=@(catName)&Category=@(category)')">Print Pick Slips</button>*@
+                            <button class="btn btn-primary" name="PrintAll" onclick="printExternal('other?l=0&id=Inventory/PickLists&startDate=@(begDate.ToString("d"))&endDate=@(endDate.ToString("d"))&countryCode=@(countryCode)&Code=@(code)&Name=@(catName)&Category=@(category)')">Print Pick Slips</button>*@
                         @*<button class="btn btn-primary" name="PrintAll" onclick="printExternal('other?l=0&id=Inventory/BatchPrintInvoice&startDate=@(begDate.ToString("d"))&endDate=@(endDate.ToString("d"))&countryCode=@(countryCode)&Code=@(code)&Name=@(catName)&Category=@(category)')">Print Invoices</button>*@
                         @*<button class="btn btn-primary" name="PrintAll" type="button" onclick="PrintPage('/Corporate/Other?l=0&id=InvoiceAll&OrderNumber=@printList')">Print Invoices</button>*@
                         <button class="btn btn-primary" name="PrintAll" type="button" onclick="PrintPage('/OrderInvoice/InvoiceAll?OrderNumbers=@printList')">Print Invoices</button>
@@ -156,16 +155,7 @@
                     </td>
                     <td>@(O.BillAddress.CountryCode)</td>
                     <td>@(O.SpecialInstructions)</td>
-                    <td>
-                        @*<button class="btn btn-default" type="button" onclick="PrintPage('/OrderInvoice/Invoice?OrderNumber=@(O.OrderNumber)')">Print</button>*@
-                        @*<button class="btn btn-default" type="button" onclick="printDetail1('@(O.OrderNumber)');">PrintMMMM</button>
-                        <button class="btn btn-default" type="button" onclick="printDetail('@(O.OrderNumber)');">PrintPPPP</button>*@
-                        <input id="print" type="button" value="Cross Domain" />
-                        <input id="getdata" type="button"  value="Send X GET"/>
-                        <input id="postdata" type="button" value="Send X POST" />
-                        <input id="getdata1" type="button"  value="Send X GET1"/>
-                        <input id="postdata1" type="button" value="Send X POST1" />
-                    </td>
+                    <td><button class="btn btn-default" type="button" onclick="PrintPage('/OrderInvoice/Invoice?OrderNumber=@(O.OrderNumber)')">Print</button></td>
                     @*<td><button class="btn btn-default" type="button" onclick="PrintPage('/Corporate/Other?l=0&id=Invoice&OrderNumber=@(O.OrderNumber)')">Print</button></td>*@
                 </tr>
                 printList = printList + O.OrderNumber.ToString() + "|";
@@ -173,31 +163,26 @@
             }
         </table>
     </div>
-        
-</div>
 
-<div id="dialog" style="display: none">
 </div>
 
 <div class="modal fade" id="fileDownloadModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title" id="myModalLabel">Orders CSV File</h4>
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Orders CSV File</h4>
+            </div>
+            <div class="modal-body">
+                <div id="fileDownloadsDiv">
                 </div>
-                <div class="modal-body">
-                    <div id="fileDownloadsDiv">
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
             </div>
         </div>
     </div>
-
-<script type='text/javascript' src="http://cdnjs.cloudflare.com/ajax/libs/jquery-ajaxtransport-xdomainrequest/1.0.1/jquery.xdomainrequest.min.js"></script>
+</div>
 
 <script>
         $(document).ready(function () {
@@ -206,269 +191,72 @@
 
             $('#WarehouseLookup').val(selectedItem);
 
+        })
+</script>
+<script type="text/javascript">
 
 
-            var contentType ="application/x-www-form-urlencoded; charset=utf-8";
- 
-            if(window.XDomainRequest)
-                contentType = "text/plain";
-
-            $("#postdata").click(function()
-            {
-                $.ajax({
-                    url:"https://vidafy.corpadmin.directscalestage.com/Corporate/Other?l=8&id=Order%20Invoice",
-                    type:"POST",
-                    dataType:"json",   
-                    contentType:contentType,    
-                    success:function(data)
-                    {
-                        alert("Data from Server"+JSON.stringify(data));
-                    },
-                    error:function(jqXhr,textStatus,errorThrown)
-                    {
-                        alert("You can not send Cross Domain AJAX requests: "+errorThrown);
-                    }
-                });
- 
-            });
-
-
- 
-            $("#getdata").click(function()
-            {
-                $.ajax({
-                    type: 'GET',
-                    url: 'https://vidafy.corpadmin.directscalestage.com/Corporate/Other?l=8&id=Order%20Invoice',
-                    success: function(response) {
-                        alert(response);
-                    }
-                }).fail(function() {
-                    alert("failed!");
-                });
-
- 
-            });
-
-            $("#postdata1").click(function()
-            {
-                $.ajax({
-                    url:"https://vidafy.clientextension.directscalestage.com/OrderInvoice/Invoice",
-                    data:"OrderNumber=226332",
-                    type:"POST",
-                    dataType:"json",   
-                    contentType:contentType,    
-                    success:function(data)
-                    {
-                        alert("Data from Server"+JSON.stringify(data));
-                    },
-                    error:function(jqXhr,textStatus,errorThrown)
-                    {
-                        alert("You can not send Cross Domain AJAX requests: "+errorThrown);
-                    }
-                });
- 
-            });
- 
-            $("#getdata1").click(function()
-            {
-                $.ajax({
-                    type: 'GET',
-                    url: 'https://vidafy.clientextension.directscalestage.com/OrderInvoice/Invoice?OrderNumber=226332',
-                    success: function(response) {
-                        alert(response);
-                    }
-                }).fail(function() {
-                    alert("failed!");
-                });
-            });
-
-        });
-
-    
-
-    </script>
-    <script type="text/javascript">
-
-
-        function downLoadCsv(start, end, country, catName, category, language) {
-            var test = "";
-            if (country === "") {
-                alert("Please Select a Country.");
-            } else {
-                $.ajax({
-                    url: '/Command/ClientAPI/orders/getorderscsv',
-                    dataType: "json",
-                    type: "POST",
-                    data: JSON.stringify({ begin: start, end: end, Code: country, Name: catName, Category: category }),
-                    success: function (r) {
-                        if (r.Status === 0) {
-                            $("#fileDownloadsDiv").append("<div><a href='/Corporate/DownloadTempFile?fileName=" +
-                                r.Data +
-                                "'>" +
-                                r.Data +
-                                "</a></div>");
-                            showModal = true;
-                            if (showModal) {
-                                $('#fileDownloadModal').modal('show');
-                            }
-                        } else {
-                            alert(r.Message);
+    function downLoadCsv(start, end, country, catName, category, language) {
+        var test = "";
+        if (country === "") {
+            alert("Please Select a Country.");
+        } else {
+            $.ajax({
+                url: '/Command/ClientAPI/orders/getorderscsv',
+                dataType: "json",
+                type: "POST",
+                data: JSON.stringify({ begin: start, end: end, Code: country, Name: catName, Category: category }),
+                success: function (r) {
+                    if (r.Status === 0) {
+                        $("#fileDownloadsDiv").append("<div><a href='/Corporate/DownloadTempFile?fileName=" +
+                            r.Data +
+                            "'>" +
+                            r.Data +
+                            "</a></div>");
+                        showModal = true;
+                        if (showModal) {
+                            $('#fileDownloadModal').modal('show');
                         }
-                    },
-                    contentType: "application/json; charset=utf-8",
-                });
-            }
-        }
-
-        function printExternal(url) {
-            var printWindow = window.open(url,
-                'Print',
-                'left=200, top=200, width=1280px, height=800px, toolbar=0, resizable=0');
-            printWindow.addEventListener('load',
-                function () {
-                    window.frames["printf"].focus();
-                    window.frames["printf"].print();
-                    var newWin = window.frames['printf'];
-                    printWindow.print();
-                    printWindow.close();
-                },
-                true);
-        }
-        $("#dialog").dialog({
-            autoOpen: false,
-            modal: true,
-            title: "View Details"
-        });
-
-        function printDetail1(orderNumber) {
-            $.ajax({
-                type: 'POST',
-                url: "/OrderInvoice/Details",
-                data: '{orderNumber: "' + orderNumber + '" }',
-                datatype: 'jsonp',
-                async: true,
-                xhrFields: {
-                    withCredentials: true
-                },
-                crossDomain: true,
-                success:function(){
-                    try {
-                        alert('THAAAAA');
-                        alert("ok");
-                    }catch (e){
-                        alert(e);
+                    } else {
+                        alert(r.Message);
                     }
-                } 
-            });  
-        }
-
-        function printDetail(orderNumber) {
-
-            $.ajax({
-                type: "POST",
-                url: "/OrderInvoice/Details",
-                data: '{orderNumber: "' + orderNumber + '" }',
+                },
                 contentType: "application/json; charset=utf-8",
-                dataType: "html",
-                crossDomain: true,
-                crossOrigin: true,
-                success: function (response) {
-                    alert('MAAAAAAA');
-                    $('#dialog').html(response);
-                    $('#dialog').dialog('open');
-                },
-                failure: function (response) {
-                    alert(response.responseText);
-                },
-                error: function (response) {
-                    alert(response.responseText);
-                }
             });
         }
+    }
 
-        function printInvoice(orderNumber) {
-            
-            //$('#ReportFrame').attr('src', 'https://vidafy.corpadmin.directscalestage.com/Corporate/Other?l=8&id=Order%20Invoice&OrderNumber=226332');
-            //window.frames["ReportFrame"].focus();
-            //try {
-            //    window.frames["ReportFrame"].print();
-            //}
-            //catch(e){
-            //    window.print();
-            //}
-            //$('#dialog').dialog('open');
+    function printExternal(url) {
+        var printWindow = window.open(url,
+            'Print',
+            'left=200, top=200, width=1280px, height=800px, toolbar=0, resizable=0');
+        printWindow.addEventListener('load',
+            function () {
+                printWindow.print();
+                printWindow.close();
+            },
+            true);
+    }
 
-            $.ajax({
-                type: "POST",
-                url: "/OrderInvoice/Invoice",
-                data: '{orderNumber: "' + orderNumber + '" }',
-                contentType: "application/json; charset=utf-8",
-                dataType: "html",
-                crossDomain: true,
-                success: function (response) {
-                    alert(response);
-                    $('#dialog').html(response);
-                    $('#dialog').dialog('open');
-                },
-                failure: function (response) {
-                    alert(response.responseText);
-                },
-                error: function (response) {
-                    alert(response.responseText);
-                }
-            });
-        }
+    function SetCategoy(code) {
+        $("#GetOrders").val(" ");
+        $('#spanCat').text(code);
+        $('#CatName').val("All");
+        $('#Code').val("0");
+        $('#Category').val(code);
+        $('#SearchFrm').submit();
+    }
 
-        $('#print').click(function () {
-            if ($.browser.msie && window.XDomainRequest) {
-                // Use Microsoft XDR
-                var xdr = new window.XDomainRequest();
-                xdr.open("get", "https://vidafy.clientextension.directscalestage.com/OrderInvoice/Invoice?OrderNumber=226332");
-                xdr.onload = function () {
-                    var json = $.parseJSON(xdr.responseText);
-                    if (json == null) {
-                        json = $.parseJSON(data.firstChild.textContent);
-                    }
-                    processData(json);
-                };
-                xdr.send();
-            } else {
-                $.ajax({
-                    type: 'GET',
-                    url: "https://vidafy.clientextension.directscalestage.com/OrderInvoice/Invoice?OrderNumber=226332",
-                    processData: true,
-                    data: {},
-                    dataType: "json",
-                    success: function (data) { processData(data); }
-                });
-            }
+    function SetCategoryItems(code, name) {
+        $('#CatName').val(name);
+        $('#Code').val(code);
+        $('#spanCatValue').text(name);
+    }
+    function Submitform() {
+        $("#GetOrders").val("GetOrders");
+        console.log($("#GetOrders").val());
+        $('#SearchFrm').submit();
 
-        });
-
-        function processData(data){
-            //Do some stuff with the data
-            alert("Testing......");
-        }
-
-        function SetCategoy(code) {
-            $("#GetOrders").val(" ");
-            $('#spanCat').text(code);
-            $('#CatName').val("All");
-            $('#Code').val("0");
-            $('#Category').val(code);
-            $('#SearchFrm').submit();
-        }
-
-        function SetCategoryItems(code, name) {
-            $('#CatName').val(name);
-            $('#Code').val(code);
-            $('#spanCatValue').text(name);
-        }
-        function Submitform() {
-            $("#GetOrders").val("GetOrders");
-            console.log($("#GetOrders").val());
-            $('#SearchFrm').submit();
-
-        }
-    </script>
+    }
+</script>
 

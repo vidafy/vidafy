@@ -6,14 +6,12 @@ using System.Threading.Tasks;
 using DirectScale.Disco.Extension.Middleware;
 using Microsoft.Extensions.Logging;
 using System.Diagnostics;
-using WebExtension.Code;
 using WebExtension.Services;
 using WebExtension.Views.Model;
 using WebExtension.Helper;
 
 namespace WebExtension.Controllers
 {
-    [AllowIframeFromUri]
     public class OrderInvoiceController : Controller
     {
         private readonly IOrderWebService _ordrWebService;
@@ -30,13 +28,13 @@ namespace WebExtension.Controllers
 
         }
 
-       [ExtensionAuthorize]
+        [ExtensionAuthorize]
         public async Task<IActionResult> Index(string category, string catName, string code, string getOrders, string begDate, string endDate)
         {
             ViewData["WarehouseDetails"] = _ordrWebService.GetWareHouseDetails();
-            ViewData["category"] = category ;
+            ViewData["category"] = category;
             ViewData["catName"] = catName; ;
-            ViewData["code"] = code ;
+            ViewData["code"] = code;
             ViewData["getOrders"] = getOrders;
             ViewData["begDate"] = begDate;
             ViewData["endDate"] = endDate;
@@ -60,12 +58,6 @@ namespace WebExtension.Controllers
             return await Task.Run(() => View());
         }
 
-        [HttpPost]
-        public ActionResult Details(int orderNumber)
-        {
-            
-            return PartialView("_Details", _extOrderService.GetInvoiceData(orderNumber));
-        }
 
         [ExtensionAuthorize]
         public async Task<IActionResult> InvoiceAll([FromQuery] string orderNumbers)

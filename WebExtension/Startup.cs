@@ -69,13 +69,13 @@ namespace WebExtension
             //Remark This section before upload
 
 
-           
+
             //DS
             services.AddDirectScale(c =>
             {
                 //CustomPage
                 c.AddCustomPage(DirectScale.Disco.Extension.Middleware.Models.Menu.Inventory, "Print Slips", "/OrderInvoice/index");
-                
+
                 // Hooks
                 c.AddHook<SubmitOrderHook>();
                 c.AddHook<FinalizeAcceptedOrderHook>();
@@ -134,20 +134,10 @@ namespace WebExtension
             }
 
             //Configure Cors
-            //app.UseCors(builder => builder
-            //    .AllowAnyOrigin()
-            //    .AllowAnyHeader()
-            //    .AllowAnyMethod());
-
-
-            app.UseCors(builder =>
-            {
-                builder
-                    .WithOrigins("https://vidafy.corpadmin.directscalestage.com", "https://vidafy.clientextension.directscalestage.com")
-                    .AllowAnyMethod()
-                    .AllowAnyHeader()
-                    .AllowCredentials();
-            });
+            app.UseCors(builder => builder
+                .AllowAnyOrigin()
+                .AllowAnyHeader()
+                .AllowAnyMethod());
 
             app.UseHttpsRedirection();
 
@@ -169,12 +159,10 @@ namespace WebExtension
             app.UseDirectScale();
 
             app.Use(async (context, next) =>
-             {
-                 //context.Response.Headers.Add("X-Frame-Options", "ALLOW-FROM " + environmentURL); // https://vidafy.corpadmin.directscalestage.com
-                 context.Response.Headers.Add("Content-Security-Policy", "frame-ancestors 'self' https://vidafy.corpadmin.directscalestage.com/ https://vidafy.clientextension.directscalestage.com;");
-                 
-                 await next();
-             });
+            {
+                context.Response.Headers.Add("X-Frame-Options", "ALLOW-FROM " + environmentURL); // https://vidafy.corpadmin.directscalestage.com
+                await next();
+            });
 
             //Swagger
             app.UseSwagger();
