@@ -134,10 +134,15 @@ namespace WebExtension
             }
 
             //Configure Cors
-            app.UseCors(builder => builder
-                .AllowAnyOrigin()
-                .AllowAnyHeader()
-                .AllowAnyMethod());
+
+            app.UseCors(builder =>
+            {
+                builder
+                    .WithOrigins(environmentURL, environmentURL.Replace("corpadmin", "clientextension"))
+                    .AllowAnyMethod()
+                    .AllowAnyHeader()
+                    .AllowCredentials();
+            });
 
             app.UseHttpsRedirection();
 
@@ -157,12 +162,15 @@ namespace WebExtension
 
             //DS
             app.UseDirectScale();
-
+            string csPolicy = "frame-ancestors 'self' " + environmentURL + " "+ environmentURL.Replace("corpadmin", "clientextension") + ";";
             app.Use(async (context, next) =>
             {
                 context.Response.Headers.Add("X-Frame-Options", "ALLOW-FROM " + environmentURL); // https://vidafy.corpadmin.directscalestage.com
+                context.Response.Headers.Add("Content-Security-Policy", csPolicy);
                 await next();
             });
+
+
 
             //Swagger
             app.UseSwagger();
