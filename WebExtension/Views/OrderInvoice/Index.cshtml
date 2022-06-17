@@ -195,37 +195,6 @@
 </script>
 <script type="text/javascript">
 
-
-    function downLoadCsv(start, end, country, catName, category, language) {
-        var test = "";
-        if (country === "") {
-            alert("Please Select a Country.");
-        } else {
-            $.ajax({
-                url: '/Command/ClientAPI/orders/getorderscsv',
-                dataType: "json",
-                type: "POST",
-                data: JSON.stringify({ begin: start, end: end, Code: country, Name: catName, Category: category }),
-                success: function (r) {
-                    if (r.Status === 0) {
-                        $("#fileDownloadsDiv").append("<div><a href='/Corporate/DownloadTempFile?fileName=" +
-                            r.Data +
-                            "'>" +
-                            r.Data +
-                            "</a></div>");
-                        showModal = true;
-                        if (showModal) {
-                            $('#fileDownloadModal').modal('show');
-                        }
-                    } else {
-                        alert(r.Message);
-                    }
-                },
-                contentType: "application/json; charset=utf-8",
-            });
-        }
-    }
-
     function printExternal(url) {
         var printWindow = window.open(url,
             'Print',
