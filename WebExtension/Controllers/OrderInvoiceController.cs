@@ -10,9 +10,11 @@ using WebExtension.Services;
 using WebExtension.Views.Model;
 using WebExtension.Helper;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 
 namespace WebExtension.Controllers
 {
+    [EnableCors("CorsPolicy")]
     public class OrderInvoiceController : Controller
     {
         private readonly IOrderWebService _ordrWebService;
