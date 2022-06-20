@@ -166,7 +166,6 @@
 
                     <td>
                         <button class="btn btn-default" type="button" onclick="PrintPage('/OrderInvoice/Invoice?OrderNumber=@(O.OrderNumber)')">Print</button>
-                        <button class="btn btn-default" type="button" onclick="loadInvoiceData('@(O.OrderNumber)')">Print Invoice</button>
                     </td>
                 </tr>
                 printList = printList + O.OrderNumber.ToString() + "|";
@@ -227,28 +226,6 @@
 
     });
 
-    function loadInvoiceData(orderNumber) {
-
-        $('#OrderNumber').val(orderNumber);
-        $('#SearchFrm').submit();
-
-        var divContents = $("#printTable").html();//div which have to print
-
-        var printWindow = window.open('', '', 'height=700,width=900');
-        printWindow.document.write('<html><head><title></title>');
-        printWindow.document.write('<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css" >');//external styles
-        printWindow.document.write('<link rel="stylesheet" href="/css/custom.css" type="text/css"/>');
-        printWindow.document.write('</head><body>');
-        printWindow.document.write(divContents);
-        printWindow.document.write('</body></html>');
-        printWindow.document.close();
-
-        printWindow.onload = function () {
-            printWindow.focus();
-            printWindow.print();
-            printWindow.close();
-        }
-    }
 
     function SetCategoy(code) {
         $("#GetOrders").val(" ");
