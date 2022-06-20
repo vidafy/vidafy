@@ -167,7 +167,10 @@
                     <td>@(O.SpecialInstructions)</td>
                     @*<td><button class="btn btn-default" type="button" onclick="PrintPage('/OrderInvoice/Invoice?OrderNumber=@(O.OrderNumber)')">Print</button></td>*@
 
-                    <td><button class="btn btn-default" type="button" onclick="loadInvoiceData('@(O.OrderNumber)')">Print</button></td>
+                    <td>
+                        <button class="btn btn-default" type="button" onclick="PrintPage('/OrderInvoice/Invoice?OrderNumber=@(O.OrderNumber)')">Print</button>
+                        <button class="btn btn-default" type="button" onclick="loadInvoiceData('@(O.OrderNumber)')">Print Invoice</button>
+                    </td>
                 </tr>
                 printList = printList + O.OrderNumber.ToString() + "|";
                 ViewData["printListData"] = printList;
@@ -176,13 +179,10 @@
     </div>
 
 </div>
-@*@if (invoice != null)
-{*@
-    @*<partial name="_InvoicePartial" model="invoice" />*@
-<div class="container" id='divToPrint' style="display:none;">
-</div>
-
-    @*}*@
+@if (invoice != null)
+{
+    <partial name="_InvoicePartial" model="invoice" />
+}
 
     <div class="modal fade" id="fileDownloadModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
         <div class="modal-dialog" role="document">
@@ -231,35 +231,26 @@
     });
 
     function loadInvoiceData(orderNumber) {
-        alert(2);
-        $.ajax({
-            type: 'POST',
-            url: '@Url.Content("~/OrderInvoice/Invoice")',
-            data: 'orderNumber=' + orderNumber,
-            success: function (data) {
-                alert(1);
-                $('#divToPrint').html(data);
-            }
-        });
-        //$('#OrderNumber').val(orderNumber);
-        //$('#SearchFrm').submit();
 
-        //var divContents = $("#printTable").html();//div which have to print
+        $('#OrderNumber').val(orderNumber);
+        $('#SearchFrm').submit();
 
-        //var printWindow = window.open('', '', 'height=700,width=900');
-        //printWindow.document.write('<html><head><title></title>');
-        //printWindow.document.write('<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css" >');//external styles
-        //printWindow.document.write('<link rel="stylesheet" href="/css/custom.css" type="text/css"/>');
-        //printWindow.document.write('</head><body>');
-        //printWindow.document.write(divContents);
-        //printWindow.document.write('</body></html>');
-        //printWindow.document.close();
+        var divContents = $("#printTable").html();//div which have to print
 
-        //printWindow.onload = function () {
-        //    printWindow.focus();
-        //    printWindow.print();
-        //    printWindow.close();
-        //}
+        var printWindow = window.open('', '', 'height=700,width=900');
+        printWindow.document.write('<html><head><title></title>');
+        printWindow.document.write('<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css" >');//external styles
+        printWindow.document.write('<link rel="stylesheet" href="/css/custom.css" type="text/css"/>');
+        printWindow.document.write('</head><body>');
+        printWindow.document.write(divContents);
+        printWindow.document.write('</body></html>');
+        printWindow.document.close();
+
+        printWindow.onload = function () {
+            printWindow.focus();
+            printWindow.print();
+            printWindow.close();
+        }
     }
 
     function SetCategoy(code) {
