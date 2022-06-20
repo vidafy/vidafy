@@ -200,11 +200,12 @@ namespace WebExtension
             {
                // context.Response.Headers.Add("X-Frame-Options", "ALLOW-FROM " + environmentURL); // https://vidafy.corpadmin.directscalestage.com
                 context.Response.Headers.Add("Content-Security-Policy", csPolicy);
+                context.Response.Headers.Add("Access-Control-Allow-Origin", "*");
                 await next();
             });
 
 
-
+  
             //Swagger
             app.UseSwagger();
             app.UseSwaggerUI(c => {
