@@ -3,77 +3,77 @@
 @using WebExtension.Services
 @using WebExtension.Views.Model
 @inject OrderWebService OrderService
-    <head>
-        <META HTTP-EQUIV="Access-Control-Allow-Origin" CONTENT="https://vidafy.corpadmin.directscalestage.com">
-        <META HTTP-EQUIV="Access-Control-Allow-Origin" CONTENT="https://vidafy.clientextension.directscalestage.com">
-    </head>
+<head>
+    <META HTTP-EQUIV="Access-Control-Allow-Origin" CONTENT="https://vidafy.corpadmin.directscalestage.com">
+    <META HTTP-EQUIV="Access-Control-Allow-Origin" CONTENT="https://vidafy.clientextension.directscalestage.com">
+</head>
 
-    @{
-        ViewBag.PageTitle = "Print Slips";
+@{
+    ViewBag.PageTitle = "Print Slips";
 
-        Layout = "~/Views/Shared/_SiteOutline.cshtml";
+    Layout = "~/Views/Shared/_SiteOutline.cshtml";
 
-        if (!DateTime.TryParse(ViewData["begDate"] as string, out var begDate))
-        {
-            begDate = DateTime.Now.Date;
-        }
-        if (!DateTime.TryParse(ViewData["endDate"] as string, out var endDate))
-        {
-            endDate = DateTime.Now.Date;
-        }
-
-        var category = ViewData["category"] ?? "Location";
-        var catName = ViewData["catName"] ?? " ";
-        var code = ViewData["code"] ?? "0";
-        var getOrders = ViewData["getOrders"] ?? " ";
-        var orderNumber = ViewData["orderNumber"] ?? "0";
-
-        var countryCode = "0";
-        var orders = OrderService.GetShippableOrders(begDate, endDate, code, catName, category);
-        var invoice = ViewData["InvoiceData"] as Invoice;
-
-
-
-        countryCode = orders.Any() ? orders[0].BillAddress.CountryCode : "0";
-        var printList = "";
-
-    }
-
-    <style>
-        .input-group-btn {
-            display: unset;
-        }
-
-        .dropdown-toggle.btn-default {
-            background-color: white !important;
-        }
-
-        .btn {
-            text-align: left !important;
-        }
-
-        .row {
-            margin-right: 0 !important;
-            margin-left: 0 !important;
-        }
-
-        .daterangepicker .calendar {
-            max-width: 300px;
-        }
-
-        .page-toolbar {
-            position: inherit;
-        }
-
-        ::-webkit-scrollbar {
-            width: 0;
-            height: 0;
-        }
-    </style>
-    @foreach (var O in orders)
+    if (!DateTime.TryParse(ViewData["begDate"] as string, out var begDate))
     {
-        printList = printList + O.OrderNumber.ToString() + "|";
+        begDate = DateTime.Now.Date;
     }
+    if (!DateTime.TryParse(ViewData["endDate"] as string, out var endDate))
+    {
+        endDate = DateTime.Now.Date;
+    }
+
+    var category = ViewData["category"] ?? "Location";
+    var catName = ViewData["catName"] ?? " ";
+    var code = ViewData["code"] ?? "0";
+    var getOrders = ViewData["getOrders"] ?? " ";
+    var orderNumber = ViewData["orderNumber"] ?? "0";
+
+    var countryCode = "0";
+    var orders = OrderService.GetShippableOrders(begDate, endDate, code, catName, category);
+    var invoice = ViewData["InvoiceData"] as Invoice;
+
+
+
+    countryCode = orders.Any() ? orders[0].BillAddress.CountryCode : "0";
+    var printList = "";
+
+}
+
+<style>
+    .input-group-btn {
+        display: unset;
+    }
+
+    .dropdown-toggle.btn-default {
+        background-color: white !important;
+    }
+
+    .btn {
+        text-align: left !important;
+    }
+
+    .row {
+        margin-right: 0 !important;
+        margin-left: 0 !important;
+    }
+
+    .daterangepicker .calendar {
+        max-width: 300px;
+    }
+
+    .page-toolbar {
+        position: inherit;
+    }
+
+    ::-webkit-scrollbar {
+        width: 0;
+        height: 0;
+    }
+</style>
+@foreach (var O in orders)
+{
+    printList = printList + O.OrderNumber.ToString() + "|";
+}
 
 <div class="page-container">
     <div class="p-8">
@@ -92,13 +92,13 @@
                 @{
                     <div class="col-sm-3">
                         @*<select id="WarehouseLookup" name="WarehouseLookup" onchange="SetCategoryItems('@(code)', '@(catName)');" class="btn btn-default dropdown-toggle" data-toggle="dropdown" style="border-radius: 5px; margin-bottom: 3px;">
-                                    <option value="0" onclick="SetCategoryItems('0', 'Select Warehouse All');">Select Warehouse All</option>
-                                    @foreach (var ac in (IEnumerable<ActiveCountry>) ViewData["WarehouseDetails"])
-                                    {
-                                        <option onclick="SetCategoryItems('@(ac.Code)', '@(ac.Name)');" value="@(ac.Code)">@(ac.Name)</option>
-                                    }
+                                <option value="0" onclick="SetCategoryItems('0', 'Select Warehouse All');">Select Warehouse All</option>
+                                @foreach (var ac in (IEnumerable<ActiveCountry>) ViewData["WarehouseDetails"])
+                                {
+                                    <option onclick="SetCategoryItems('@(ac.Code)', '@(ac.Name)');" value="@(ac.Code)">@(ac.Name)</option>
+                                }
 
-                                </select>*@
+                            </select>*@
 
                         <div class="inline-block align-top w-64 sm:w-auto">
 
@@ -127,7 +127,7 @@
                         <button class="btn btn-primary" name="Submit" onclick="Submitform(this);return false;" style="margin-left: 3px;">List Orders</button>
                         @*<button class="btn btn-primary" name="PrintAll" onclick="Submitform(); return false;" style="margin-left: 3px;">Print All</button>*@
                         @*<button class="btn btn-primary" name="PrintAll" onclick="printExternal('other?l=0&id=Inventory/RegistrationDocument&startDate=@(begDate.ToString("d"))&endDate=@(endDate.ToString("d"))&countryCode=@(countryCode)')">Print Registration</button>
-                                <button class="btn btn-primary" name="PrintAll" onclick="printExternal('other?l=0&id=Inventory/PickLists&startDate=@(begDate.ToString("d"))&endDate=@(endDate.ToString("d"))&countryCode=@(countryCode)&Code=@(code)&Name=@(catName)&Category=@(category)')">Print Pick Slips</button>*@
+                            <button class="btn btn-primary" name="PrintAll" onclick="printExternal('other?l=0&id=Inventory/PickLists&startDate=@(begDate.ToString("d"))&endDate=@(endDate.ToString("d"))&countryCode=@(countryCode)&Code=@(code)&Name=@(catName)&Category=@(category)')">Print Pick Slips</button>*@
                         @*<button class="btn btn-primary" name="PrintAll" onclick="printExternal('other?l=0&id=Inventory/BatchPrintInvoice&startDate=@(begDate.ToString("d"))&endDate=@(endDate.ToString("d"))&countryCode=@(countryCode)&Code=@(code)&Name=@(catName)&Category=@(category)')">Print Invoices</button>*@
                         @*<button class="btn btn-primary" name="PrintAll" type="button" onclick="PrintPage('/Corporate/Other?l=0&id=InvoiceAll&OrderNumber=@printList')">Print Invoices</button>*@
                         <button class="btn btn-primary" name="PrintAll" type="button" onclick="PrintPage('/OrderInvoice/InvoiceAll?OrderNumbers=@printList')">Print Invoices</button>
@@ -166,7 +166,7 @@
                     <td>@(O.BillAddress.CountryCode)</td>
                     <td>@(O.SpecialInstructions)</td>
                     @*<td><button class="btn btn-default" type="button" onclick="PrintPage('/OrderInvoice/Invoice?OrderNumber=@(O.OrderNumber)')">Print</button></td>*@
-                    
+
                     <td><button class="btn btn-default" type="button" onclick="loadInvoiceData('@(O.OrderNumber)')">Print</button></td>
                 </tr>
                 printList = printList + O.OrderNumber.ToString() + "|";
@@ -176,128 +176,15 @@
     </div>
 
 </div>
-@if (invoice != null)
-{
-
-<div class="container" id='printTable' style="display:none;">
-    <table>
-        <tr>
-            <td style="width:70%; margin-top:-38px;"><img src='/CMS/Images/JWPro-Square500-Black8e7a4f.png' alt='Jack Winn Color' /></td><!--Logo-->
-            <td>
-                <!--Order Details-->
-                <div style='height:40px;'>
-                    <span class="bold">Acct #</span>
-                    <span class="bold">@invoice?.BackOfficeId</span>
-                    <span class="bold">@invoice?.FirstLastName</span>
-                </div>
-                <div class="row"><div class="heading">Phone #</div><div class="value">@invoice?.PhoneNumber</div></div>
-                <div class="row"><div class="heading">Email</div><div class="value">@invoice?.Email </div></div>
-                <div class="row"><div class="heading">Order #</div><div class="value">@invoice?.OrderNumber </div></div>
-                <div class="row"><div class="heading">Date</div><div class="value">@invoice?.Date.ToString("d") </div></div>
-                <div class="row"><div class="heading">Method</div><div class="value">@invoice?.ShippingMethod</div></div>
-                <div class="row"><div class="heading">Weight</div><div class="value">@invoice?.Weight</div></div>
-                <div class="row"><div class="heading">Status</div><div class="value">@invoice?.Status</div></div>
-            </td>
-        </tr>
-    </table>
-    <table>
-        <tr>
-            <td>
-                <div class="bold">Ship To</div>
-                <div>@invoice?.ShipToAddress.CompanyName</div>
-                <div>@invoice?.ShipToAddress.FullName</div>
-                <div>@invoice?.ShipToAddress.Address</div>
-                <div>@invoice?.ShipToAddress.Address2</div>
-                <div>@invoice?.ShipToAddress.City, @invoice.ShipToAddress.State  @invoice.ShipToAddress.Zip</div>
-            </td><!--Ship To-->
-            <td>
-                <div class="bold">Bill To</div>
-                <div>@invoice?.BillToAddress.CompanyName</div>
-                <div>@invoice?.BillToAddress.FullName</div>
-                <div>@invoice?.BillToAddress.Address</div>
-                <div>@invoice?.BillToAddress.Address2</div>
-                <div>@invoice?.BillToAddress.City, @invoice.BillToAddress.State  @invoice.BillToAddress.Zip</div>
-            </td><!--Bill To-->
-        </tr>
-    </table>
-    <table>
-        <thead>
-            <tr style="background-color:#888585 !important">
-                <td>Item #</td>
-                <td>Qty</td>
-                <td>Description</td>
-                <td>Price</td>
-                <td>Total</td>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in invoice?.Items)
-            {
-                <tr class="item">
-                    <td>@(item.ItemNumber)</td>
-                    <td>@(item.Qty)</td>
-                    <td>@(item.Description) </td>
-                    <td>@(item.Price)</td>
-                    <td>@(item.Total)</td>
-                </tr>
-                foreach (InvoiceBOM bom in @item.BOMs)
-                {
-                    <tr class="bom">
-                        <td>@(bom.Name)</td><!--name-->
-                        <td>@(bom.Qty)</td><!--Qty-->
-                        <td colspan="3">@(bom.Description)</td><!--Description-->
-                    </tr>
-                }
-            }
-        </tbody>
-    </table>
-    <!-- Totals -->
-    <table style="margin-top:50px">
-        <tr>
-            <td style="width:70%">
-                <!-- Payment details -->
-                <table class="clear_margin">
-                    <thead>
-                        <tr>
-                            <td>Payment</td>
-                            <td>Type</td>
-                            <td>Amount</td>
-                        </tr>
-                    </thead>
-                    @foreach (var detail in invoice?.PaymentDetails)
-                    {
-                        <tr>
-                            <td>@(detail.PaymentDate.ToString("d"))</td>
-                            <td>@(detail.Type)</td>
-                            <td>@(detail.Amount)</td>
-                        </tr>
-                    }
-                </table>
-            </td>
-            <td>
-                <!--Totals-->
-                <div class="row"><div class="heading">Subtotal</div><div class="value">@(invoice?.InvoiceAmount.Subtotal)</div></div>
-                <div class="row"><div class="heading">Tax</div><div class="value">@(invoice?.InvoiceAmount.Tax)</div></div>
-                <div class="row"><div class="heading">Shipping</div><div class="value">@(invoice?.InvoiceAmount.Shipping)</div></div>
-                <div class="row"><div class="heading">Handling</div><div class="value">@(invoice?.InvoiceAmount.Handling)</div></div>
-                <div class="row" style="margin-top:15px; font-size:12pt">
-                    <div class="heading">Total</div><div class="value bold">
-                        @(invoice?.InvoiceAmount.Total)
-                    </div>
-                </div>
-                <div class="row"><div class="heading">Payments</div><div class="value">@(invoice?.InvoiceAmount.Payments)</div></div>
-                <div class="row"><div class="heading">Balance Due</div><div class="value">@(invoice?.InvoiceAmount.BalanceDue)</div></div>
-            </td>
-        </tr>
-    </table>
-    <!-- Notes -->
-    <div class="notes">
-        @invoice?.AdditionalInformation
-    </div>
+@*@if (invoice != null)
+{*@
+    @*<partial name="_InvoicePartial" model="invoice" />*@
+<div class="container" id='divToPrint' style="display:none;">
 </div>
-}
 
-<div class="modal fade" id="fileDownloadModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    @*}*@
+
+    <div class="modal fade" id="fileDownloadModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -326,64 +213,74 @@
     </script>
     <script type="text/javascript">
 
-        function printExternal(url) {
-            var printWindow = window.open(url,
-                'Print',
-                'left=200, top=200, width=1280px, height=800px, toolbar=0, resizable=0');
-            printWindow.addEventListener('load',
-                function () {
-                    printWindow.print();
-                    printWindow.close();
-                },
-                true);
-        }
-
-        $("#print").click(function () {
-            
-
-        });
-
-        function loadInvoiceData(orderNumber) {
-            $('#OrderNumber').val(orderNumber);
-            $('#SearchFrm').submit();
-            
-            var divContents = $("#printTable").html();//div which have to print
-
-            var printWindow = window.open('', '', 'height=700,width=900');
-            printWindow.document.write('<html><head><title></title>');
-            printWindow.document.write('<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css" >');//external styles
-            printWindow.document.write('<link rel="stylesheet" href="/css/custom.css" type="text/css"/>');
-            printWindow.document.write('</head><body>');
-            printWindow.document.write(divContents);
-            printWindow.document.write('</body></html>');
-            printWindow.document.close();
-
-            printWindow.onload = function () {
-                printWindow.focus();
+    function printExternal(url) {
+        var printWindow = window.open(url,
+            'Print',
+            'left=200, top=200, width=1280px, height=800px, toolbar=0, resizable=0');
+        printWindow.addEventListener('load',
+            function () {
                 printWindow.print();
                 printWindow.close();
+            },
+            true);
+    }
+
+    $("#print").click(function () {
+
+
+    });
+
+    function loadInvoiceData(orderNumber) {
+        alert(2);
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Content("~/OrderInvoice/Invoice")',
+            data: 'orderNumber=' + orderNumber,
+            success: function (data) {
+                alert(1);
+                $('#divToPrint').html(data);
             }
-        }
+        });
+        //$('#OrderNumber').val(orderNumber);
+        //$('#SearchFrm').submit();
 
-        function SetCategoy(code) {
-            $("#GetOrders").val(" ");
-            $('#spanCat').text(code);
-            $('#CatName').val("All");
-            $('#Code').val("0");
-            $('#Category').val(code);
-            $('#SearchFrm').submit();
-        }
+        //var divContents = $("#printTable").html();//div which have to print
 
-        function SetCategoryItems(code, name) {
-            $('#CatName').val(name);
-            $('#Code').val(code);
-            $('#spanCatValue').text(name);
-        }
-        function Submitform() {
-            $("#GetOrders").val("GetOrders");
-            console.log($("#GetOrders").val());
-            $('#SearchFrm').submit();
+        //var printWindow = window.open('', '', 'height=700,width=900');
+        //printWindow.document.write('<html><head><title></title>');
+        //printWindow.document.write('<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css" >');//external styles
+        //printWindow.document.write('<link rel="stylesheet" href="/css/custom.css" type="text/css"/>');
+        //printWindow.document.write('</head><body>');
+        //printWindow.document.write(divContents);
+        //printWindow.document.write('</body></html>');
+        //printWindow.document.close();
 
-        }
+        //printWindow.onload = function () {
+        //    printWindow.focus();
+        //    printWindow.print();
+        //    printWindow.close();
+        //}
+    }
+
+    function SetCategoy(code) {
+        $("#GetOrders").val(" ");
+        $('#spanCat').text(code);
+        $('#CatName').val("All");
+        $('#Code').val("0");
+        $('#Category').val(code);
+        $('#SearchFrm').submit();
+    }
+
+    function SetCategoryItems(code, name) {
+        $('#CatName').val(name);
+        $('#Code').val(code);
+        $('#spanCatValue').text(name);
+    }
+    function Submitform() {
+        $("#GetOrders").val("GetOrders");
+        console.log($("#GetOrders").val());
+        $('#SearchFrm').submit();
+
+    }
     </script>
 
