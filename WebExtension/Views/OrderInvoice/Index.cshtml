@@ -205,7 +205,7 @@
                 <div>@invoice?.ShipToAddress.FullName</div>
                 <div>@invoice?.ShipToAddress.Address</div>
                 <div>@invoice?.ShipToAddress.Address2</div>
-                <div>@invoice?.ShipToAddress.City, @Model.ShipToAddress.State  @Model.ShipToAddress.Zip</div>
+                <div>@invoice?.ShipToAddress.City, @invoice.ShipToAddress.State  @invoice.ShipToAddress.Zip</div>
             </td><!--Ship To-->
             <td>
                 <div class="bold">Bill To</div>
@@ -213,7 +213,7 @@
                 <div>@invoice?.BillToAddress.FullName</div>
                 <div>@invoice?.BillToAddress.Address</div>
                 <div>@invoice?.BillToAddress.Address2</div>
-                <div>@invoice?.BillToAddress.City, @Model.BillToAddress.State  @Model.BillToAddress.Zip</div>
+                <div>@invoice?.BillToAddress.City, @invoice.BillToAddress.State  @invoice.BillToAddress.Zip</div>
             </td><!--Bill To-->
         </tr>
     </table>
