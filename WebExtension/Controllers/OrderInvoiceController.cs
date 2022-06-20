@@ -13,7 +13,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace WebExtension.Controllers
 {
-    [Authorize]
+
     public class OrderInvoiceController : Controller
     {
         private readonly IOrderWebService _ordrWebService;
@@ -31,7 +31,7 @@ namespace WebExtension.Controllers
         }
 
         [ExtensionAuthorize]
-        [Authorize]
+  
         public async Task<IActionResult> Index(string category, string catName, string code, string getOrders, string begDate, string endDate)
         {
             ViewData["WarehouseDetails"] = _ordrWebService.GetWareHouseDetails();
@@ -46,7 +46,7 @@ namespace WebExtension.Controllers
 
 
         [ExtensionAuthorize]
-        [Authorize]
+     
         public async Task<IActionResult> Invoice([FromQuery] int orderNumber)
         {
             var invoiceData = await _extOrderService.GetInvoiceData(orderNumber);
