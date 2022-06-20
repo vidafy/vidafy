@@ -195,10 +195,10 @@ namespace WebExtension
 
             //DS
             app.UseDirectScale();
-            string csPolicy = "frame-ancestors 'self' " + environmentURL + " "+ environmentURL.Replace("corpadmin", "clientextension") + ";";
+            string csPolicy = "frame-ancestors http://directscalestage.com https://directscalestage.com http://*.directscalestage.com https://*.directscalestage.com https://code.jquery.com https://cdn.jsdelivr.net https://maxcdn.bootstrapcdn.com;";
             app.Use(async (context, next) =>
             {
-                context.Response.Headers.Add("X-Frame-Options", "ALLOW-FROM " + environmentURL); // https://vidafy.corpadmin.directscalestage.com
+               // context.Response.Headers.Add("X-Frame-Options", "ALLOW-FROM " + environmentURL); // https://vidafy.corpadmin.directscalestage.com
                 context.Response.Headers.Add("Content-Security-Policy", csPolicy);
                 await next();
             });
