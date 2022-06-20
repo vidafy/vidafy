@@ -195,7 +195,7 @@ namespace WebExtension
 
             //DS
             app.UseDirectScale();
-            string csPolicy = "frame-ancestors http://directscalestage.com https://directscalestage.com http://*.directscalestage.com https://*.directscalestage.com https://code.jquery.com https://cdn.jsdelivr.net https://maxcdn.bootstrapcdn.com;";
+            string csPolicy = "frame-ancestors http://directscalestage.com https://directscalestage.com http://*.directscalestage.com https://*.directscalestage.com https://code.jquery.com https://cdn.jsdelivr.net https://maxcdn.bootstrapcdn.com https://b2d4-117-247-182-219.in.ngrok.io https://localhost:44309/;";
             app.Use(async (context, next) =>
             {
                // context.Response.Headers.Add("X-Frame-Options", "ALLOW-FROM " + environmentURL); // https://vidafy.corpadmin.directscalestage.com

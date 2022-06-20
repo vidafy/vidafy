@@ -30,8 +30,6 @@ namespace WebExtension.Controllers
             _extOrderService = extOrderService ?? throw new ArgumentNullException(nameof(extOrderService));
 
         }
-
-        [ExtensionAuthorize]
         public async Task<IActionResult> Index(string category, string catName, string code, string getOrders, string begDate, string endDate, int orderNumber=0)
         {
             ViewData["WarehouseDetails"] = _ordrWebService.GetWareHouseDetails();
@@ -50,9 +48,6 @@ namespace WebExtension.Controllers
             ViewData["orderNumber"] = orderNumber;
             return await Task.Run(() => View());
         }
-
-
-        [ExtensionAuthorize]
         public async Task<IActionResult> Invoice([FromQuery] int orderNumber)
         {
             var invoiceData = await _extOrderService.GetInvoiceData(orderNumber);
@@ -68,8 +63,6 @@ namespace WebExtension.Controllers
             return await Task.Run(() => View());
         }
 
-
-        [ExtensionAuthorize]
         public async Task<IActionResult> InvoiceAll([FromQuery] string orderNumbers)
         {
             var listOrder = orderNumbers.Split('|').ToList();
