@@ -53,7 +53,6 @@ namespace WebExtension.Repositories
         {
             // ComplexQuery qry;
             var qryst = "";
-            begin = begin.AddDays(-2);
             var orderNos = new List<int>();
             end = end.AddDays(1);
             //name = "All";
