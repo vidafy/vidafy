@@ -164,7 +164,7 @@ namespace WebExtension
             }
 
             //Configure Cors
-
+            app.UseRouting();
 
             app.UseCors("CorsPolicy");
 
@@ -189,7 +189,7 @@ namespace WebExtension
 
             app.UseStaticFiles();
 
-            app.UseRouting();
+
 
             app.UseAuthorization();
 
