@@ -26,9 +26,14 @@
         var catName = ViewData["catName"] ?? " ";
         var code = ViewData["code"] ?? "0";
         var getOrders = ViewData["getOrders"] ?? " ";
+        var orderNumber = ViewData["orderNumber"] ?? "0";
 
         var countryCode = "0";
         var orders = OrderService.GetShippableOrders(begDate, endDate, code, catName, category);
+        var invoice = ViewData["InvoiceData"]
+            as Invoice;
+
+
         countryCode = orders.Any() ? orders[0].BillAddress.CountryCode : "0";
         var printList = "";
 
@@ -70,22 +75,23 @@
         printList = printList + O.OrderNumber.ToString() + "|";
     }
 
-    <div class="page-container">
-        <div class="p-8">
-            <form id="SearchFrm" method="post">
-                @*<input type="hidden" name="l" value="@((int)Disco.Extensions.Abstractions.Hooks.Menu.Inventory)" />*@
-                <div class="col-sm-4">
-                    <input type="hidden" name="id" value="Inventory/PackingSlips" />
-                    <input type="hidden" id="Category" value="Warehouse" name="Category">
-                    <input type="hidden" id="Code" value="@(code)" name="Code">
-                    <input type="hidden" id="CatName" value="@(catName)" name="CatName">
-                    <input type="hidden" id="GetOrders" value="@(getOrders)" name="GetOrders">
-                </div>
+<div class="page-container">
+    <div class="p-8">
+        <form id="SearchFrm" method="post">
+            @*<input type="hidden" name="l" value="@((int)Disco.Extensions.Abstractions.Hooks.Menu.Inventory)" />*@
+            <div class="col-sm-4">
+                <input type="hidden" name="id" value="Inventory/PackingSlips" />
+                <input type="hidden" id="Category" value="Warehouse" name="Category">
+                <input type="hidden" id="Code" value="@(code)" name="Code">
+                <input type="hidden" id="CatName" value="@(catName)" name="CatName">
+                <input type="hidden" id="GetOrders" value="@(getOrders)" name="GetOrders">
+                <input type="hidden" id="OrderNumber" value="@(orderNumber)" name="OrderNumber">
+            </div>
 
-                <div class="form-group input-group pull-left col-sm-9" style="margin-right: 15px;">
-                    @{
-                        <div class="col-sm-3">
-                            @*<select id="WarehouseLookup" name="WarehouseLookup" onchange="SetCategoryItems('@(code)', '@(catName)');" class="btn btn-default dropdown-toggle" data-toggle="dropdown" style="border-radius: 5px; margin-bottom: 3px;">
+            <div class="form-group input-group pull-left col-sm-9" style="margin-right: 15px;">
+                @{
+                    <div class="col-sm-3">
+                        @*<select id="WarehouseLookup" name="WarehouseLookup" onchange="SetCategoryItems('@(code)', '@(catName)');" class="btn btn-default dropdown-toggle" data-toggle="dropdown" style="border-radius: 5px; margin-bottom: 3px;">
                                     <option value="0" onclick="SetCategoryItems('0', 'Select Warehouse All');">Select Warehouse All</option>
                                     @foreach (var ac in (IEnumerable<ActiveCountry>) ViewData["WarehouseDetails"])
                                     {
@@ -94,83 +100,200 @@
 
                                 </select>*@
 
-                            <div class="inline-block align-top w-64 sm:w-auto">
+                        <div class="inline-block align-top w-64 sm:w-auto">
 
-                                <select id="WarehouseLookup" name="WarehouseLookup" onchange="SetCategoryItems('@(code)', '@(catName)');">
-                                    <option value="0" onclick="SetCategoryItems('0', 'Select Warehouse All');">Select Warehouse All</option>
-                                    @foreach (var w in (IEnumerable<ActiveCountry>)ViewData["WarehouseDetails"])
-                                    {
-                                        <option onclick="SetCategoryItems('@(w.Code)', '@(w.Name)');" value="@(w.Code)">@(w.Name)</option>
-                                    }
-                                </select>
+                            <select id="WarehouseLookup" name="WarehouseLookup" onchange="SetCategoryItems('@(code)', '@(catName)');">
+                                <option value="0" onclick="SetCategoryItems('0', 'Select Warehouse All');">Select Warehouse All</option>
+                                @foreach (var w in (IEnumerable<ActiveCountry>)ViewData["WarehouseDetails"])
+                                {
+                                    <option onclick="SetCategoryItems('@(w.Code)', '@(w.Name)');" value="@(w.Code)">@(w.Name)</option>
+                                }
+                            </select>
 
-                            </div>
                         </div>
-                        <div class="col-sm-8">
-                            @Html.Partial("Partials/DateInput", new DateInput
-                            {
-                                Id = "DateRangePicker",
-                                Style = "min-width: 175px;",
-                                Class = "btn btn-default",
-                                Name = "BegDate",
-                                EndName = "EndDate",
-                                BegDate = begDate,
-                                EndDate = endDate
-                            })
+                    </div>
+                    <div class="col-sm-8">
+                        @Html.Partial("Partials/DateInput", new DateInput
+                        {
+                            Id = "DateRangePicker",
+                            Style = "min-width: 175px;",
+                            Class = "btn btn-default",
+                            Name = "BegDate",
+                            EndName = "EndDate",
+                            BegDate = begDate,
+                            EndDate = endDate
+                        })
 
-                            <button class="btn btn-primary" name="Submit" onclick="Submitform(this);return false;" style="margin-left: 3px;">List Orders</button>
-                            @*<button class="btn btn-primary" name="PrintAll" onclick="Submitform(); return false;" style="margin-left: 3px;">Print All</button>*@
-                            @*<button class="btn btn-primary" name="PrintAll" onclick="printExternal('other?l=0&id=Inventory/RegistrationDocument&startDate=@(begDate.ToString("d"))&endDate=@(endDate.ToString("d"))&countryCode=@(countryCode)')">Print Registration</button>
+                        <button class="btn btn-primary" name="Submit" onclick="Submitform(this);return false;" style="margin-left: 3px;">List Orders</button>
+                        @*<button class="btn btn-primary" name="PrintAll" onclick="Submitform(); return false;" style="margin-left: 3px;">Print All</button>*@
+                        @*<button class="btn btn-primary" name="PrintAll" onclick="printExternal('other?l=0&id=Inventory/RegistrationDocument&startDate=@(begDate.ToString("d"))&endDate=@(endDate.ToString("d"))&countryCode=@(countryCode)')">Print Registration</button>
                                 <button class="btn btn-primary" name="PrintAll" onclick="printExternal('other?l=0&id=Inventory/PickLists&startDate=@(begDate.ToString("d"))&endDate=@(endDate.ToString("d"))&countryCode=@(countryCode)&Code=@(code)&Name=@(catName)&Category=@(category)')">Print Pick Slips</button>*@
-                            @*<button class="btn btn-primary" name="PrintAll" onclick="printExternal('other?l=0&id=Inventory/BatchPrintInvoice&startDate=@(begDate.ToString("d"))&endDate=@(endDate.ToString("d"))&countryCode=@(countryCode)&Code=@(code)&Name=@(catName)&Category=@(category)')">Print Invoices</button>*@
-                            @*<button class="btn btn-primary" name="PrintAll" type="button" onclick="PrintPage('/Corporate/Other?l=0&id=InvoiceAll&OrderNumber=@printList')">Print Invoices</button>*@
-                            <button class="btn btn-primary" name="PrintAll" type="button" onclick="PrintPage('/OrderInvoice/InvoiceAll?OrderNumbers=@printList')">Print Invoices</button>
+                        @*<button class="btn btn-primary" name="PrintAll" onclick="printExternal('other?l=0&id=Inventory/BatchPrintInvoice&startDate=@(begDate.ToString("d"))&endDate=@(endDate.ToString("d"))&countryCode=@(countryCode)&Code=@(code)&Name=@(catName)&Category=@(category)')">Print Invoices</button>*@
+                        @*<button class="btn btn-primary" name="PrintAll" type="button" onclick="PrintPage('/Corporate/Other?l=0&id=InvoiceAll&OrderNumber=@printList')">Print Invoices</button>*@
+                        <button class="btn btn-primary" name="PrintAll" type="button" onclick="PrintPage('/OrderInvoice/InvoiceAll?OrderNumbers=@printList')">Print Invoices</button>
 
-                        </div>
+                    </div>
 
-                    }
-
-
-                </div>
-            </form>
-        </div>
-        <div class="row">
-            <table id="vendorList" class="table table-striped">
-                <tr>
-                    <th>Date</th>
-                    <th>Order Number</th>
-                    <th>Name</th>
-                    <th>Address</th>
-                    <th>Country</th>
-                    <th>Notes</th>
-                    <th></th>
-                </tr>
-
-                @foreach (var O in orders)
-                {
-                    <tr>
-                        <td>@(O.OrderDate.ToString("d"))</td>
-                        <td><a href="/Corporate/CRM/OrderDetail?order=@(O.OrderNumber)&id=@(O.AssociateId)">@(O.OrderNumber)</a></td>
-                        <td><a href="/Corporate/CRM/Detail?id=@(O.AssociateId)">@(O.Name)</a></td>
-                        <td>
-                            @(O.BillAddress.AddressLine1), @(O.BillAddress.City),
-                            @(OrderService.GetCountryByCode(O.BillAddress.CountryCode)),
-                            @(O.BillAddress.PostalCode)
-                        </td>
-                        <td>@(O.BillAddress.CountryCode)</td>
-                        <td>@(O.SpecialInstructions)</td>
-                        <td><button class="btn btn-default" type="button" onclick="PrintPage('/OrderInvoice/Invoice?OrderNumber=@(O.OrderNumber)')">Print</button></td>
-                        @*<td><button class="btn btn-default" type="button" onclick="PrintPage('/Corporate/Other?l=0&id=Invoice&OrderNumber=@(O.OrderNumber)')">Print</button></td>*@
-                    </tr>
-                    printList = printList + O.OrderNumber.ToString() + "|";
-                    ViewData["printListData"] = printList;
                 }
-            </table>
-        </div>
 
+
+            </div>
+        </form>
+    </div>
+    <div class="row">
+        <table id="vendorList" class="table table-striped">
+            <tr>
+                <th>Date</th>
+                <th>Order Number</th>
+                <th>Name</th>
+                <th>Address</th>
+                <th>Country</th>
+                <th>Notes</th>
+                <th></th>
+            </tr>
+
+            @foreach (var O in orders)
+            {
+                <tr>
+                    <td>@(O.OrderDate.ToString("d"))</td>
+                    <td><a href="/Corporate/CRM/OrderDetail?order=@(O.OrderNumber)&id=@(O.AssociateId)">@(O.OrderNumber)</a></td>
+                    <td><a href="/Corporate/CRM/Detail?id=@(O.AssociateId)">@(O.Name)</a></td>
+                    <td>
+                        @(O.BillAddress.AddressLine1), @(O.BillAddress.City),
+                        @(OrderService.GetCountryByCode(O.BillAddress.CountryCode)),
+                        @(O.BillAddress.PostalCode)
+                    </td>
+                    <td>@(O.BillAddress.CountryCode)</td>
+                    <td>@(O.SpecialInstructions)</td>
+                    <td><button class="btn btn-default" type="button" onclick="PrintPage('/OrderInvoice/Invoice?OrderNumber=@(O.OrderNumber)')">Print</button></td>
+                    <td><button class="btn btn-default" type="button" onclick="loadInvoiceData('@(O.OrderNumber)')">InvoiceData</button></td>
+                </tr>
+                printList = printList + O.OrderNumber.ToString() + "|";
+                ViewData["printListData"] = printList;
+            }
+        </table>
     </div>
 
-    <div class="modal fade" id="fileDownloadModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+</div>
+
+<div class="container">
+    <table>
+        <tr>
+            <td style="width:70%; margin-top:-38px;"><img src='/CMS/Images/JWPro-Square500-Black8e7a4f.png' alt='Jack Winn Color' /></td><!--Logo-->
+            <td>
+                <!--Order Details-->
+                <div style='height:40px;'>
+                    <span class="bold">Acct #</span>
+                    <span class="bold">@invoice?.BackOfficeId</span>
+                    <span class="bold">@invoice?.FirstLastName</span>
+                </div>
+                <div class="row"><div class="heading">Phone #</div><div class="value">@invoice?.PhoneNumber</div></div>
+                <div class="row"><div class="heading">Email</div><div class="value">@invoice?.Email </div></div>
+                <div class="row"><div class="heading">Order #</div><div class="value">@invoice?.OrderNumber </div></div>
+                <div class="row"><div class="heading">Date</div><div class="value">@invoice?.Date.ToString("d") </div></div>
+                <div class="row"><div class="heading">Method</div><div class="value">@invoice?.ShippingMethod</div></div>
+                <div class="row"><div class="heading">Weight</div><div class="value">@invoice?.Weight</div></div>
+                <div class="row"><div class="heading">Status</div><div class="value">@invoice?.Status</div></div>
+            </td>
+        </tr>
+    </table>
+    <table>
+        <tr>
+            <td>
+                <div class="bold">Ship To</div>
+                <div>@invoice?.ShipToAddress.CompanyName</div>
+                <div>@invoice?.ShipToAddress.FullName</div>
+                <div>@invoice?.ShipToAddress.Address</div>
+                <div>@invoice?.ShipToAddress.Address2</div>
+                <div>@invoice?.ShipToAddress.City, @Model.ShipToAddress.State  @Model.ShipToAddress.Zip</div>
+            </td><!--Ship To-->
+            <td>
+                <div class="bold">Bill To</div>
+                <div>@invoice?.BillToAddress.CompanyName</div>
+                <div>@invoice?.BillToAddress.FullName</div>
+                <div>@invoice?.BillToAddress.Address</div>
+                <div>@invoice?.BillToAddress.Address2</div>
+                <div>@invoice?.BillToAddress.City, @Model.BillToAddress.State  @Model.BillToAddress.Zip</div>
+            </td><!--Bill To-->
+        </tr>
+    </table>
+    <table>
+        <thead>
+            <tr style="background-color:#888585 !important">
+                <td>Item #</td>
+                <td>Qty</td>
+                <td>Description</td>
+                <td>Price</td>
+                <td>Total</td>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in invoice?.Items)
+            {
+                <tr class="item">
+                    <td>@(item.ItemNumber)</td>
+                    <td>@(item.Qty)</td>
+                    <td>@(item.Description) </td>
+                    <td>@(item.Price)</td>
+                    <td>@(item.Total)</td>
+                </tr>
+                foreach (InvoiceBOM bom in @item.BOMs)
+                {
+                    <tr class="bom">
+                        <td>@(bom.Name)</td><!--name-->
+                        <td>@(bom.Qty)</td><!--Qty-->
+                        <td colspan="3">@(bom.Description)</td><!--Description-->
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+    <!-- Totals -->
+    <table style="margin-top:50px">
+        <tr>
+            <td style="width:70%">
+                <!-- Payment details -->
+                <table class="clear_margin">
+                    <thead>
+                        <tr>
+                            <td>Payment</td>
+                            <td>Type</td>
+                            <td>Amount</td>
+                        </tr>
+                    </thead>
+                    @foreach (var detail in invoice?.PaymentDetails)
+                    {
+                        <tr>
+                            <td>@(detail.PaymentDate.ToString("d"))</td>
+                            <td>@(detail.Type)</td>
+                            <td>@(detail.Amount)</td>
+                        </tr>
+                    }
+                </table>
+            </td>
+            <td>
+                <!--Totals-->
+                <div class="row"><div class="heading">Subtotal</div><div class="value">@(invoice?.InvoiceAmount.Subtotal)</div></div>
+                <div class="row"><div class="heading">Tax</div><div class="value">@(invoice?.InvoiceAmount.Tax)</div></div>
+                <div class="row"><div class="heading">Shipping</div><div class="value">@(invoice?.InvoiceAmount.Shipping)</div></div>
+                <div class="row"><div class="heading">Handling</div><div class="value">@(invoice?.InvoiceAmount.Handling)</div></div>
+                <div class="row" style="margin-top:15px; font-size:12pt">
+                    <div class="heading">Total</div><div class="value bold">
+                        @(invoice?.InvoiceAmount.Total)
+                    </div>
+                </div>
+                <div class="row"><div class="heading">Payments</div><div class="value">@(invoice?.InvoiceAmount.Payments)</div></div>
+                <div class="row"><div class="heading">Balance Due</div><div class="value">@(invoice?.InvoiceAmount.BalanceDue)</div></div>
+            </td>
+        </tr>
+    </table>
+    <!-- Notes -->
+    <div class="notes">
+        @invoice?.AdditionalInformation
+    </div>
+</div>
+
+<div class="modal fade" id="fileDownloadModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -209,6 +332,11 @@
                     printWindow.close();
                 },
                 true);
+        }
+
+        function loadInvoiceData(orderNumber) {
+            $('#OrderNumber').val(orderNumber);
+            $('#SearchFrm').submit();
         }
 
         function SetCategoy(code) {

@@ -30,15 +30,20 @@ namespace WebExtension.Controllers
         }
 
         [ExtensionAuthorize]
-        public async Task<IActionResult> Index(string category, string catName, string code, string getOrders, string begDate, string endDate)
+        public async Task<IActionResult> Index(string category, string catName, string code, string getOrders, string begDate, string endDate, int orderNumber=0)
         {
             ViewData["WarehouseDetails"] = _ordrWebService.GetWareHouseDetails();
+
+            if(orderNumber != 0)
+                ViewData["InvoiceData"] = _extOrderService.GetInvoiceData(orderNumber);
+
             ViewData["category"] = category;
-            ViewData["catName"] = catName; ;
+            ViewData["catName"] = catName; 
             ViewData["code"] = code;
             ViewData["getOrders"] = getOrders;
             ViewData["begDate"] = begDate;
             ViewData["endDate"] = endDate;
+            ViewData["orderNumber"] = orderNumber;
             return await Task.Run(() => View());
         }
 
