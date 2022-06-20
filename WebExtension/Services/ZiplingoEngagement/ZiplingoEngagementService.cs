@@ -916,7 +916,7 @@ namespace WebExtension.Services.ZiplingoEngagementService
             try
             {
                 AssociateRankAdvancement obj = new AssociateRankAdvancement();
-                var rankName = _rankService.GetRankName(req.NewRank);
+                var rankName = _rankService.GetRankName(req.NewRank).Result;
                 obj.Rank = req.NewRank;
                 obj.RankName = rankName.ToString();
                 obj.AssociateId = req.AssociateId;
