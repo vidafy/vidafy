@@ -34,9 +34,11 @@ namespace WebExtension.Controllers
         {
             ViewData["WarehouseDetails"] = _ordrWebService.GetWareHouseDetails();
 
-            if(orderNumber != 0)
-                ViewData["InvoiceData"] = _extOrderService.GetInvoiceData(orderNumber);
-
+            if (orderNumber != 0)
+            {               
+                var invoiceData = await _extOrderService.GetInvoiceData(orderNumber);                
+                ViewData["InvoiceData"] = invoiceData;
+            }
             ViewData["category"] = category;
             ViewData["catName"] = catName; 
             ViewData["code"] = code;

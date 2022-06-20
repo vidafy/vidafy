@@ -30,8 +30,8 @@
 
         var countryCode = "0";
         var orders = OrderService.GetShippableOrders(begDate, endDate, code, catName, category);
-        var invoice = ViewData["InvoiceData"]
-            as Invoice;
+        var invoice = ViewData["InvoiceData"] as Invoice;
+
 
 
         countryCode = orders.Any() ? orders[0].BillAddress.CountryCode : "0";
@@ -165,8 +165,9 @@
                     </td>
                     <td>@(O.BillAddress.CountryCode)</td>
                     <td>@(O.SpecialInstructions)</td>
-                    <td><button class="btn btn-default" type="button" onclick="PrintPage('/OrderInvoice/Invoice?OrderNumber=@(O.OrderNumber)')">Print</button></td>
-                    <td><button class="btn btn-default" type="button" onclick="loadInvoiceData('@(O.OrderNumber)')">InvoiceData</button></td>
+                    @*<td><button class="btn btn-default" type="button" onclick="PrintPage('/OrderInvoice/Invoice?OrderNumber=@(O.OrderNumber)')">Print</button></td>*@
+                    
+                    <td><button class="btn btn-default" type="button" onclick="loadInvoiceData('@(O.OrderNumber)')">Print</button></td>
                 </tr>
                 printList = printList + O.OrderNumber.ToString() + "|";
                 ViewData["printListData"] = printList;
@@ -175,8 +176,10 @@
     </div>
 
 </div>
+@if (invoice != null)
+{
 
-<div class="container">
+<div class="container" id='printTable' style="display:none;">
     <table>
         <tr>
             <td style="width:70%; margin-top:-38px;"><img src='/CMS/Images/JWPro-Square500-Black8e7a4f.png' alt='Jack Winn Color' /></td><!--Logo-->
@@ -292,6 +295,7 @@
         @invoice?.AdditionalInformation
     </div>
 </div>
+}
 
 <div class="modal fade" id="fileDownloadModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
         <div class="modal-dialog" role="document">
@@ -334,9 +338,31 @@
                 true);
         }
 
+        $("#print").click(function () {
+            
+
+        });
+
         function loadInvoiceData(orderNumber) {
             $('#OrderNumber').val(orderNumber);
             $('#SearchFrm').submit();
+            
+            var divContents = $("#printTable").html();//div which have to print
+
+            var printWindow = window.open('', '', 'height=700,width=900');
+            printWindow.document.write('<html><head><title></title>');
+            printWindow.document.write('<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css" >');//external styles
+            printWindow.document.write('<link rel="stylesheet" href="/css/custom.css" type="text/css"/>');
+            printWindow.document.write('</head><body>');
+            printWindow.document.write(divContents);
+            printWindow.document.write('</body></html>');
+            printWindow.document.close();
+
+            printWindow.onload = function () {
+                printWindow.focus();
+                printWindow.print();
+                printWindow.close();
+            }
         }
 
         function SetCategoy(code) {
