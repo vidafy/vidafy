@@ -51,6 +51,12 @@ namespace WebExtension
                     .AllowAnyOrigin());
             });
 
+            services.AddRazorPages(options =>
+            {
+                options.Conventions.AuthorizeFolder("/OrderInvoice").AllowAnonymousToPage("/OrderInvoice/Invoice");
+                options.Conventions.AllowAnonymousToPage("/OrderInvoice/InvoiceAll");
+            });
+
             //services.AddCors(options =>
             //{
             //    options.AddPolicy("CorsPolicy",
