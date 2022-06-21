@@ -65,8 +65,13 @@ namespace WebExtension.Controllers
 
         public async Task<IActionResult> InvoiceAll([FromQuery] string orderNumbers)
         {
-            var listOrder = orderNumbers.Split('|').ToList();
             var invoices = new List<Invoice>();
+            if (orderNumbers == null)
+            {
+                ViewData["InvoiceDataAll"] = invoices;
+                return await Task.Run(() => View());
+            }
+            var listOrder = orderNumbers.Split('|').ToList();
 
             foreach (var orderNumber in listOrder)
             {

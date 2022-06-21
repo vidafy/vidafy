@@ -87,6 +87,8 @@
         });
 
         function PrintPage(url) {
+            if (url === '')
+                return;
             $('#ReportFrame').attr("src", url);
         }
 
