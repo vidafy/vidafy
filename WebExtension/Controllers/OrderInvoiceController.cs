@@ -30,22 +30,15 @@ namespace WebExtension.Controllers
             _extOrderService = extOrderService ?? throw new ArgumentNullException(nameof(extOrderService));
 
         }
-        public async Task<IActionResult> Index(string category, string catName, string code, string getOrders, string begDate, string endDate, int orderNumber=0)
+        public async Task<IActionResult> Index(string category, string catName, string code, string getOrders, string begDate, string endDate)
         {
             ViewData["WarehouseDetails"] = _ordrWebService.GetWareHouseDetails();
-
-            if (orderNumber != 0)
-            {               
-                var invoiceData = await _extOrderService.GetInvoiceData(orderNumber);                
-                ViewData["InvoiceData"] = invoiceData;
-            }
             ViewData["category"] = category;
             ViewData["catName"] = catName; 
             ViewData["code"] = code;
             ViewData["getOrders"] = getOrders;
             ViewData["begDate"] = begDate;
-            ViewData["endDate"] = endDate;
-            ViewData["orderNumber"] = orderNumber;
+            ViewData["endDate"] = endDate;            
             return await Task.Run(() => View());
         }
         public async Task<IActionResult> Invoice([FromQuery] int orderNumber)
