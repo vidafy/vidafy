@@ -88,15 +88,6 @@
             <div class="form-group input-group pull-left col-sm-9" style="margin-right: 15px;">
                 @{
                     <div class="col-sm-3">
-                        @*<select id="WarehouseLookup" name="WarehouseLookup" onchange="SetCategoryItems('@(code)', '@(catName)');" class="btn btn-default dropdown-toggle" data-toggle="dropdown" style="border-radius: 5px; margin-bottom: 3px;">
-                                <option value="0" onclick="SetCategoryItems('0', 'Select Warehouse All');">Select Warehouse All</option>
-                                @foreach (var ac in (IEnumerable<ActiveCountry>) ViewData["WarehouseDetails"])
-                                {
-                                    <option onclick="SetCategoryItems('@(ac.Code)', '@(ac.Name)');" value="@(ac.Code)">@(ac.Name)</option>
-                                }
-
-                            </select>*@
-
                         <div class="inline-block align-top w-64 sm:w-auto">
 
                             <select id="WarehouseLookup" name="WarehouseLookup" onchange="SetCategoryItems('@(code)', '@(catName)');">
@@ -122,11 +113,6 @@
                         })
 
                         <button class="btn btn-primary" name="Submit" onclick="Submitform(this);return false;" style="margin-left: 3px;">List Orders</button>
-                        @*<button class="btn btn-primary" name="PrintAll" onclick="Submitform(); return false;" style="margin-left: 3px;">Print All</button>*@
-                        @*<button class="btn btn-primary" name="PrintAll" onclick="printExternal('other?l=0&id=Inventory/RegistrationDocument&startDate=@(begDate.ToString("d"))&endDate=@(endDate.ToString("d"))&countryCode=@(countryCode)')">Print Registration</button>
-                            <button class="btn btn-primary" name="PrintAll" onclick="printExternal('other?l=0&id=Inventory/PickLists&startDate=@(begDate.ToString("d"))&endDate=@(endDate.ToString("d"))&countryCode=@(countryCode)&Code=@(code)&Name=@(catName)&Category=@(category)')">Print Pick Slips</button>*@
-                        @*<button class="btn btn-primary" name="PrintAll" onclick="printExternal('other?l=0&id=Inventory/BatchPrintInvoice&startDate=@(begDate.ToString("d"))&endDate=@(endDate.ToString("d"))&countryCode=@(countryCode)&Code=@(code)&Name=@(catName)&Category=@(category)')">Print Invoices</button>*@
-                        @*<button class="btn btn-primary" name="PrintAll" type="button" onclick="PrintPage('/Corporate/Other?l=0&id=InvoiceAll&OrderNumber=@printList')">Print Invoices</button>*@
                         <button class="btn btn-primary" name="PrintAll" type="button" onclick="PrintPage('/OrderInvoice/InvoiceAll?OrderNumbers=@printList')">Print Invoices</button>
 
                     </div>

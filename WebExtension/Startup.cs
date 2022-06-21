@@ -56,24 +56,7 @@ namespace WebExtension
                 options.Conventions.AuthorizeFolder("/OrderInvoice").AllowAnonymousToPage("/OrderInvoice/Invoice");
                 options.Conventions.AllowAnonymousToPage("/OrderInvoice/InvoiceAll");
             });
-
-            //services.AddCors(options =>
-            //{
-            //    options.AddPolicy("CorsPolicy",
-            //        builder => builder.AllowAnyOrigin()
-            //        .AllowAnyMethod()
-            //        .AllowAnyHeader());
-            //});
-
             services.AddMvc();
-            //app.UseCors(builder =>
-            //{
-            //    builder
-            //        .WithOrigins(environmentURL, environmentURL.Replace("corpadmin", "clientextension"))
-            //        .AllowAnyMethod()
-            //        .AllowAnyHeader()
-            //        .AllowCredentials();
-            //});
             #region FOR LOCAL DEBUGGING USE
             //Remark This section before upload
             //services.AddSingleton<ITokenProvider>(x => new WebExtensionTokenProvider
@@ -86,20 +69,8 @@ namespace WebExtension
             //Remark This section before upload
             #endregion
 
+
             //Remark This section before upload
-            if (CurrentEnvironment.IsDevelopment())
-            {
-                //services.AddSingleton<ITokenProvider>(x => new WebExtensionTokenProvider
-                //{
-                //    DirectScaleUrl = Configuration["configSetting:BaseURL"].Replace("{clientId}", Configuration["configSetting:Client"]).Replace("{environment}", Configuration["configSetting:Environment"]),
-                //    DirectScaleSecret = Configuration["configSetting:DirectScaleSecret"],
-                //    ExtensionSecrets = new[] { Configuration["configSetting:ExtensionSecrets"] }
-                //});
-            }
-            //Remark This section before upload
-
-
-
             //DS
             services.AddDirectScale(c =>
             {
@@ -151,6 +122,10 @@ namespace WebExtension
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             string environmentURL = Environment.GetEnvironmentVariable("DirectScaleServiceUrl");
+            string serverURL = environmentURL.Replace("https://vidafy.corpadmin.", "");
+            string appendURL = @" http://"+ serverURL + " " + "https://" + serverURL + " " + "http://*." + serverURL + " " + "https://*." + serverURL;
+
+            string csPolicy = "frame-ancestors https://code.jquery.com https://cdn.jsdelivr.net https://maxcdn.bootstrapcdn.com https://localhost:44309/ https://284a-117-247-182-219.in.ngrok.io" + appendURL + ";";
 
             if (env.IsDevelopment())
             {
@@ -167,16 +142,6 @@ namespace WebExtension
             app.UseRouting();
 
             app.UseCors("CorsPolicy");
-
-            //app.UseCors(builder =>
-            //{
-            //    builder
-            //        .WithOrigins(environmentURL, environmentURL.Replace("corpadmin", "clientextension"))
-            //        .AllowAnyMethod()
-            //        .AllowAnyHeader()
-            //        .AllowCredentials();
-            //});
-
             app.UseHttpsRedirection();
 
             app.UseStaticFiles(new StaticFileOptions
@@ -188,24 +153,17 @@ namespace WebExtension
             });
 
             app.UseStaticFiles();
-
-
-
             app.UseAuthorization();
 
             //DS
             app.UseDirectScale();
-            string csPolicy = "frame-ancestors http://directscalestage.com https://directscalestage.com http://*.directscalestage.com https://*.directscalestage.com https://code.jquery.com https://cdn.jsdelivr.net https://maxcdn.bootstrapcdn.com https://b2d4-117-247-182-219.in.ngrok.io https://localhost:44309/;";
             app.Use(async (context, next) =>
             {
-               // context.Response.Headers.Add("X-Frame-Options", "ALLOW-FROM " + environmentURL); // https://vidafy.corpadmin.directscalestage.com
                 context.Response.Headers.Add("Content-Security-Policy", csPolicy);
                 context.Response.Headers.Add("Access-Control-Allow-Origin", "*");
                 await next();
             });
 
-
-  
             //Swagger
             app.UseSwagger();
             app.UseSwaggerUI(c => {
