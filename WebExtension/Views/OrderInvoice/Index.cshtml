@@ -69,8 +69,6 @@
     printList = printList + O.OrderNumber.ToString() + "|";
 }
 
-
-
 <div class="page-container">
     <div class="p-8">
         <form id="SearchFrm" method="post">
@@ -147,8 +145,6 @@
                     </td>
                     <td>@(O.BillAddress.CountryCode)</td>
                     <td>@(O.SpecialInstructions)</td>
-                    @*<td><button class="btn btn-default" type="button" onclick="PrintPage('/OrderInvoice/Invoice?OrderNumber=@(O.OrderNumber)')">Print</button></td>*@
-
                     <td>
                         <button class="btn btn-primary" type="button" onclick="PrintPage('/OrderInvoice/Invoice?OrderNumber=@(O.OrderNumber)')">Print</button>
                     </td>
@@ -209,7 +205,7 @@
             $('#printOption').val("1");
             var $this = $(this);
             $this.button('loading');
-            PrintPage('/OrderInvoice/InvoiceAll?OrderNumbers=@printList', $this);
+            PrintPage('/OrderInvoice/InvoiceAll?OrderNumbers=@printList');
         });
 
     function SetCategoy(code) {

@@ -3,13 +3,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using DirectScale.Disco.Extension.Middleware;
-using Microsoft.Extensions.Logging;
-using System.Diagnostics;
 using WebExtension.Services;
 using WebExtension.Views.Model;
-using WebExtension.Helper;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 
 namespace WebExtension.Controllers
