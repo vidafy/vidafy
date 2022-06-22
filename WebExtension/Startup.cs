@@ -17,6 +17,8 @@ using WebExtension.Services;
 using WebExtension.Services.DailyRun;
 using WebExtension.Services.ZiplingoEngagementService;
 using System;
+using System.Globalization;
+using Microsoft.AspNetCore.Localization;
 
 namespace WebExtension
 {
@@ -116,6 +118,31 @@ namespace WebExtension
 
             //Configurations
             services.Configure<configSetting>(Configuration.GetSection("configSetting"));
+
+            services.Configure<RequestLocalizationOptions>(options =>
+            {
+                var supportedUICultures = new[]
+                {
+                    new CultureInfo("en-US"),
+                    new CultureInfo("es-US"),
+                    new CultureInfo("en-GB"),
+                    new CultureInfo("fr-FR"),
+                };
+
+                var supportedCultures = new[]
+                {
+                    new CultureInfo("en-US"),
+                    new CultureInfo("en-GB"),
+                    new CultureInfo("es-US")
+
+                };
+
+                options.DefaultRequestCulture = new RequestCulture(culture: "en-US", uiCulture: "en-US");
+                options.SupportedCultures = supportedCultures;
+                options.SupportedUICultures = supportedUICultures;
+
+
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
