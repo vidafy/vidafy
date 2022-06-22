@@ -103,17 +103,17 @@
             </td>
             <td>
                 <!--Totals-->
-                <div class="row"><div class="heading">Subtotal</div><div class="value">@(@Model.InvoiceAmount.Subtotal)</div></div>
-                <div class="row"><div class="heading">Tax</div><div class="value">@(@Model.InvoiceAmount.Tax)</div></div>
-                <div class="row"><div class="heading">Shipping</div><div class="value">@(@Model.InvoiceAmount.Shipping)</div></div>
-                <div class="row"><div class="heading">Handling</div><div class="value">@(@Model.InvoiceAmount.Handling)</div></div>
+                <div class="row"><div class="heading">Subtotal</div><div class="value">@(Model.InvoiceAmount.Subtotal)</div></div>
+                <div class="row"><div class="heading">Tax</div><div class="value">@(Model.InvoiceAmount.Tax)</div></div>
+                <div class="row"><div class="heading">Shipping</div><div class="value">@(Model.InvoiceAmount.Shipping)</div></div>
+                <div class="row"><div class="heading">Handling</div><div class="value">@(Model.InvoiceAmount.Handling)</div></div>
                 <div class="row" style="margin-top:15px; font-size:12pt">
                     <div class="heading">Total</div><div class="value bold">
-                        @(@Model.InvoiceAmount.Total)
+                        @(string.Format("{0:C}", Model.InvoiceAmount.Total))
                     </div>
                 </div>
-                <div class="row"><div class="heading">Payments</div><div class="value">@(@Model.InvoiceAmount.Payments)</div></div>
-                <div class="row"><div class="heading">Balance Due</div><div class="value">@(@Model.InvoiceAmount.BalanceDue)</div></div>
+                <div class="row"><div class="heading">Payments</div><div class="value">@(Model.InvoiceAmount.Payments)</div></div>
+                <div class="row"><div class="heading">Balance Due</div><div class="value">@(Model.InvoiceAmount.BalanceDue)</div></div>
             </td>
         </tr>
     </table>
