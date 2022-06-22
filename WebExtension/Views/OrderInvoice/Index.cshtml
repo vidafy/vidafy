@@ -20,7 +20,7 @@
     }
 
     var category = ViewData["category"] ?? "Location";
-    var catName = ViewData["catName"] ?? " ";
+    var catName = ViewData["catName"] ?? "All";
     var code = ViewData["code"] ?? "0";
     var getOrders = ViewData["getOrders"] ?? " ";   
 
@@ -88,7 +88,7 @@
                         <div class="inline-block align-top w-64 sm:w-auto">
 
                             <select id="WarehouseLookup" name="WarehouseLookup" onchange="SetCategoryItems('@(code)', '@(catName)');">
-                                <option value="0" onclick="SetCategoryItems('0', 'Select Warehouse All');">Select Warehouse All</option>
+                                <option value="0" onclick="SetCategoryItems('0', 'Select Warehouse All');" selected disabled hidden>Select Warehouse All</option>
                                 @foreach (var w in (IEnumerable<ActiveCountry>)ViewData["WarehouseDetails"])
                                 {
                                     <option onclick="SetCategoryItems('@(w.Code)', '@(w.Name)');" value="@(w.Code)">@(w.Name)</option>
