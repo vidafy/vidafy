@@ -5,6 +5,7 @@
 
 @{
     ViewBag.PageTitle = "Invoice";
+    Layout = "~/Views/Shared/_ReportPageBase.cshtml";
     List<Invoice> invoice = (List<Invoice>)ViewData["InvoiceDataAll"];
     var itemCount = invoice.Count;
     var counter = 0;
