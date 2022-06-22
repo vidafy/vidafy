@@ -58,6 +58,32 @@ namespace WebExtension
                 options.Conventions.AuthorizeFolder("/OrderInvoice").AllowAnonymousToPage("/OrderInvoice/Invoice");
                 options.Conventions.AllowAnonymousToPage("/OrderInvoice/InvoiceAll");
             });
+
+            services.Configure<RequestLocalizationOptions>(options =>
+            {
+                var supportedUICultures = new[]
+                {
+                    new CultureInfo("en-US"),
+                    new CultureInfo("es-US"),
+                    new CultureInfo("en-GB"),
+                    new CultureInfo("fr-FR"),
+                };
+
+                var supportedCultures = new[]
+                {
+                    new CultureInfo("en-US"),
+                    new CultureInfo("en-GB"),
+                    new CultureInfo("es-US")
+
+                };
+
+                options.DefaultRequestCulture = new RequestCulture(culture: "en-US", uiCulture: "en-US");
+                options.SupportedCultures = supportedCultures;
+                options.SupportedUICultures = supportedUICultures;
+
+
+            });
+
             services.AddMvc();
             #region FOR LOCAL DEBUGGING USE
             //Remark This section before upload
@@ -118,31 +144,7 @@ namespace WebExtension
 
             //Configurations
             services.Configure<configSetting>(Configuration.GetSection("configSetting"));
-
-            services.Configure<RequestLocalizationOptions>(options =>
-            {
-                var supportedUICultures = new[]
-                {
-                    new CultureInfo("en-US"),
-                    new CultureInfo("es-US"),
-                    new CultureInfo("en-GB"),
-                    new CultureInfo("fr-FR"),
-                };
-
-                var supportedCultures = new[]
-                {
-                    new CultureInfo("en-US"),
-                    new CultureInfo("en-GB"),
-                    new CultureInfo("es-US")
-
-                };
-
-                options.DefaultRequestCulture = new RequestCulture(culture: "en-US", uiCulture: "en-US");
-                options.SupportedCultures = supportedCultures;
-                options.SupportedUICultures = supportedUICultures;
-
-
-            });
+            services.AddMvc(option => option.EnableEndpointRouting = false);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -153,6 +155,7 @@ namespace WebExtension
             string appendURL = @" http://"+ serverURL + " " + "https://" + serverURL + " " + "http://*." + serverURL + " " + "https://*." + serverURL;
 
             string csPolicy = "frame-ancestors https://code.jquery.com https://cdn.jsdelivr.net https://maxcdn.bootstrapcdn.com" + appendURL + ";";
+            app.UseRequestLocalization();
 
             if (env.IsDevelopment())
             {
@@ -203,6 +206,7 @@ namespace WebExtension
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
             });
+            app.UseMvc();
         }
     }
     internal class WebExtensionTokenProvider : ITokenProvider
