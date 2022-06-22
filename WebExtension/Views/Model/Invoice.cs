@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations;
 
 namespace WebExtension.Views.Model
 {
@@ -38,9 +37,10 @@ namespace WebExtension.Views.Model
     {
         public string ItemNumber { get; set; }
         public string Description { get; set; }
-
+        [DisplayFormat(DataFormatString = "{0:C0}")]
         public string Price { get; set; }
         public double Qty { get; set; }
+        [DisplayFormat(DataFormatString = "{0:C0}")]
         public string Total { get; set; }
         public List<InvoiceBOM> BOMs { get; set; }
     }
@@ -58,12 +58,19 @@ namespace WebExtension.Views.Model
     }
     public class InvoiceAmounts
     {
+        [DisplayFormat(DataFormatString = "{0:C0}")]
         public string Subtotal { get; set; }
+        [DisplayFormat(DataFormatString = "{0:C0}")]
         public string Tax { get; set; }
+        [DisplayFormat(DataFormatString = "{0:C0}")]
         public string Shipping { get; set; }
+        [DisplayFormat(DataFormatString = "{0:C0}")]
         public string Handling { get; set; }
+        [DisplayFormat(DataFormatString = "{0:C0}")]
         public string Total { get; set; }
+        [DisplayFormat(DataFormatString = "{0:C0}")]
         public string Payments { get; set; }
+        [DisplayFormat(DataFormatString = "{0:C0}")]
         public string BalanceDue { get; set; }
     }
 }
