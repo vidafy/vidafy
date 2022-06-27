@@ -66,13 +66,11 @@ thead {
 
     .row .heading {
         font-weight: bold;
-        width: 100px;
         float: left;
     }
 
     .row .headingprominent {
         font-weight: bold;
-        width: 100px;
         float: left;
         font-size:x-large;
     }
