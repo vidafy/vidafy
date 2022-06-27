@@ -5,6 +5,7 @@ using Dapper;
 using DirectScale.Disco.Extension.Services;
 using System.Linq;
 using WebExtension.Services.ZiplingoEngagement.Model;
+using WebExtension.Models;
 
 namespace WebExtension.Services.ZiplingoEngagementService
 {
@@ -23,6 +24,7 @@ namespace WebExtension.Services.ZiplingoEngagementService
         List<ZiplingoEventSettings> GetEventSettingsList();
         ZiplingoEventSettings GetEventSettingDetail(string eventKey);
         void UpdateEventSetting(ZiplingoEventSettingRequest request);
+        EWalletSettingModel GetEWalletSetting();
     }
     public class ZiplingoEngagementRepository : IZiplingoEngagementRepository
     {
@@ -252,6 +254,16 @@ namespace WebExtension.Services.ZiplingoEngagementService
 
                 var result = dbConnection.QueryFirstOrDefault<string>(query, parameter);
                 return result;
+            }
+        }
+
+        public EWalletSettingModel GetEWalletSetting()
+        {
+            using (var dbConnection = new System.Data.SqlClient.SqlConnection(_dataService.GetClientConnectionString().Result))
+            {
+                var settingsQuery = "SELECT * FROM Client.Ewallet_Settings";
+
+                return dbConnection.QueryFirstOrDefault<EWalletSettingModel>(settingsQuery);
             }
         }
     }
