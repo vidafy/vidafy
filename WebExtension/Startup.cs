@@ -1,4 +1,5 @@
 using DirectScale.Disco.Extension.Middleware;
+using DirectScale.Disco.Extension.Middleware.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -62,7 +63,7 @@ namespace WebExtension
             //Remark This section before upload
 
 
-           
+
             //DS
             services.AddDirectScale(c =>
             {
@@ -81,6 +82,12 @@ namespace WebExtension
 
                 // Event Handlers
                 c.AddEventHandler("3", "/api/webhooks/Associate/UpdateAssociate"); // Update Associate Event (3)
+
+                //ZiplingoEngagementSetting page
+                c.AddCustomPage(Menu.Settings, "Ziplingo Engagement Setting", "/CustomPage/ZiplingoEngagementSetting");
+
+                //EWalletSettings
+                c.AddCustomPage(Menu.Settings, "EWallet Settings", "/CustomPage/EWalletSettings");
             });
 
             //Repositories
