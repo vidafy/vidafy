@@ -76,6 +76,13 @@ namespace WebExtension.Controllers
             ViewBag.Message = viewDataSend;
             return View();
         }
+
+        public IActionResult EWalletSettings()
+        {
+            var ewalletSetting = _ziplingoEngagementRepository.GetEWalletSetting();
+            ViewBag.Message = ewalletSetting;
+            return View();
+        }
     }
     public class resObj
     {
