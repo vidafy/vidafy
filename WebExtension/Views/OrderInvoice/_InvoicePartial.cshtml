@@ -9,7 +9,7 @@
 <div class="container" id='printTable'>
     <table>
         <tr>
-            <td style="width:70%; margin-top:-38px;"><img src='/CMS/Images/Logo-Default-230px.png' alt='Vidafy' /></td><!--Logo-->
+            <td style="width:70%; margin-top:-38px;"><img src='/CMS/Images/Logo-Default.png' alt='Vidafy' /></td><!--Logo-->
             <td>
                 <!--Order Details-->
                 <div style='height:40px;'>
@@ -17,9 +17,9 @@
                     <span class="bold">@Model.BackOfficeId</span>
                     <span class="bold">@Model.FirstLastName</span>
                 </div>
+                <div class="row"><div class="headingprominent">Order #</div><div class="valueprominent">@Model.OrderNumber </div></div>
                 <div class="row"><div class="heading">Phone #</div><div class="value">@Model.PhoneNumber</div></div>
                 <div class="row"><div class="heading">Email</div><div class="value">@Model.Email </div></div>
-                <div class="row"><div class="heading">Order #</div><div class="value">@Model.OrderNumber </div></div>
                 <div class="row"><div class="heading">Date</div><div class="value">@Model.Date.ToString("d") </div></div>
                 <div class="row"><div class="heading">Method</div><div class="value">@Model.ShippingMethod</div></div>
                 <div class="row"><div class="heading">Weight</div><div class="value">@Model.Weight</div></div>

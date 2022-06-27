@@ -154,7 +154,7 @@ namespace WebExtension
             string serverURL = environmentURL.Replace("https://vidafy.corpadmin.", "");
             string appendURL = @" http://"+ serverURL + " " + "https://" + serverURL + " " + "http://*." + serverURL + " " + "https://*." + serverURL;
 
-            string csPolicy = "frame-ancestors https://code.jquery.com https://cdn.jsdelivr.net https://maxcdn.bootstrapcdn.com" + appendURL + ";";
+            string csPolicy = "frame-ancestors https://code.jquery.com https://cdn.jsdelivr.net https://maxcdn.bootstrapcdn.com https://993f-117-247-182-219.in.ngrok.io https://localhost:44309/" + appendURL + ";";
             app.UseRequestLocalization();
 
             if (env.IsDevelopment())

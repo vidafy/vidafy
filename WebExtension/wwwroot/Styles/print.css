@@ -70,8 +70,21 @@ thead {
         float: left;
     }
 
+    .row .headingprominent {
+        font-weight: bold;
+        width: 100px;
+        float: left;
+        font-size:x-large;
+    }
+
     .row .value {
         width: 300px;
+    }
+
+    .row .valueprominent {
+        font-weight: bold;
+        width: 300px;
+        font-size:x-large;
     }
 
 .center {
