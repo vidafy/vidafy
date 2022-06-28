@@ -1,0 +1,25 @@
+﻿.btn-ds-info {
+    width: 130px;
+    background-color: #57C1E8;
+    color: #FFFFFF;
+}
+
+.btn-ds-danger {
+    background-color: #FF7659;
+    color: #FFFFFF;
+}
+
+.btn-ds-default {
+    background-color: #BED62F;
+    color: #FFFFFF;
+}
+
+.bg-ds-dark {
+    background-color: #69737A;
+    color: #FFFFFF;
+}
+
+.btn:disabled {
+    box-shadow: none;
+    background-color: #DBDBDB !important;
+}

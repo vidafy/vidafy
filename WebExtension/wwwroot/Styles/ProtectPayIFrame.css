@@ -1,0 +1,450 @@
+﻿.PageBody {
+    margin: 0;
+}
+
+.PageContent {
+    width: 550px;
+    color: #000000;
+    font-family: Verdana,Arial;
+    font-size: 14px;
+}
+
+.ErrorBackground {
+    border: 1px solid #C79595 !important;
+    background-color: #FAF2F2 !important;
+}
+
+.ErrorMessage {
+    width: 500px;
+    margin-bottom: 20px;
+    border: 1px solid #DB9494;
+    padding: 9px 10px 10px 35px;
+    background-color: #FAF2F2;
+    background-image: url("../images/Error.png");
+    background-position: 10px 10px;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+}
+
+.RequiredField {
+    color: red;
+    font-size: 11px;
+}
+
+.FieldSet {
+    border: 1px solid #D3D3D3;
+    padding: 10px 10px 20px 10px;
+    margin-bottom: 25px;
+    border-radius: 4px;
+    -moz-border-radius: 4px;
+    -webkit-border-radius: 4px;
+}
+
+.Legend {
+    padding-left: 7px;
+    padding-right: 7px;
+    color: #A3A3A3;
+}
+
+.Label {
+    display: inline-block;
+    padding: 3px 0px 3px 0px;
+    width: 240px;
+    vertical-align: top;
+}
+
+.TextBox {
+    width: 200px;
+    height: 20px;
+    border: 1px solid #9B9B9B;
+    padding: 3px 3px 3px 6px;
+    font-family: monospace,Verdana,Arial;
+    font-size: 14px;
+    border-radius: 2px;
+    -moz-border-radius: 2px;
+    -webkit-border-radius: 2px;
+}
+
+.DropDown {
+    width: 210px;
+    height: 28px;
+    border: 1px solid #9B9B9B;
+    padding: 3px;
+    font-family: monospace,Verdana,Arial;
+    font-size: 14px;
+    border-radius: 2px;
+    -moz-border-radius: 2px;
+    -webkit-border-radius: 2px;
+}
+
+.LabelColon {
+    padding-left: 3px;
+}
+
+.button {
+    display: inline-block;
+    padding: 6px 12px;
+    margin-bottom: 0;
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 1.42857143;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: middle;
+    -ms-touch-action: manipulation;
+    touch-action: manipulation;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    background-image: none;
+    background: none;
+    border: 1px solid;
+    border-radius: 4px;
+}
+
+.wrapSpan {
+    display: block;
+    width: 289px;
+    word-wrap: break-word;
+}
+/* IE8, 9 and 10 Specific Styles */
+@media screen\0 {
+    .LegendIe {
+        display: inline-block;
+        position: relative;
+        top: -20px;
+        left: -3px;
+        background-color: #FFFFFF;
+    }
+}
+
+.PageHeader {
+}
+
+.PageFooter {
+}
+
+.FormContainer {
+}
+
+.FieldSetOrder {
+}
+
+.LegendOrder {
+}
+
+.FieldsetCreditCard {
+}
+
+.LegendCreditCard {
+}
+
+.FieldsetBillingInfo {
+}
+
+.LegendBillingInfo {
+}
+
+.FormRow {
+    margin: 5px;
+}
+
+.FormLeftColumn {
+    width: 245px;
+    display: inline-block;
+    white-space: nowrap;
+    text-align: right;
+    vertical-align: top;
+    margin-right: 8px;
+    padding-top: 4px;
+}
+
+.FormRightColumn {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.FormAmount {
+}
+
+.FormAmountLabel {
+}
+
+.FormAmountValue {
+}
+
+.FormAmountField {
+}
+
+.FormInvoice {
+}
+
+.FormInvoiceLabel {
+}
+
+.FormInvoiceValue {
+}
+
+.FormInvoiceField {
+}
+
+.FormComment1 {
+}
+
+.FormComment1Label {
+}
+
+.FormComment1Value {
+}
+
+.FormComment1Field {
+}
+
+.FormComment2 {
+}
+
+.FormComment2Label {
+    margin-bottom: 7px;
+}
+
+.FormComment2Value {
+    margin-bottom: 7px;
+}
+
+.FormComment2Field {
+}
+
+.FormName {
+}
+
+.FormNameLabel {
+}
+
+.FormNameLabel1 {
+    display: none;
+}
+
+.FormNameValue {
+}
+
+.FormNameField {
+}
+
+.FormCardNumber {
+}
+
+.FormCardNumberLabel {
+}
+
+.FormCardNumberValue {
+}
+
+.FormCardNumberField {
+}
+
+.FormExpDate {
+}
+
+.FormExpDateLabel {
+}
+
+.FormExpDateValue {
+}
+
+.FormExpDateMonthField {
+    width: 75px;
+}
+
+.FormExpDateYearField {
+    width: 75px;
+}
+
+.FormCvv {
+}
+
+.FormCvvLabel {
+}
+
+.FormCvvValue {
+}
+
+.FormCvvField {
+    width: 95px;
+}
+
+.FormDescription {
+}
+
+.FormDescriptionLabel {
+}
+
+.FormDescriptionValue {
+}
+
+.FormDescriptionField {
+}
+
+.FormAddress1 {
+}
+
+.FormAddress1Label {
+}
+
+.FormAddress1Value {
+}
+
+.FormAddress1Field {
+}
+
+.FormAddress2 {
+}
+
+.FormAddress2Label {
+}
+
+.FormAddress2Value {
+}
+
+.FormAddress2Field {
+}
+
+.FormCity {
+}
+
+.FormCityLabel {
+}
+
+.FormCityValue {
+}
+
+.FormCityField {
+}
+
+.FormState {
+}
+
+.FormStateLabel {
+}
+
+.FormStateValue {
+}
+
+.FormStateField {
+}
+
+.FormStateDropDown {
+}
+
+.FormZip {
+}
+
+.FormZipLabel {
+}
+
+.FormZipValue {
+}
+
+.FormZipField {
+    width: 95px;
+}
+
+.FormCountry {
+}
+
+.FormCountryLabel {
+}
+
+.FormCountryValue {
+}
+
+.FormCountryField {
+}
+
+.FormBankAccountType {
+}
+
+.FormBankAccountTypeLabel {
+}
+
+.FormBankAccountValue {
+}
+
+.FormRadioButtonField {
+}
+
+.FormBankAccountNumber {
+}
+
+.FormBankAccountNumberLabel {
+}
+
+.BankAccountNumberNumberValue {
+}
+
+.FormBankAccountNumberField {
+}
+
+.FormBankRoutingNumber {
+}
+
+.FormBankRoutingNumberLabel {
+}
+
+.BankRoutingNumberNumberValue {
+}
+
+.FormBankRoutingNumberField {
+}
+
+.AcceptOnlyNumbers {
+}
+
+.input-validation-error {
+}
+
+.field-validation-error {
+    display: table
+}
+
+.field-validation-valid {
+    display: none
+}
+
+.validation-summary-errors {
+    display: none
+}
+
+.validation-summary-valid {
+    display: none
+}
+
+.masterpass-error-message {
+    padding: 10px;
+    font-size: 15px;
+    font-family: Arial,sans-serif;
+}
+
+.masterpass-result-message {
+}
+
+.masterpass-result-success {
+}
+
+.masterpass-result-cancel {
+}
+
+.masterpass-result-failure {
+}
+
+.pay-with-card {
+    color: #000000;
+    font-weight: bold
+}
+
+.pay-with-masterpass {
+    font-weight: bold
+}
