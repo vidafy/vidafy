@@ -150,49 +150,52 @@ namespace WebExtension
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            string environmentURL = Environment.GetEnvironmentVariable("DirectScaleServiceUrl");
-            string serverURL = environmentURL.Replace("https://vidafy.corpadmin.", "");
-            string appendURL = @" http://"+ serverURL + " " + "https://" + serverURL + " " + "http://*." + serverURL + " " + "https://*." + serverURL;
-
-            string csPolicy = "frame-ancestors https://code.jquery.com https://cdn.jsdelivr.net https://maxcdn.bootstrapcdn.com https://993f-117-247-182-219.in.ngrok.io https://localhost:44309/" + appendURL + ";";
-            app.UseRequestLocalization();
-
-            if (env.IsDevelopment())
+            var environmentUrl = Environment.GetEnvironmentVariable("DirectScaleServiceUrl");
+            if (environmentUrl != null)
             {
-                app.UseDeveloperExceptionPage();
-            }
-            else
-            {
-                app.UseExceptionHandler("/Home/Error");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-                app.UseHsts();
-            }
+                var serverUrl = environmentUrl.Replace("https://vidafy.corpadmin.", "");
+                var appendUrl = @" http://"+ serverUrl + " " + "https://" + serverUrl + " " + "http://*." + serverUrl + " " + "https://*." + serverUrl;
 
-            //Configure Cors
-            app.UseRouting();
+                var csPolicy = "frame-ancestors https://code.jquery.com https://cdn.jsdelivr.net https://maxcdn.bootstrapcdn.com" + appendUrl + ";";
+                app.UseRequestLocalization();
 
-            app.UseCors("CorsPolicy");
-            app.UseHttpsRedirection();
-
-            app.UseStaticFiles(new StaticFileOptions
-            {
-                OnPrepareResponse = ctx =>
+                if (env.IsDevelopment())
                 {
-                    ctx.Context.Response.Headers.Add("Access-Control-Allow-Origin", "*");
+                    app.UseDeveloperExceptionPage();
                 }
-            });
+                else
+                {
+                    app.UseExceptionHandler("/Home/Error");
+                    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+                    app.UseHsts();
+                }
 
-            app.UseStaticFiles();
-            app.UseAuthorization();
+                //Configure Cors
+                app.UseRouting();
 
-            //DS
-            app.UseDirectScale();
-            app.Use(async (context, next) =>
-            {
-                context.Response.Headers.Add("Content-Security-Policy", csPolicy);
-                context.Response.Headers.Add("Access-Control-Allow-Origin", "*");
-                await next();
-            });
+                app.UseCors("CorsPolicy");
+                app.UseHttpsRedirection();
+
+                app.UseStaticFiles(new StaticFileOptions
+                {
+                    OnPrepareResponse = ctx =>
+                    {
+                        ctx.Context.Response.Headers.Add("Access-Control-Allow-Origin", "*");
+                    }
+                });
+
+                app.UseStaticFiles();
+                app.UseAuthorization();
+
+                //DS
+                app.UseDirectScale();
+                app.Use(async (context, next) =>
+                {
+                    context.Response.Headers.Add("Content-Security-Policy", csPolicy);
+                    context.Response.Headers.Add("Access-Control-Allow-Origin", "*");
+                    await next();
+                });
+            }
 
             //Swagger
             app.UseSwagger();

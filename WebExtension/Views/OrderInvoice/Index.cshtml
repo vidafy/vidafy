@@ -28,8 +28,6 @@
     var orders = OrderService.GetShippableOrders(begDate, endDate, code, catName, category);  
 
     countryCode = orders.Any() ? orders[0].BillAddress.CountryCode : "0";
-    var printList = "";
-
 }
 
 <style>
@@ -64,10 +62,6 @@
     }
 
 </style>
-@foreach (var O in orders)
-{
-    printList = printList + O.OrderNumber.ToString() + "|";
-}
 
 <div class="page-container">
     <div class="p-8">
@@ -109,7 +103,7 @@
                             EndDate = endDate
                         })
 
-                        <button class="btn btn-primary" name="Submit" onclick="Submitform(this);return false;" style="margin-left: 3px;" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> Loading Orders">List Orders</button>
+                        <button class="btn btn-primary" name="Submit" onclick="submitForm(this);return false;" style="margin-left: 3px;" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> Loading Orders">List Orders</button>
                         <button type="button" class="btn btn-primary" id="printAll" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> Printing Invoices">Print Invoices</button>                       
 
                     </div>
@@ -149,8 +143,6 @@
                         <button class="btn btn-primary" type="button" onclick="PrintPage('/OrderInvoice/Invoice?OrderNumber=@(O.OrderNumber)')">Print</button>
                     </td>
                 </tr>
-                printList = printList + O.OrderNumber.ToString() + "|";
-                ViewData["printListData"] = printList;
             }
         </table>
     </div>
@@ -199,13 +191,14 @@
             true);
     }
         $('#printAll').on('click', function () {
-            var orderIds = '@printList';            
-            if (orderIds.length === 0)
-                return;
+
             $('#printOption').val("1");
             var $this = $(this);
             $this.button('loading');
-            PrintPage('/OrderInvoice/InvoiceAll?OrderNumbers=@printList');
+
+            var begDate = '@begDate.ToString("M/d/yyyy")';
+            var endDate = '@endDate.ToString("M/d/yyyy")';
+            PrintPage('/OrderInvoice/InvoiceAll?begDate=' + encodeURIComponent(begDate) + '&endDate=' + encodeURIComponent(endDate) + '&code=@code' + '&catName=@catName' +'&category=@category');
         });
 
     function SetCategoy(code) {
@@ -221,14 +214,15 @@
         $('#CatName').val(name);
         $('#Code').val(code);
         $('#spanCatValue').text(name);
-    }
-        function Submitform(element) {
+        }
+
+        function submitForm(element)
+        {
             var $this = $(element);
             $this.button('loading');
-        $("#GetOrders").val("GetOrders");
-        console.log($("#GetOrders").val());
-        $('#SearchFrm').submit();
-
+            $("#GetOrders").val("GetOrders");
+            console.log($("#GetOrders").val());
+            $('#SearchFrm').submit();
     }
     </script>
 

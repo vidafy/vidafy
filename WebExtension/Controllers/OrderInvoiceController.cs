@@ -51,20 +51,20 @@ namespace WebExtension.Controllers
             return await Task.Run(() => View());
         }
 
-        public async Task<IActionResult> InvoiceAll([FromQuery] string orderNumbers)
+        public async Task<IActionResult> InvoiceAll([FromQuery] DateTime begDate, 
+            [FromQuery] DateTime endDate, [FromQuery] string code, [FromQuery] string catName, [FromQuery] string category)
         {
             var invoices = new List<Invoice>();
+            var orderNumbers = _ordrWebService.GetShippableOrders(begDate, endDate, code, catName, category);
             if (orderNumbers == null)
             {
                 ViewData["InvoiceDataAll"] = invoices;
-                return await Task.Run(() => View());
+                return await Task.Run(View);
             }
-            var listOrder = orderNumbers.Split('|').ToList();
 
-            foreach (var orderNumber in listOrder)
+            foreach (var orderNumber in orderNumbers)
             {
-                var isParsable = int.TryParse(orderNumber, out var numberOnOrder);
-                if (!isParsable) continue;
+                var numberOnOrder = orderNumber.OrderNumber;
                 var invoiceData = await _extOrderService.GetInvoiceData(numberOnOrder);
                 if (invoiceData == null || invoiceData.OrderNumber == 0)
                 {
@@ -75,7 +75,7 @@ namespace WebExtension.Controllers
                 }
             }
             ViewData["InvoiceDataAll"] = invoices;
-            return await Task.Run(() => View());
+            return await Task.Run(View);
         }
     }
 }
