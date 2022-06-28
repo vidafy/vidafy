@@ -17,6 +17,9 @@ using WebExtension.Repositories;
 using WebExtension.Services;
 using WebExtension.Services.DailyRun;
 using WebExtension.Services.ZiplingoEngagementService;
+using System;
+using System.Globalization;
+using Microsoft.AspNetCore.Localization;
 
 namespace WebExtension
 {
@@ -35,9 +38,54 @@ namespace WebExtension
         public void ConfigureServices(IServiceCollection services)
         {
             // Add cors
-            services.AddCors();
+
+            string environmentURL = Environment.GetEnvironmentVariable("DirectScaleServiceUrl");
+
+            // services.AddResponseCaching();
+            services.AddControllers();
+            services.AddTransient<OrderWebService>();
+            services.AddTransient<OrderInvoiceService>();
+            services.AddCors(options =>
+            {
+                options.AddPolicy("CorsPolicy",
+                    builder => builder.WithOrigins(environmentURL, environmentURL.Replace("corpadmin", "clientextension"))
+                    .AllowAnyMethod()
+                    .AllowAnyHeader()
+                    .AllowAnyOrigin());
+            });
+
+            services.AddRazorPages(options =>
+            {
+                options.Conventions.AuthorizeFolder("/OrderInvoice").AllowAnonymousToPage("/OrderInvoice/Invoice");
+                options.Conventions.AllowAnonymousToPage("/OrderInvoice/InvoiceAll");
+            });
+
+            services.Configure<RequestLocalizationOptions>(options =>
+            {
+                var supportedUICultures = new[]
+                {
+                    new CultureInfo("en-US"),
+                    new CultureInfo("es-US"),
+                    new CultureInfo("en-GB"),
+                    new CultureInfo("fr-FR"),
+                };
+
+                var supportedCultures = new[]
+                {
+                    new CultureInfo("en-US"),
+                    new CultureInfo("en-GB"),
+                    new CultureInfo("es-US")
+
+                };
+
+                options.DefaultRequestCulture = new RequestCulture(culture: "en-US", uiCulture: "en-US");
+                options.SupportedCultures = supportedCultures;
+                options.SupportedUICultures = supportedUICultures;
 
 
+            });
+
+            services.AddMvc();
             #region FOR LOCAL DEBUGGING USE
             //Remark This section before upload
             //services.AddSingleton<ITokenProvider>(x => new WebExtensionTokenProvider
@@ -50,16 +98,7 @@ namespace WebExtension
             //Remark This section before upload
             #endregion
 
-            //Remark This section before upload
-            if (CurrentEnvironment.IsDevelopment())
-            {
-                //services.AddSingleton<ITokenProvider>(x => new WebExtensionTokenProvider
-                //{
-                //    DirectScaleUrl = Configuration["configSetting:BaseURL"].Replace("{clientId}", Configuration["configSetting:Client"]).Replace("{environment}", Configuration["configSetting:Environment"]),
-                //    DirectScaleSecret = Configuration["configSetting:DirectScaleSecret"],
-                //    ExtensionSecrets = new[] { Configuration["configSetting:ExtensionSecrets"] }
-                //});
-            }
+
             //Remark This section before upload
 
 
@@ -68,8 +107,8 @@ namespace WebExtension
             services.AddDirectScale(c =>
             {
                 //CustomPage
-                //c.AddCustomPage(Menu.Associates, "Custom Order Report", "/CustomPage/CustomOrderReport");
-                
+                c.AddCustomPage(DirectScale.Disco.Extension.Middleware.Models.Menu.Inventory, "Print Slips", "/OrderInvoice/index");
+
                 // Hooks
                 c.AddHook<SubmitOrderHook>();
                 c.AddHook<FinalizeAcceptedOrderHook>();
@@ -82,7 +121,7 @@ namespace WebExtension
 
                 // Event Handlers
                 c.AddEventHandler("3", "/api/webhooks/Associate/UpdateAssociate"); // Update Associate Event (3)
-
+                services.AddControllers();
                 //ZiplingoEngagementSetting page
                 c.AddCustomPage(Menu.Settings, "Ziplingo Engagement Setting", "/CustomPage/ZiplingoEngagementSetting");
 
@@ -103,6 +142,7 @@ namespace WebExtension
             services.AddSingleton<ICustomLogService, CustomLogService>();
             services.AddSingleton<IAssociateWebService, AssociateWebService>();
             services.AddSingleton<IOrderWebService, OrderWebService>();
+            services.AddSingleton<IExtensionOrderService, OrderInvoiceService>();
             services.AddScoped<IHttpClientService, HttpClientService>();
             services.AddSingleton<IZiplingoEngagementService, ZiplingoEngagementService>();
             services.AddSingleton<IDailyRunService, DailyRunService>();
@@ -116,37 +156,58 @@ namespace WebExtension
 
             //Configurations
             services.Configure<configSetting>(Configuration.GetSection("configSetting"));
+            services.AddMvc(option => option.EnableEndpointRouting = false);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            if (env.IsDevelopment())
+            var environmentUrl = Environment.GetEnvironmentVariable("DirectScaleServiceUrl");
+            if (environmentUrl != null)
             {
-                app.UseDeveloperExceptionPage();
+                var serverUrl = environmentUrl.Replace("https://vidafy.corpadmin.", "");
+                var appendUrl = @" http://"+ serverUrl + " " + "https://" + serverUrl + " " + "http://*." + serverUrl + " " + "https://*." + serverUrl;
+
+                var csPolicy = "frame-ancestors https://code.jquery.com https://cdn.jsdelivr.net https://maxcdn.bootstrapcdn.com" + appendUrl + ";";
+                app.UseRequestLocalization();
+
+                if (env.IsDevelopment())
+                {
+                    app.UseDeveloperExceptionPage();
+                }
+                else
+                {
+                    app.UseExceptionHandler("/Home/Error");
+                    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+                    app.UseHsts();
+                }
+
+                //Configure Cors
+                app.UseRouting();
+
+                app.UseCors("CorsPolicy");
+                app.UseHttpsRedirection();
+
+                app.UseStaticFiles(new StaticFileOptions
+                {
+                    OnPrepareResponse = ctx =>
+                    {
+                        ctx.Context.Response.Headers.Add("Access-Control-Allow-Origin", "*");
+                    }
+                });
+
+                app.UseStaticFiles();
+                app.UseAuthorization();
+
+                //DS
+                app.UseDirectScale();
+                app.Use(async (context, next) =>
+                {
+                    context.Response.Headers.Add("Content-Security-Policy", csPolicy);
+                    context.Response.Headers.Add("Access-Control-Allow-Origin", "*");
+                    await next();
+                });
             }
-            else
-            {
-                app.UseExceptionHandler("/Home/Error");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-                app.UseHsts();
-            }
-
-            //Configure Cors
-            app.UseCors(builder => builder
-                .AllowAnyOrigin()
-                .AllowAnyHeader()
-                .AllowAnyMethod());
-
-            app.UseHttpsRedirection();
-            app.UseStaticFiles();
-
-            app.UseRouting();
-
-            app.UseAuthorization();
-
-            //DS
-            app.UseDirectScale();
 
             //Swagger
             app.UseSwagger();
@@ -160,6 +221,7 @@ namespace WebExtension
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
             });
+            app.UseMvc();
         }
     }
     internal class WebExtensionTokenProvider : ITokenProvider

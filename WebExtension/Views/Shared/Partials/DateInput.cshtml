@@ -1,0 +1,303 @@
+﻿@*http://www.daterangepicker.com/*@
+@{
+    var type = Model.Type;
+    var ID = Model.Id;// "DateInput";
+    var realBegDate = Model.BegDate;
+    var realEndDate = Model.EndDate;
+    var timePicker = Model.IsTimePicker;
+    var itemClass = Model.Class;
+    var itemStyle = Model.Style;
+    var itemName = Model.Name;
+    var itemEndName = Model.EndName;
+    var format = Model.Format;
+    var OnChange = Model.OnChange;
+    var opens = Model.Opens; // right , left, or center.
+    var drops = Model.Drops; // down or up.
+    var linkedCalendars = Model.LinkedCalendars;
+    var autoApply = Model.AutoApply;
+    var handleID = Model.Handle;
+
+    if (string.IsNullOrWhiteSpace(handleID))
+    {
+        handleID = ID;
+    }
+
+    var IsRange = (type == "range");
+
+    var ID__BEG = $"{ID}__BEG";
+    var ID__END = $"{ID}__END";
+
+}
+
+<style>
+    .dateInputCtl:hover {
+        background-color: white !important;
+    }
+
+    .dropdownCaret {
+        background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABoAAAAPCAMAAADNjy/UAAAAHlBMVEWCkqKDk6OJmKeeqreos7+qtcD09ff3+Pn+/v7///+3ssFLAAAAPElEQVR42sXQKxIAMQiDYZ6Bvf+FV8TR1rY45jP/RL7jXSfP5tfpg8qyKVaDaENINMqaAY1Q7Ashgndr/GJLDRU/4pTLAAAAAElFTkSuQmCC);
+        background-repeat: no-repeat;
+        background-position-x: right;
+        background-position-y: center;
+        display: inline-block;
+        height: 14px;
+        width: 24px;
+        position: relative;
+        top: 3px;
+        left: 8px;
+    }
+</style>
+
+@if (type == "range")
+{
+    <script type="text/javascript">
+
+        function @(ID)_SetValue(begin, end)
+        {
+            if ("undefined" === typeof end) {
+                end = begin;
+            }
+
+            $('#@(ID)').data('daterangepicker').setStartDate(begin);
+            $('#@(ID)').data('daterangepicker').setEndDate(end);
+
+            var start = moment(begin);
+            var end = moment(end);
+
+            $('#@(ID) span').html(start.format('MMMM D, YYYY'));
+            $('#@(ID)__BEG').val(start.format('M/D/YYYY'));
+            $('#@(ID)__END').val(end.format('M/D/YYYY'));
+        }
+
+        $(function(){
+
+            var start = moment('@realBegDate');
+            var end = moment('@realEndDate');
+
+
+            $('#@ID span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+            $('#@ID__BEG').val(start.format('M/D/YYYY'));
+            $('#@ID__END').val(end.format('M/D/YYYY'));
+
+            function cb(start, end) {
+                $('#@ID span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+
+                $('#@ID__BEG').val(start.format('M/D/YYYY'));
+                $('#@ID__END').val(end.format('M/D/YYYY'));
+
+                @Html.Raw(OnChange)
+            }
+
+          $('#@ID').daterangepicker({
+            ranges: {
+              'Today': [moment(), moment()],
+              'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+              'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+              'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+              'This Month': [moment().startOf('month'), moment().endOf('month')],
+              'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+            },
+            "linkedCalendars": @linkedCalendars,
+            "autoApply": @autoApply,
+            "alwaysShowCalendars": false,
+            "startDate": "@realBegDate",
+            "endDate": "@realEndDate",
+            "opens": "@opens",
+            "drops": "@drops"
+          }, cb);
+        });
+    </script>
+
+    <div id="@ID" class="dateInputCtl @itemClass" style="@itemStyle">
+        <i class="bi bi-calendar3 mr-1"></i>
+        <span class="hideSmall"></span><div class="dropdownCaret hideSmall"></div>
+    </div>
+
+    <input type="hidden" id="@ID__BEG" name="@itemName" value="@realBegDate">
+    <input type="hidden" id="@ID__END" name="@itemEndName" value="@realEndDate" />
+}
+else if (type == "futurerange")
+{
+    <script type="text/javascript">
+
+        function @(ID)_SetValue(begin, end)
+        {
+            if ("undefined" === typeof end) {
+                end = begin;
+            }
+
+            $('#@(ID)').data('daterangepicker').setStartDate(begin);
+            $('#@(ID)').data('daterangepicker').setEndDate(end);
+
+            var start = moment(begin);
+            var end = moment(end);
+
+            $('#@(ID) span').html(start.format('MMMM D, YYYY'));
+            $('#@(ID)__BEG').val(start.format('M/D/YYYY'));
+            $('#@(ID)__END').val(end.format('M/D/YYYY'));
+        }
+
+        $(function(){
+
+            var start = moment('@realBegDate');
+            var end = moment('@realEndDate');
+
+
+            $('#@ID span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+            $('#@ID__BEG').val(start.format('M/D/YYYY'));
+            $('#@ID__END').val(end.format('M/D/YYYY'));
+
+            function cb(start, end) {
+                $('#@ID span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+
+                $('#@ID__BEG').val(start.format('M/D/YYYY'));
+                $('#@ID__END').val(end.format('M/D/YYYY'));
+
+                @Html.Raw(OnChange)
+            }
+
+          $('#@ID').daterangepicker({
+            ranges: {
+                'Today': [moment(), moment()],
+                'Tomorrow': [moment(), moment().add(1, 'days')],
+                'Next 7 Days': [moment(), moment().add(6, 'days')],
+                'Next 30 Days': [moment(), moment().add(29, 'days')],
+                'This Month': [moment(), moment().endOf('month')]
+            },
+            "linkedCalendars": @linkedCalendars,
+            "autoApply": @autoApply,
+            "alwaysShowCalendars": false,
+            "minDate":"@realBegDate",
+            "startDate": "@realBegDate",
+            "endDate": "@realEndDate",
+            "opens": "@opens",
+            "drops": "@drops"
+          }, cb);
+        });
+    </script>
+
+    <div id="@ID" class="dateInputCtl @itemClass" style="@itemStyle">
+        <i class="bi bi-calendar3 mr-1"></i>
+        <span class="hideSmall"></span><div class="dropdownCaret hideSmall"></div>
+    </div>
+
+    <input type="hidden" id="@ID__BEG" name="@itemName" value="@realBegDate">
+    <input type="hidden" id="@ID__END" name="@itemEndName" value="@realEndDate" />
+}
+else if (type == "single")
+{
+    <script type="text/javascript">
+
+        function @(ID)_SetValue(begin, end)
+        {
+            if ("undefined" === typeof end) {
+                end = begin;
+            }
+
+            $('#@(ID)').data('daterangepicker').setStartDate(begin);
+            $('#@(ID)').data('daterangepicker').setEndDate(end);
+
+            var start = moment(begin);
+
+            $('#@(ID) span').html(start.format('MMMM D, YYYY'));
+            $('#@(ID)__BEG').val(start.format('M/D/YYYY'));
+            $('#@(ID)__END').val(start.format('M/D/YYYY'));
+        }
+
+        $(function(){
+
+            var start = moment('@realBegDate');
+            var end = moment('@realEndDate');
+
+            $('#@ID span').html(start.format('MMMM D, YYYY'));
+            $('#@ID__BEG').val(start.format('M/D/YYYY'));
+            $('#@ID__END').val(end.format('M/D/YYYY'));
+
+            function cb(start, end) {
+                $('#@(ID) span').html(start.format('MMMM D, YYYY'));
+                $('#@ID__BEG').val(start.format('M/D/YYYY'));
+                $('#@ID__END').val(end.format('M/D/YYYY'));
+
+                @Html.Raw(OnChange)
+            }
+
+            $('#@ID').daterangepicker({
+                "autoApply": @autoApply,
+                "singleDatePicker": true,
+                "maxSpan": {
+                    "days": 1
+                },
+                "startDate": "@realBegDate",
+                "endDate": "@realEndDate",
+                "opens": "@opens",
+                "drops": "@drops"
+            }, cb);
+        });
+
+    </script>
+
+    <div id="@ID" class="dateInputCtl @itemClass" style="@itemStyle">
+        <i class="bi bi-calendar3 mr-1"></i>
+        <span class="hideSmall"></span><div class="dropdownCaret hideSmall"></div>
+    </div>
+
+    <input type="hidden" id="@ID__BEG" name="@itemName" value="@realBegDate">
+    <input type="hidden" id="@ID__END" name="@itemEndName" value="@realEndDate" />
+}
+else if (type == "singledateinput")
+{
+    <script type="text/javascript">
+
+        function @(ID)_SetValue(begin, end)
+        {
+            if ("undefined" === typeof end) {
+                end = begin;
+            }
+
+            $('#@(ID)').data('daterangepicker').setStartDate(begin);
+            $('#@(ID)').data('daterangepicker').setEndDate(end);
+
+            var start = moment(begin);
+
+            $('#@(ID) span').html(start.format('@format'));
+            $('#@(ID)__BEG').val(start.format('M/D/YYYY'));
+        }
+
+        $(function(){
+            var start = moment('@realBegDate');
+            var end = moment('@realEndDate');
+
+            $('#@ID span').html(start.format('@format'));
+            $('#@ID__BEG').val(start.format('M/D/YYYY'));
+
+            function cb(start, end) {
+                $('#@ID span').html(start.format('@format'));
+                $('#@ID__BEG').val(start.format('M/D/YYYY'));
+
+                @Html.Raw(OnChange)
+            }
+
+            $('#@ID').daterangepicker({
+            "singleDatePicker": true,
+            "timePicker": @timePicker,
+            "maxSpan": {
+                "days": 1
+            },
+            "locale": {
+                "format": '@format'
+            },
+            "startDate": "@realBegDate",
+            "endDate": "@realEndDate",
+            "opens": "@opens",
+            "drops": "@drops"
+            }, cb);
+        });
+
+    </script>
+
+    <div id="@ID" class="dateInputCtl @itemClass" style="@itemStyle">
+        <span></span><i class="bi bi-calendar3 pull-right"></i>
+        <i class="bi bi-calendar3 mr-1"></i>
+    </div>
+    <input type="hidden" id="@ID__BEG" name="@itemName" value="@realBegDate">
+}
