@@ -12,7 +12,7 @@ namespace WebExtension.Services
     public interface IOrderWebService
     {
         Task<List<OrderViewModel>> GetFilteredOrders(string search, DateTime beginDate, DateTime endDate);
-        Task<List<Bom>> BillOfMaterialItemsDetails(int itemId);
+        Task<List<BillOfMaterialItem>> BillOfMaterialItemsDetails(int itemId);
     }
     public class OrderWebService : IOrderWebService
     {
@@ -53,7 +53,7 @@ namespace WebExtension.Services
             return new List<OrderViewModel>();
         }
 
-        public async Task<List<Bom>> BillOfMaterialItemsDetails(int itemId)
+        public async Task<List<BillOfMaterialItem>> BillOfMaterialItemsDetails(int itemId)
         {
             return _orderWebRepository.billOfMaterialItems(itemId);
         }
