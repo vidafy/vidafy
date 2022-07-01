@@ -85,9 +85,6 @@ namespace WebExtension
 
                 //ZiplingoEngagementSetting page
                 c.AddCustomPage(Menu.Settings, "Ziplingo Engagement Setting", "/CustomPage/ZiplingoEngagementSetting");
-
-                //EWalletSettings
-                c.AddCustomPage(Menu.Settings, "EWallet Settings", "/CustomPage/EWalletSettings");
             });
 
             //Repositories

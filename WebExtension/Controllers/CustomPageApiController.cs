@@ -21,21 +21,6 @@ namespace WebExtension.Controllers
         }
 
         [HttpPost]
-        [Route("UpdateEwalletSettings")]
-        public IActionResult UpdateEWalletSettings()
-        {
-            try
-            {
-
-                return Ok();
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex);
-            }
-        }
-
-        [HttpPost]
         [Route("UpdateZiplingoEngagementSettings")]
         public IActionResult UpdateZiplingoEngagementSettings(ZiplingoEngagementSettingsRequest request)
         {
