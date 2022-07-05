@@ -34,7 +34,7 @@ namespace WebExtension.Controllers
             ViewData["getOrders"] = getOrders;
             ViewData["begDate"] = begDate;
             ViewData["endDate"] = endDate;            
-            return await Task.Run(() => View());
+            return await Task.Run(View);
         }
         public async Task<IActionResult> Invoice([FromQuery] int orderNumber)
         {
@@ -46,9 +46,9 @@ namespace WebExtension.Controllers
             }
 
             Title = $"Order Invoice: #{invoiceData.OrderNumber} - {invoiceData.FirstLastName} - {invoiceData.Date}";
-            ViewData["InvoiceData"] = (WebExtension.Views.Model.Invoice)invoiceData;
+            ViewData["InvoiceData"] = invoiceData;
 
-            return await Task.Run(() => View());
+            return await Task.Run(View);
         }
 
         public async Task<IActionResult> InvoiceAll([FromQuery] DateTime begDate, 
