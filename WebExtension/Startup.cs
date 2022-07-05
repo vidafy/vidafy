@@ -165,7 +165,7 @@ namespace WebExtension
                 var serverUrl = environmentUrl.Replace("https://vidafy.corpadmin.", "");
                 var appendUrl = @" http://"+ serverUrl + " " + "https://" + serverUrl + " " + "http://*." + serverUrl + " " + "https://*." + serverUrl;
 
-                var csPolicy = "frame-ancestors https://code.jquery.com https://cdn.jsdelivr.net https://maxcdn.bootstrapcdn.com" + appendUrl + ";";
+                var csPolicy = "frame-ancestors https://code.jquery.com https://cdn.jsdelivr.net https://maxcdn.bootstrapcdn.com https://vidafy.corpadmin.directscale.com https://vidafy.corpadmin.directscalestage.com" + appendUrl + ";";
                 app.UseRequestLocalization();
 
                 if (env.IsDevelopment())
