@@ -1,5 +1,4 @@
-﻿using DirectScale.Disco.Extension.Middleware;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System.Diagnostics;
 using WebExtension.Models;
@@ -19,7 +18,7 @@ namespace WebExtension.Controllers
         {
             return View();
         }
-        [ExtensionAuthorize]
+
         public IActionResult Privacy()
         {
             return View();

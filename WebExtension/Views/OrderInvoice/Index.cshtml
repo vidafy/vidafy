@@ -126,21 +126,21 @@
                 <th></th>
             </tr>
 
-            @foreach (var O in orders)
+            @foreach (var o in orders)
             {
                 <tr>
-                    <td>@(O.OrderDate.ToString("d"))</td>
-                    <td>@(O.OrderNumber)</td>
-                    <td>@(O.Name)</td>
+                    <td>@(o.OrderDate.ToString("d"))</td>
+                    <td>@(o.OrderNumber)</td>
+                    <td>@(o.Name)</td>
                     <td>
-                        @(O.BillAddress.AddressLine1), @(O.BillAddress.City),
-                        @(OrderService.GetCountryByCode(O.BillAddress.CountryCode)),
-                        @(O.BillAddress.PostalCode)
+                        @(o.BillAddress.AddressLine1), @(o.BillAddress.City),
+                        @(OrderService.GetCountryByCode(o.BillAddress.CountryCode)),
+                        @(o.BillAddress.PostalCode)
                     </td>
-                    <td>@(O.BillAddress.CountryCode)</td>
-                    <td>@(O.SpecialInstructions)</td>
+                    <td>@(o.BillAddress.CountryCode)</td>
+                    <td>@(o.SpecialInstructions)</td>
                     <td>
-                        <button class="btn btn-primary" type="button" onclick="PrintPage('/OrderInvoice/Invoice?OrderNumber=@(O.OrderNumber)')">Print</button>
+                        <button class="btn btn-primary" type="button" onclick="PrintPage('/OrderInvoice/Invoice?OrderNumber=@(o.OrderNumber)')">Print</button>
                     </td>
                 </tr>
             }
