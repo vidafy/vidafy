@@ -1,0 +1,17 @@
+﻿@using DirectScale.Disco.Extension.Services
+@using WebExtension.Services
+@using WebExtension.Views.Model
+@inject OrderWebService OrderService
+@model Invoice
+@{
+    ViewBag.PageTitle = "Invoice";
+    Layout = "~/Views/Shared/_ReportPageBase.cshtml";
+
+    var invoice = ViewData["InvoiceData"]
+        as WebExtension.Views.Model.Invoice;
+}
+
+<link href="/Styles/print.css" rel="stylesheet" />
+<h2 class="center">Shipping Invoice</h2>
+<partial name="_InvoicePartial" model="invoice" />
+

@@ -1,0 +1,327 @@
+﻿#results span {
+    background-color: lightblue;
+    font-weight: bold;
+    font-family: 'Verdana';
+}
+
+.api-list-group {
+    -webkit-padding-start: 0;
+}
+
+.api-list-group li {
+    list-style: none;
+    padding: 5px 7px;
+    font-size: 13px;
+    font-family: Verdana;
+    cursor: pointer;
+
+    /* these four properties are to handle ellipsis for long API names */
+    border: 1px solid transparent;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.api-list-group li:hover {
+    border: 1px solid silver;
+    border-radius: 7px;
+}
+
+.active-api {
+    background: lightblue;
+    border-radius: 7px;
+    font-weight: bold;
+    border: 1px solid silver;
+}
+
+.fl-left {
+    float: left;
+}
+
+.fl-right {
+    float: right;
+    line-height: 35px;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.pos-btn {
+    position: relative;
+    top: 5px;
+    left: -3px;
+}
+
+.query-action-bar {
+    padding: 15px 0;
+    min-height: 50px;
+}
+
+.query-action-bar button {
+    margin-left: 10px;
+}
+
+.tb-container {
+    /*        padding: 10px 0;*/
+    display: table-row;
+}
+
+.tb-container div {
+    display: table-cell;
+    padding: 9px 12px;
+    cursor: pointer;
+}
+
+.tb-active {
+    border-top: 1px solid silver;
+    border-left: 1px solid silver;
+    border-right: 1px solid silver;
+    border-bottom: 1px solid white;
+    border-radius: 4px 4px 0 0;
+    position: relative;
+    bottom: -1px;
+}
+
+.results-panel {
+    padding: 15px;
+    border: 1px solid silver;
+    border-radius: 0 4px 4px 4px;
+}
+
+.shrink-button {
+    padding: 3px 10px;
+}
+
+.small-padding {
+    padding: 5px;
+}
+
+#searchTextbox {
+    width: 100%;
+}
+
+#selectedAPIPanel {
+    display: none;
+}
+
+#selectedAPIResultsPanel {
+    display: none;
+}
+
+#txtJSON {
+    width: 100%;
+    min-height: 400px;
+    font-family: monospace;
+}
+
+#tbRecentPanel {
+    display: none;
+}
+
+#tbSavedPanel {
+    display: none;
+}
+
+#searchTextbox {
+    margin-bottom: 5px;
+    padding: 0 5px;
+}
+
+#tbResultsPanel {
+    display: none;
+    min-height: 400px;
+}
+
+#jsonResults {
+    display: none;
+    background-color: transparent;
+    border: 0;
+}
+
+#resultJSONTemplate {
+    background-color: transparent;
+    border: 0;
+}
+
+#selectedAPIName {
+    float: left;
+    line-height: 28px;
+    padding-left: 10px;
+}
+
+#results {
+    margin-top: 5px;
+}
+
+#resultsError {
+    display: none;
+    font-size: 15px;
+    font-weight: bold;
+    color: red;
+}
+
+#resultsLoader {
+    display: none;
+}
+
+#btnToggleExpand {
+    display: none;
+}
+
+.expand-collapse {
+    display: none;
+}
+
+/* Spinner CSS */
+.loader,
+.loader:before,
+.loader:after {
+    background: #c0c0c0;
+    -webkit-animation: load1 1s infinite ease-in-out;
+    animation: load1 1s infinite ease-in-out;
+    width: 1em;
+    height: 4em;
+}
+.loader {
+    color: #c0c0c0;
+    text-indent: -9999em;
+    margin: 88px auto;
+    position: relative;
+    font-size: 11px;
+    -webkit-transform: translateZ(0);
+    -ms-transform: translateZ(0);
+    transform: translateZ(0);
+    -webkit-animation-delay: -0.16s;
+    animation-delay: -0.16s;
+}
+.loader:before,
+.loader:after {
+    position: absolute;
+    top: 0;
+    content: '';
+}
+.loader:before {
+    left: -1.5em;
+    -webkit-animation-delay: -0.32s;
+    animation-delay: -0.32s;
+}
+.loader:after {
+    left: 1.5em;
+}
+@-webkit-keyframes load1 {
+    0%,
+    80%,
+    100% {
+        box-shadow: 0 0;
+        height: 4em;
+    }
+    40% {
+        box-shadow: 0 -2em;
+        height: 5em;
+    }
+}
+@keyframes load1 {
+    0%,
+    80%,
+    100% {
+        box-shadow: 0 0;
+        height: 4em;
+    }
+    40% {
+        box-shadow: 0 -2em;
+        height: 5em;
+    }
+}
+
+/* End - Spinner CSS*/
+
+/* plus/minus icon */
+
+.plus-to-minus {
+    position: relative;
+    width: 16px;
+    height: 16px;
+    /* Vertical line */
+    /* horizontal line */
+}
+
+.plus-to-minus:hover {
+    cursor: pointer;
+}
+
+.plus-to-minus:before, .plus-to-minus:after {
+    content: "";
+    position: absolute;
+    background-color: silver;
+    transition: transform 0.25s ease-out;
+}
+
+.plus-to-minus:before {
+    top: 0;
+    left: 50%;
+    width: 2px;
+    height: 100%;
+    margin-left: -1px;
+}
+
+.plus-to-minus:after {
+    top: 50%;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    margin-top: -1px;
+}
+
+.minus-to-plus:hover {
+    cursor: pointer;
+}
+
+.minus-to-plus {
+    position: relative;
+    width: 16px;
+    height: 16px;
+}
+
+.minus-to-plus:before, .minus-to-plus:after {
+    content: "";
+    position: absolute;
+    background-color: silver;
+    transition: transform 0.25s ease-out;
+}
+
+.minus-to-plus:before {
+    top: 50%;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    margin-top: -1px;
+}
+
+.minus-to-plus:after {
+    top: 50%;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    margin-top: -1px;
+}
+
+/* uncomment to add animation
+
+
+.plus-to-minus:hover:before {
+    transform: rotate(90deg);
+}
+.plus-to-minus:hover:after {
+    transform: rotate(180deg);
+}
+
+
+
+.minus-to-plus:hover:before {
+    transform: rotate(90deg);
+}
+.minus-to-plus:hover:after {
+    transform: rotate(180deg);
+}
+*/
+
+/* End - plus/minus icon */
