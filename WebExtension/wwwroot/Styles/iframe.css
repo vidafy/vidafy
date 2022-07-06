@@ -1,0 +1,66 @@
+﻿.table-hover > tbody > tr:hover > td,
+.table-hover > tbody > tr:hover > th {
+    cursor: pointer;
+}
+body {
+    background-color: #ffffff !important;
+}
+.container {
+    padding-top: 15px;
+    padding-bottom: 15px;
+}
+
+#navOpener, #topHeader {
+    display: none;
+}
+
+
+.cardIcon {
+    background-image: url('/Images/credit-card-icon.png');
+    width: 44px;
+    height: 26px;
+    display: inline-block;
+    margin: 0 5px;
+    margin-bottom: -5px;
+}
+
+.check {
+    display: none;
+}
+
+.cash {
+    display: none;
+}
+
+.visa {
+    background-image: url('/Images/CreditCards/visa-card-icon.png?width=44&height=26');
+}
+
+.mastercard {
+    background-image: url('/Images/CreditCards/mastercard.png?width=44&height=26');
+}
+
+.bank {
+    background-image: url('/Images/CreditCards/money.png?width=44&height=26');
+}
+
+.americanexpress {
+    background-image: url('/Images/CreditCards/american-express-card-icon.png?width=44&height=26');
+}
+
+.discover {
+    background-image: url('/Images/CreditCards/discover-card-icon.png?width=44&height=26');
+}
+
+.paypal {
+    background-image: url('/Images/CreditCards/paypal-icon.png?width=44&height=28');
+}
+
+.pmSelect {
+    vertical-align: top;
+    margin-top: 15px;
+}
+
+#CMSNavSlider {
+    display: none;
+}

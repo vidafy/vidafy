@@ -1,0 +1,29 @@
+﻿@using DirectScale.Disco.Extension.Services
+@using WebExtension.Services
+@using WebExtension.Views.Model
+@inject OrderWebService OrderService
+
+@{
+    ViewBag.PageTitle = "Invoice";
+    Layout = "~/Views/Shared/_ReportPageBase.cshtml";
+    List<Invoice> invoice = (List<Invoice>)ViewData["InvoiceDataAll"];
+    var itemCount = invoice.Count;
+    var counter = 0;
+}
+
+<link href="/Styles/print.css" rel="stylesheet" />
+<h2 class="center">Shipping Invoices</h2>
+<div class="container">
+
+    @foreach (Invoice invoiceitem in invoice)
+    {
+        counter = counter + 1;
+        <partial name="_InvoicePartial" model="invoiceitem" />
+        if (counter < itemCount)
+        {
+            <p style="page-break-before: always"></p>
+        }
+
+    }
+</div>
+
