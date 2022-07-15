@@ -60,13 +60,14 @@ thead {
 
 .row {
     width: 350px;
-    font-size: 10pt;
+    font-size: 12px;
     font-family: 'Roboto', sans-serif;
 }
 
     .row .heading {
         font-weight: bold;
         float: left;
+        font-size:12px;
     }
 
     .row .headingprominent {
