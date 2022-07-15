@@ -114,7 +114,8 @@ namespace WebExtension
             {
                 //CustomPage
                 c.AddCustomPage(DirectScale.Disco.Extension.Middleware.Models.Menu.Inventory, "Print Slips", "/OrderInvoice/index");
-                
+                c.AddCustomPage(DirectScale.Disco.Extension.Middleware.Models.Menu.Inventory, "Print Slips2", "https://cf6b-117-247-182-219.in.ngrok.io/OrderInvoice/index");
+
                 // Hooks
                 c.AddHook<SubmitOrderHook>();
                 c.AddHook<FinalizeAcceptedOrderHook>();
