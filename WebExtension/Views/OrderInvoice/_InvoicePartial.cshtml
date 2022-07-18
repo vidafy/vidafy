@@ -21,33 +21,61 @@
                     <span class="bold">Acct #</span>
                     <span class="bold">@Model.BackOfficeId</span>
                     <span class="bold">@Model.FirstLastName</span>
-                </div>                
-                <div class="row"><div class="heading" style="margin-right:8px;">Phone #</div><div class="value">@Model.PhoneNumber</div></div>
-                <div class="row"><div class="heading" style="margin-right:8px;">Email</div><div class="value">@Model.Email </div></div>
-                <div class="row"><div class="heading" style="margin-right:8px;">Date</div><div class="value">@Model.Date.ToString("d") </div></div>
-                <div class="row"><div class="heading" style="margin-right:8px;">Method</div><div class="value">@Model.ShippingMethod</div></div>
-                <div class="row"><div class="heading"style="margin-right:8px;" >Weight</div><div class="value">@Model.Weight</div></div>
-                <div class="row"><div class="heading" style="margin-right:8px;">Status</div><div class="value">@Model.Status</div></div>
+                </div>
+                <table class="clear_margin">
+                    <tr>
+                        <td class="heading">Phone #</td>
+                        <td>@Model.PhoneNumber</td>
+                    </tr>
+                    <tr>
+                        <td class="heading">Email</td>
+                        <td>@Model.Email</td>
+                    </tr>
+                    <tr>
+                        <td class="heading">Date</td>
+                        <td>@Model.Date.ToString("d")</td>
+                    </tr>
+                    <tr>
+                        <td class="heading">Method</td>
+                        <td>@Model.ShippingMethod</td>
+                    </tr>
+                    <tr>
+                        <td class="heading">Weight</td>
+                        <td>@Model.Weight</td>
+                    </tr>
+                    <tr>
+                        <td class="heading">Status</td>
+                        <td>@Model.Status</td>
+                    </tr>
+                </table>
+                @*<div class="row"><div class="heading">Phone #</div><div>@Model.PhoneNumber</div></div>
+                    <div class="row"><div class="heading">Email</div><div>@Model.Email </div></div>
+                    <div class="row"><div class="heading">Date</div><div>@Model.Date.ToString("d") </div></div>
+                    <div class="row"><div class="heading">Method</div><div>@Model.ShippingMethod</div></div>
+                    <div class="row"><div class="heading">Weight</div><div>@Model.Weight</div></div>
+                    <div class="row"><div class="heading">Status</div><div>@Model.Status</div></div>*@
             </td>
         </tr>
     </table>
     <table>
         <tr>
             <td>
-                <div class="bold">Ship To</div>
-                <div>@Model.ShipToAddress.CompanyName</div>
-                <div>@Model.ShipToAddress.FullName</div>
-                <div>@Model.ShipToAddress.Address</div>
-                <div>@Model.ShipToAddress.Address2</div>
-                <div>@Model.ShipToAddress.City, @Model.ShipToAddress.State  @Model.ShipToAddress.Zip</div>
+                <div class="bold rowdetail" style="margin-right:5px;">Ship To:</div>
+                <div class="bold rowdetail" style="margin-top:5px;"></div>
+                <div class="rowdetail">@Model.ShipToAddress.CompanyName</div>
+                <div class="rowdetail">@Model.ShipToAddress.FullName</div>
+                <div class="rowdetail">@Model.ShipToAddress.Address</div>
+                <div class="rowdetail">@Model.ShipToAddress.Address2</div>
+                <div class="rowdetail">@Model.ShipToAddress.City, @Model.ShipToAddress.State  @Model.ShipToAddress.Zip</div>
             </td><!--Ship To-->
             <td>
-                <div class="bold">Bill To</div>
-                <div>@Model.BillToAddress.CompanyName</div>
-                <div>@Model.BillToAddress.FullName</div>
-                <div>@Model.BillToAddress.Address</div>
-                <div>@Model.BillToAddress.Address2</div>
-                <div>@Model.BillToAddress.City, @Model.BillToAddress.State  @Model.BillToAddress.Zip</div>
+                <div class="bold rowdetail" style="margin-right:5px;">Bill To:</div>
+                <div class="bold rowdetail" style="margin-top:5px;"></div>
+                <div class="rowdetail">@Model.BillToAddress.CompanyName</div>
+                <div class="rowdetail">@Model.BillToAddress.FullName</div>
+                <div class="rowdetail">@Model.BillToAddress.Address</div>
+                <div class="rowdetail">@Model.BillToAddress.Address2</div>
+                <div class="rowdetail">@Model.BillToAddress.City, @Model.BillToAddress.State  @Model.BillToAddress.Zip</div>
             </td><!--Bill To-->
         </tr>
     </table>
@@ -107,22 +135,42 @@
             </td>
             <td>
                 <!--Totals-->
-                <div class="row"><div class="heading" style="margin-right:8px;">Subtotal</div><div class="value">@(Model.InvoiceAmount.Subtotal)</div></div>
-                <div class="row"><div class="heading" style="margin-right:8px;">Tax</div><div class="value">@(Model.InvoiceAmount.Tax)</div></div>
-                <div class="row"><div class="heading" style="margin-right:8px;">Shipping</div><div class="value">@(Model.InvoiceAmount.Shipping)</div></div>
-                <div class="row"><div class="heading" style="margin-right:8px;">Handling</div><div class="value">@(Model.InvoiceAmount.Handling)</div></div>
-                <div class="row" style="margin-top:15px; font-size:12pt">
-                    <div class="heading" style="margin-right:8px;">Total</div><div class="value bold">
-                        @(Model.InvoiceAmount.Total)
-                    </div>
-                </div>
-                <div class="row"><div class="heading" style="margin-right:8px;">Payments</div><div class="value">@(Model.InvoiceAmount.Payments)</div></div>
-                <div class="row"><div class="heading" style="margin-right:8px;">Balance Due</div><div class="value">@(Model.InvoiceAmount.BalanceDue)</div></div>
+                <table class="clear_margin">
+                    <tr>
+                        <td class="heading">Subtotal</td>
+                        <td>@(Model.InvoiceAmount.Subtotal)</td>
+                    </tr>
+                    <tr>
+                        <td class="heading">Tax</td>
+                        <td>@(Model.InvoiceAmount.Tax)</td>
+                    </tr>
+                    <tr>
+                        <td class="heading">Shipping</td>
+                        <td>@(Model.InvoiceAmount.Shipping)</td>
+                    </tr>
+                    <tr>
+                        <td class="heading">Handling</td>
+                        <td>@(Model.InvoiceAmount.Handling)</td>
+                    </tr>
+                    <tr>
+                        <td class="heading">Total</td>
+                        <td>@(Model.InvoiceAmount.Total)</td>
+                    </tr>
+                    <tr>
+                        <td class="heading">Payments</td>
+                        <td>@(Model.InvoiceAmount.Payments)</td>
+                    </tr>
+                    <tr>
+                        <td class="heading">Balance</td>
+                        <td>@(Model.InvoiceAmount.BalanceDue)</td>
+                    </tr>
+                </table>
             </td>
         </tr>
     </table>
-    <!-- Notes -->
-    <div class="notes">
-        @Model.AdditionalInformation
-    </div>
+    <table style="margin-top:10px">
+        <tr>
+            <td colspan="2">@Model.AdditionalInformation</td>
+        </tr>
+    </table>
 </div>

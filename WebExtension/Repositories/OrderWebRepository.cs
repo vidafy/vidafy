@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
+using WebExtension.Models;
 using WebExtension.Views.Model;
 
 namespace WebExtension.Repositories
@@ -13,7 +14,7 @@ namespace WebExtension.Repositories
     public interface IOrderWebRepository
     {
         List<int> GetFilteredOrderIds(string search, DateTime beginDate, DateTime endDate);
-        List<Bom> billOfMaterialItems(int itemId);
+        List<BillOfMaterialItem> billOfMaterialItems(int itemId);
         List<ActiveCountry> GetWarehouseItemDetails();
         Order[] GetShippableOrders(DateTime begin, DateTime end, object code, object name, object category);
         List<ActiveCountry> GetCountryNames();
@@ -157,7 +158,7 @@ namespace WebExtension.Repositories
             return sql;
         }
 
-        public  List<Bom> billOfMaterialItems(int itemId)
+        public  List<BillOfMaterialItem> billOfMaterialItems(int itemId)
         {
             using (var dbConnection = new SqlConnection( _dataService.GetClientConnectionString().Result))
             {
@@ -166,7 +167,7 @@ namespace WebExtension.Repositories
                 LEFT JOIN [dbo].[INV_LanguageValues] L ON L.[ItemID] = B.[ItemID] AND L.[LanguageCode] = 'en'
                 WHERE B.[ParentItemID] = @ItemId;";
 
-                return dbConnection.Query<Bom>(sql, new { ItemId = itemId }).ToList();
+                return dbConnection.Query<BillOfMaterialItem>(sql, new { ItemId = itemId }).ToList();
             }
         }
     }
