@@ -163,6 +163,7 @@ namespace WebExtension
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        //Cleanup for Refresh issue
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             var environmentUrl = Environment.GetEnvironmentVariable("DirectScaleServiceUrl");
