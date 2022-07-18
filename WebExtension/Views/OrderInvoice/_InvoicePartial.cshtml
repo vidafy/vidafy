@@ -60,8 +60,14 @@
     <table>
         <tr>
             <td>
-                <div class="bold rowdetail" style="margin-right:5px;">Ship To:</div>
-                <div class="bold rowdetail" style="margin-top:5px;"></div>
+                <div class="bold rowdetail">Ship To:</div>
+            </td>
+            <td>
+                <div class="bold rowdetail">Bill To:</div>
+            </td>
+        </tr>
+        <tr>
+            <td>
                 <div class="rowdetail">@Model.ShipToAddress.CompanyName</div>
                 <div class="rowdetail">@Model.ShipToAddress.FullName</div>
                 <div class="rowdetail">@Model.ShipToAddress.Address</div>
@@ -69,8 +75,6 @@
                 <div class="rowdetail">@Model.ShipToAddress.City, @Model.ShipToAddress.State  @Model.ShipToAddress.Zip</div>
             </td><!--Ship To-->
             <td>
-                <div class="bold rowdetail" style="margin-right:5px;">Bill To:</div>
-                <div class="bold rowdetail" style="margin-top:5px;"></div>
                 <div class="rowdetail">@Model.BillToAddress.CompanyName</div>
                 <div class="rowdetail">@Model.BillToAddress.FullName</div>
                 <div class="rowdetail">@Model.BillToAddress.Address</div>
@@ -161,7 +165,7 @@
                         <td>@(Model.InvoiceAmount.Payments)</td>
                     </tr>
                     <tr>
-                        <td class="heading">Balance</td>
+                        <td class="heading">Balance Due</td>
                         <td>@(Model.InvoiceAmount.BalanceDue)</td>
                     </tr>
                 </table>
