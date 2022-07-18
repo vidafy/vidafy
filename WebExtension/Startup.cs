@@ -2,9 +2,12 @@ using DirectScale.Disco.Extension.Middleware;
 using DirectScale.Disco.Extension.Middleware.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Newtonsoft.Json.Serialization;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using WebExtension.Helper;
@@ -101,13 +104,17 @@ namespace WebExtension
 
             //Remark This section before upload
 
-
+            services.AddMvc(setupAction => { setupAction.EnableEndpointRouting = false; }).AddJsonOptions(jsonOptions =>
+            {
+                jsonOptions.JsonSerializerOptions.PropertyNamingPolicy = null;
+            }).SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
 
             //DS
             services.AddDirectScale(c =>
             {
                 //CustomPage
                 c.AddCustomPage(DirectScale.Disco.Extension.Middleware.Models.Menu.Inventory, "Print Slips", "/OrderInvoice/index");
+                c.AddCustomPage(DirectScale.Disco.Extension.Middleware.Models.Menu.Inventory, "Print Slips2", "https://cf6b-117-247-182-219.in.ngrok.io/OrderInvoice/index");
 
                 // Hooks
                 c.AddHook<SubmitOrderHook>();
@@ -165,7 +172,7 @@ namespace WebExtension
                 var serverUrl = environmentUrl.Replace("https://vidafy.corpadmin.", "");
                 var appendUrl = @" http://"+ serverUrl + " " + "https://" + serverUrl + " " + "http://*." + serverUrl + " " + "https://*." + serverUrl;
 
-                var csPolicy = "frame-ancestors https://code.jquery.com https://cdn.jsdelivr.net https://maxcdn.bootstrapcdn.com https://vidafy.corpadmin.directscale.com https://vidafy.corpadmin.directscalestage.com" + appendUrl + ";";
+                var csPolicy = "frame-ancestors https://code.jquery.com https://cdn.jsdelivr.net https://maxcdn.bootstrapcdn.com https://vidafy.corpadmin.directscale.com https://vidafy.corpadmin.directscalestage.com https://6b27-117-247-182-219.in.ngrok.io https://localhost:44309/" + appendUrl + ";";
                 app.UseRequestLocalization();
 
                 if (env.IsDevelopment())
