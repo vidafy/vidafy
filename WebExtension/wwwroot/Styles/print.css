@@ -41,7 +41,7 @@ table {
 
 td {
     vertical-align: top;
-    font-size: 10pt;
+    font-size: 15px;
     font-family: 'Roboto', sans-serif;
     border-spacing: 0;
     border-collapse: collapse;
@@ -50,7 +50,7 @@ td {
 thead {
     background-color: #E6E6E6 !important;
     font-weight: bold;
-    font-size: 10pt;
+    font-size: 16px;
     font-family: 'Roboto', sans-serif;
 }
 
@@ -60,20 +60,20 @@ thead {
 
 .row {
     width: 350px;
-    font-size: 12px;
+    font-size: 15px;
     font-family: 'Roboto', sans-serif;
 }
 
     .row .heading {
         font-weight: bold;
         float: left;
-        font-size:12px;
+        font-size:16px;
     }
 
     .rowdetail{
         font-weight: bold;
         float: left;
-        font-size: 12px;
+        font-size: 15px;
     }
 
     .row .headingprominent {
@@ -108,14 +108,14 @@ thead {
 
 .container {
     width: 720px;
-    font-size: 12px;
+    font-size: 15px;
 }
 
 .item td {
     line-height: 24px;
     border-collapse: collapse;
     border-top: 1px solid #fff;
-    font-size: 12px;
+    font-size: 15px;
     /* border-bottom: 1px solid #fff; */
 }
 
