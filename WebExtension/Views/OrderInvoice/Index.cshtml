@@ -70,7 +70,7 @@
             <div class="col-sm-4">
                 <input type="hidden" name="id" value="Inventory/PackingSlips" />
                 <input type="hidden" id="Category" value="Warehouse" name="Category">
-                <input type="hidden" id="Code" value="@(code)" name="Code">
+                <input type="hidden" id="Code" value="@ViewBag.Codeval" name="Code">
                 <input type="hidden" id="CatName" value="@(catName)" name="CatName">
                 <input type="hidden" id="GetOrders" value="@(getOrders)" name="GetOrders">
                 <input type="hidden" id="printOption" value="0" name="printOption">
@@ -200,15 +200,6 @@
             var endDate = '@endDate.ToString("M/d/yyyy")';
             PrintPage('/OrderInvoice/InvoiceAll?begDate=' + encodeURIComponent(begDate) + '&endDate=' + encodeURIComponent(endDate) + '&code=@code' + '&catName=@catName' +'&category=@category');
         });
-
-    function SetCategoy(code) {
-        $("#GetOrders").val(" ");
-        $('#spanCat').text(code);
-        $('#CatName').val("All");
-        $('#Code').val("0");
-        $('#Category').val(code);
-        $('#SearchFrm').submit();
-    }
 
     function SetCategoryItems(code, name) {
         $('#CatName').val(name);

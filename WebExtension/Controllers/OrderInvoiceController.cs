@@ -31,7 +31,7 @@ namespace WebExtension.Controllers
             ViewData["category"] = category;
             ViewData["catName"] = catName; 
             ViewData["code"] = code;
-            ViewBag.Codeval = code;
+            ViewBag.Codeval = code??"0";
             ViewData["getOrders"] = getOrders;
             ViewData["begDate"] = begDate;
             ViewData["endDate"] = endDate;            
