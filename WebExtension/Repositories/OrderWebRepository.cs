@@ -7,7 +7,8 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
 using WebExtension.Models;
-using WebExtension.Views.Model;
+using WebExtension.Views.Model;
+
 
 namespace WebExtension.Repositories
 {
@@ -58,7 +59,7 @@ namespace WebExtension.Repositories
             end = end.AddDays(1);
             //name = "All";
 
-            if ((string)name == "All")
+            if ((string)code == "0")
             {
                 using (var dbConnection = new SqlConnection(_dataService.GetClientConnectionString().Result))
                 {
