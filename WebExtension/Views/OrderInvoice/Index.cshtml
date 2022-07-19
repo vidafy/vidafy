@@ -22,10 +22,10 @@
     var category = ViewData["category"] ?? "Location";
     var catName = ViewData["catName"] ?? "All";
     var code = ViewData["code"] ?? "0";
-    var getOrders = ViewData["getOrders"] ?? " ";   
+    var getOrders = ViewData["getOrders"] ?? " ";
 
     var countryCode = "0";
-    var orders = OrderService.GetShippableOrders(begDate, endDate, code, catName, category);  
+    var orders = OrderService.GetShippableOrders(begDate, endDate, code, catName, category);
 
     countryCode = orders.Any() ? orders[0].BillAddress.CountryCode : "0";
 }
@@ -60,7 +60,6 @@
         width: 0;
         height: 0;
     }
-
 </style>
 
 <div class="page-container">
@@ -69,8 +68,8 @@
             @*<input type="hidden" name="l" value="@((int)Disco.Extensions.Abstractions.Hooks.Menu.Inventory)" />*@
             <div class="col-sm-4">
                 <input type="hidden" name="id" value="Inventory/PackingSlips" />
-                <input type="hidden" id="Category" value="Warehouse" name="Category">
-                <input type="hidden" id="Code" value="@ViewBag.Codeval" name="Code">
+                <input type="text" id="Category" value="Warehouse" name="Category">
+                <input type="text" id="Code" value="@(code)" name="Code">
                 <input type="hidden" id="CatName" value="@(catName)" name="CatName">
                 <input type="hidden" id="GetOrders" value="@(getOrders)" name="GetOrders">
                 <input type="hidden" id="printOption" value="0" name="printOption">
@@ -81,7 +80,7 @@
                     <div class="col-sm-3">
                         <div class="inline-block align-top w-64 sm:w-auto">
 
-                            <select id="WarehouseLookup" name="WarehouseLookup" onchange="SetCategoryItems('@(code)', '@(catName)');">
+                            <select id="WarehouseLookup" name="WarehouseLookup">
                                 <option value="0" onclick="SetCategoryItems('0', 'Select Warehouse All');" selected disabled hidden>Select Warehouse All</option>
                                 @foreach (var w in (IEnumerable<ActiveCountry>)ViewData["WarehouseDetails"])
                                 {
@@ -104,7 +103,7 @@
                         })
 
                         <button class="btn btn-primary" name="Submit" onclick="submitForm(this);return false;" style="margin-left: 3px;" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> Loading Orders">List Orders</button>
-                        <button type="button" class="btn btn-primary" id="printAll" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> Printing Invoices">Print Invoices</button>                       
+                        <button type="button" class="btn btn-primary" id="printAll" data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> Printing Invoices">Print Invoices</button>
 
                     </div>
 
@@ -150,34 +149,32 @@
 </div>
 
 
-    <div class="modal fade" id="fileDownloadModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title" id="myModalLabel">Orders CSV File</h4>
+<div class="modal fade" id="fileDownloadModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Orders CSV File</h4>
+            </div>
+            <div class="modal-body">
+                <div id="fileDownloadsDiv">
                 </div>
-                <div class="modal-body">
-                    <div id="fileDownloadsDiv">
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
             </div>
         </div>
     </div>
+</div>
 
-    <script>
+<script>
         $(document).ready(function () {
-            alert(1);
-            var selectedItem = '@ViewBag.Codeval';
+            var selectedItem = '@code';
             alert(selectedItem);
             $('#WarehouseLookup').val(selectedItem).attr("selected", "selected");
-
         })
-    </script>
-    <script type="text/javascript">
+</script>
+<script type="text/javascript">
 
     function printExternal(url) {
         var printWindow = window.open(url,
@@ -201,10 +198,18 @@
             PrintPage('/OrderInvoice/InvoiceAll?begDate=' + encodeURIComponent(begDate) + '&endDate=' + encodeURIComponent(endDate) + '&code=@code' + '&catName=@catName' +'&category=@category');
         });
 
+    function SetCategoy(code) {
+        $("#GetOrders").val(" ");
+        $('#spanCat').text(code);
+        $('#CatName').val("All");
+        $('#Code').val("0");
+        $('#Category').val(code);
+        $('#SearchFrm').submit();
+    }
+
     function SetCategoryItems(code, name) {
         $('#CatName').val(name);
         $('#Code').val(code);
-        $('#spanCatValue').text(name);
         }
 
         function submitForm(element)
@@ -215,5 +220,5 @@
             console.log($("#GetOrders").val());
             $('#SearchFrm').submit();
     }
-    </script>
+</script>
 
