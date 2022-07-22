@@ -99,7 +99,7 @@
                 <tr class="item">
                     <td style="font-weight:bold">@(item.ItemNumber)</td>
                     <td style="font-weight:bold">@(item.Qty)</td>
-                    <td style="font-weight:bold">@(item.Description) </td>
+                    <td style="font-weight: bold; word-wrap: normal">@(item.Description) </td>
                     <td style="font-weight:bold">@(item.Price)</td>
                     <td style="font-weight:bold">@(item.Total)</td>
                 </tr>
@@ -109,7 +109,7 @@
                         <td></td>
                         <td>@(bom.Name)</td><!--name-->
                         <td>@(item.Qty * bom.Qty)</td><!--Qty-->
-                        <td colspan="2">@(bom.Description)</td><!--Description-->
+                        <td colspan="2" style="word-wrap:normal">@(bom.Description)</td><!--Description-->
                     </tr>
                 }
             }
