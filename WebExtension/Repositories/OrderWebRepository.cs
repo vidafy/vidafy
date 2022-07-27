@@ -92,11 +92,7 @@ namespace WebExtension.Repositories
             List<Order> newList = new List<Order>();
             foreach (var orderInfo in x.Result)
             {
-                if (!orderInfo.IsShipped)
-                {
-                    newList.Add(orderInfo);
-                }
-
+               newList.Add(orderInfo);
             }
             return newList.ToArray();
         }
