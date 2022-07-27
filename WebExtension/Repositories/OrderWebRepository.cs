@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using WebExtension.Models;
 using WebExtension.Views.Model;
 
+
 namespace WebExtension.Repositories
 {
     public interface IOrderWebRepository
@@ -58,7 +59,7 @@ namespace WebExtension.Repositories
             end = end.AddDays(1);
             //name = "All";
 
-            if ((string)name == "All")
+            if ((string)code == "0")
             {
                 using (var dbConnection = new SqlConnection(_dataService.GetClientConnectionString().Result))
                 {
@@ -91,11 +92,7 @@ namespace WebExtension.Repositories
             List<Order> newList = new List<Order>();
             foreach (var orderInfo in x.Result)
             {
-                if (!orderInfo.IsShipped)
-                {
-                    newList.Add(orderInfo);
-                }
-
+               newList.Add(orderInfo);
             }
             return newList.ToArray();
         }

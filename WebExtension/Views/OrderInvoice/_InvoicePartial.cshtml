@@ -60,10 +60,10 @@
     <table>
         <tr>
             <td>
-                <div class="bold rowdetail">Ship To:</div>
+                <div class="bold rowdetail">Ship To</div>
             </td>
             <td>
-                <div class="bold rowdetail">Bill To:</div>
+                <div class="bold rowdetail">Bill To</div>
             </td>
         </tr>
         <tr>
@@ -97,18 +97,19 @@
             @foreach (InvoiceItem item in Model.Items)
             {
                 <tr class="item">
-                    <td>@(item.ItemNumber)</td>
-                    <td>@(item.Qty)</td>
-                    <td>@(item.Description) </td>
-                    <td>@(item.Price)</td>
-                    <td>@(item.Total)</td>
+                    <td style="font-weight:bold">@(item.ItemNumber)</td>
+                    <td style="font-weight:bold">@(item.Qty)</td>
+                    <td style="font-weight: bold; word-wrap: normal">@(item.Description) </td>
+                    <td style="font-weight:bold">@(item.Price)</td>
+                    <td style="font-weight:bold">@(item.Total)</td>
                 </tr>
                 foreach (InvoiceBOM bom in @item.BOMs)
                 {
                     <tr class="bom">
+                        <td></td>
                         <td>@(bom.Name)</td><!--name-->
                         <td>@(bom.Qty)</td><!--Qty-->
-                        <td colspan="3">@(bom.Description)</td><!--Description-->
+                        <td colspan="2" style="word-wrap:normal">@(bom.Description)</td><!--Description-->
                     </tr>
                 }
             }
@@ -117,7 +118,7 @@
     <!-- Totals -->
     <table style="margin-top:50px">
         <tr>
-            <td style="width:70%">
+            <td style="width:60%">
                 <!-- Payment details -->
                 <table class="clear_margin">
                     <thead>

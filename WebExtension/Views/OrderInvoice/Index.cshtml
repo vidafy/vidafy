@@ -81,11 +81,11 @@
                     <div class="col-sm-3">
                         <div class="inline-block align-top w-64 sm:w-auto">
 
-                            <select id="WarehouseLookup" name="WarehouseLookup" onchange="SetCategoryItems('@(code)', '@(catName)');">
+                            <select id="WarehouseLookup" name="WarehouseLookup" onchange="SetCategoryItems('@(catName)');">
                                 <option value="0" onclick="SetCategoryItems('0', 'Select Warehouse All');" selected disabled hidden>Select Warehouse All</option>
                                 @foreach (var w in (IEnumerable<ActiveCountry>)ViewData["WarehouseDetails"])
                                 {
-                                    <option onclick="SetCategoryItems('@(w.Code)', '@(w.Name)');" value="@(w.Code)">@(w.Name)</option>
+                                    <option value="@(w.Code)">@(w.Name)</option>
                                 }
                             </select>
 
@@ -170,11 +170,8 @@
 
     <script>
         $(document).ready(function () {
-
             var selectedItem = '@code';
-
             $('#WarehouseLookup').val(selectedItem);
-
         })
     </script>
     <script type="text/javascript">
@@ -210,10 +207,9 @@
         $('#SearchFrm').submit();
     }
 
-    function SetCategoryItems(code, name) {
+    function SetCategoryItems(name) {
         $('#CatName').val(name);
-        $('#Code').val(code);
-        $('#spanCatValue').text(name);
+        $('#Code').val($('#WarehouseLookup').val());
         }
 
         function submitForm(element)
